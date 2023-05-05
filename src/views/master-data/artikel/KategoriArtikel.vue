@@ -5,7 +5,7 @@
                 <div class="d-flex justify-content-between">
                     <h6 class="m-0 font-weight-bold text-primary">Data {{ $route.name }}</h6>
                     <ButtonComponent Color="btn-dark" Message="Tambah Data +" data-bs-toggle="modal"
-                        data-bs-target="#tambahData" />
+                        data-bs-target="#tambahData" v-if="$can('create', 'Kategori Artikel')" />
                 </div>
             </div>
             <div class="card-body">
@@ -15,7 +15,7 @@
                             <tr>
                                 <th>ID Kategori</th>
                                 <th>Nama Kategori</th>
-                                <th>Status</th>
+                                <th v-if="$can('create', 'Kategori Artikel')" >Aksi</th>
                             </tr>
                         </thead>
                         <tbody v-if="isLoading">
@@ -29,7 +29,7 @@
                                 <tr>
                                     <td>{{ data.idKategoriArtikel }}</td>
                                     <td>{{ data.namaKategori }}</td>
-                                    <td>
+                                    <td v-if="$can('create', 'Kategori Artikel')">
                                         <div class="d-flex justify-content-start">
                                             <router-link :to="'kategori_artikel/' + data.idKategoriArtikel + '/edit'">
                                                 <ButtonComponent Color="btn-warning" Message="Edit" />

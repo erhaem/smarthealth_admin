@@ -16,5 +16,6 @@ export const roles = {
     ownerApotek: ["RO-2003065"],
     adminRs: ["RO-2003066"],
     adminOwnerApt: ["RO-2003061", "RO-2003065"],
-    adminDokter: ["RO-2003061", "RO-2003066"]
+    adminDokter: ["RO-2003061", "RO-2003062"],
+    adminRsadminWeb: ["RO-2003066", "RO-2003061"],
 };

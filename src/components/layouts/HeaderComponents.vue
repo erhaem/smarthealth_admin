@@ -245,20 +245,20 @@ export default {
         getData() {
             const cookie = Cookies.get("user");
             const parsing = JSON.parse(cookie);
-            const cekRole = parsing.data.getRole.namaRole;
+            const cekRole = parsing.data.getRole.idRole;
 
             let type = "getData"
             let url = null;
 
-            if (cekRole === "Administrator") {
+            if (cekRole === "RO-2003061") {
                 url = [
                     "akun/profil/admin/profil", []
                 ]
-            } else if (cekRole === "Dokter") {
+            } else if (cekRole === "RO-2003062") {
                 url = [
                     "akun/profil/dokter/profil", []
                 ]
-            } else if (cekRole === "Owner Apotek"){
+            } else if (cekRole === "RO-2003065"){
                 url = [
                     "akun/profil/apotek/profil", []
                 ]

@@ -6,13 +6,16 @@ import Cookie from "js-cookie";
 const permisionsByRole = {
     "RO-2003061": [
         'show_Artikel', 'create_Artikel', 'edit_Artikel',
+        'create_Kategori Artikel',
         'show_Dokter',
+        'show_User',
+        'show_Keahlian',
         'show_Rumah Sakit',
-        'create_Kategori Produk', 'edit_Kategori Produk', 'show_Kategori Produk'
+        'create_Kategori Produk', 'edit_Kategori Produk', 'show_Kategori Produk',
+        'show_Spesialis'
     ],
     "RO-2003062": [
         'show_Artikel', 'create_Artikel', 'edit_Artikel',
-        'show_Kategori Produk'
     ],
     "RO-2003063": [
         'show_Kategori Produk'
@@ -24,7 +27,8 @@ const permisionsByRole = {
         'show_Rumah Sakit',
         'show_Fasilitas',
         'create_Fasilitas',
-        'show_Dokter'
+        'show_Dokter',
+        'show_Spesialis'
     ],
 }
 export default defineAbility(can => {

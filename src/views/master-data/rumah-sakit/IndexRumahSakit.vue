@@ -20,10 +20,10 @@
                         </tr>
                     </thead>
                     <tbody v-if="isLoading">
-                        <EmptyLoading/>
+                        <EmptyLoading />
                     </tbody>
                     <tbody v-else-if="rumahSakit.length == 0">
-                        <EmptyData/>
+                        <EmptyData />
                     </tbody>
                     <template v-else>
                         <tbody v-for="data in rumahSakit" :key="index">
@@ -55,6 +55,7 @@ import InputField from '../../../components/partials-component/InputField.vue'
 import EmptyLoading from '../../../components/empty-table/EmptyLoading.vue'
 import EmptyData from '../../../components/empty-table/EmptyData.vue'
 import iziToast from 'izitoast'
+import Cookies from 'js-cookie'
 export default {
     data() {
         return {
@@ -67,18 +68,28 @@ export default {
     },
     methods: {
         getRumahSakit() {
-            let type = "getData";
-            let url = [
-                "master/rumah_sakit/data",
-                {}
-            ];
-            this.isLoading = true
-            this.$store.dispatch(type, url).then((result) => {
-                this.rumahSakit = result.data;
-                this.isLoading = false
-            }).catch((err) => {
-                console.log(err);
-            });
+            const parsing = JSON.parse(Cookies.get('user'));
+            const userId = parsing.data.id;
+            const cekRole = parsing.data.getRole.idRole;
+            const type = "getData";
+            let url = null;
+            if(cekRole === "RO-2003061"){
+                url = [
+                    "master/rumah_sakit/data", {}
+                ]
+            } else if (cekRole === "RO-2003066"){
+                url = [`master/rumah_sakit/data/${userId}`, {}];
+            }
+            this.isLoading = true;
+            this.$store.dispatch(type, url)
+                .then((result) => {
+                    this.rumahSakit = result.data;
+                    this.isLoading = false;
+                    console.log(result.data);
+                })
+                .catch((err) => {
+                    console.log(err);
+                });
         },
         deleteRumahSakit(idRumahSakit) {
             let type = "deleteData"
@@ -99,10 +110,10 @@ export default {
         }
     },
     components: {
-    ButtonComponent,
-    InputField,
-    EmptyLoading,
-    EmptyData
-}
+        ButtonComponent,
+        InputField,
+        EmptyLoading,
+        EmptyData
+    }
 }
 </script>

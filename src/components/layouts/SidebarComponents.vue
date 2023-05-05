@@ -34,28 +34,32 @@
                         <router-link class="collapse-item" to="/master/artikel">Data Artikel</router-link>
                         <router-link class="collapse-item" to="/master/grouping_artikel">Grouping Artikel</router-link>
                     </div>
-                    <div>
+                    <div v-if="$can('show', 'Rumah Sakit')">
                         <h6 class="collapse-header">Rumah Sakit</h6>
-                        <router-link class="collapse-item" v-if="$can('show', 'Rumah Sakit')" to="/master/rumah_sakit">Data Rumah Sakit</router-link>
+                        <router-link class="collapse-item" to="/master/rumah_sakit">Data Rumah Sakit</router-link>
                         <router-link class="collapse-item" to="/master/fasilitas_rs">Fasilitas Rumah Sakit</router-link>
                     </div>
-                    <h6 class="collapse-header">Spesialis Penyakit</h6>
-                    <router-link class="collapse-item" to="/master/spesialis_penyakit">Data Spesialis</router-link>
+                    <div v-if="$can('show', 'Spesialis')">
+                        <h6 class="collapse-header">Spesialis Penyakit</h6>
+                        <router-link class="collapse-item" to="/master/spesialis_penyakit">Data Spesialis</router-link>
+                    </div>
                 </div>
             </div>
         </li>
         <NavItem v-if="$can('show', 'Dokter')" span="Dokter" icon="fa-user-doctor" target="#collapseDokter">
             <template #item>
-                <CollapseItem v-if="$can('show', 'Dokter')" id="collapseDokter" title="Dokter & Keahlian">
+                <CollapseItem id="collapseDokter" title="Dokter & Keahlian">
                     <template #router>
-                        <router-link class="collapse-item" to="/dokter">Data Dokter</router-link>
-                        <router-link class="collapse-item" to="/dokter/keahlian_dokter">Keahlian Dokter</router-link>
+                        <div v-if="$can('show', 'Keahlian')">
+                            <router-link class="collapse-item" to="/dokter">Data Dokter</router-link>
+                            <router-link class="collapse-item" to="/dokter/keahlian_dokter">Keahlian Dokter</router-link>
+                        </div>
                         <router-link class="collapse-item" to="/dokter/dokter_keahlian">Dokter Keahlian </router-link>
                     </template>
                 </CollapseItem>
             </template>
         </NavItem>
-        <NavItem span="Perawat" icon="fa-user-nurse" target="#collapsePerawat">
+        <NavItem v-if="$can('show', 'User')" span="Perawat" icon="fa-user-nurse" target="#collapsePerawat">
             <template #item>
                 <CollapseItem header="Perawat dan Rekap" id="collapsePerawat" title="Perawat & Rekap">
                     <template #router>
@@ -64,7 +68,7 @@
                 </CollapseItem>
             </template>
         </NavItem>
-        <NavItem span="Konsumen" icon="fa-users" target="#collapseKomponen">
+        <NavItem v-if="$can('show', 'User')" span="Konsumen" icon="fa-users" target="#collapseKomponen">
             <template #item>
                 <CollapseItem header="Konsumen & Rekap" id="collapseKomponen" title="Konsumen & Rekap">
                     <template #router>
@@ -74,7 +78,7 @@
                 </CollapseItem>
             </template>
         </NavItem>
-        <NavItem span="Apotek" icon="fa-users" target="#collapseApotek">
+        <NavItem v-if="$can('show', 'User')" span="Apotek" icon="fa-users" target="#collapseApotek">
             <template #item>
                 <CollapseItem header="Konsumen & Rekap" id="collapseApotek" title="Apotek & Rekap">
                     <template #router>

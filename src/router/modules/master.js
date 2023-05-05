@@ -14,6 +14,7 @@ import FasilitasRumahSakit from '@/views/master-data/rumah-sakit/FasilitasRumahS
 import EditFasilitas from '@/views/master-data/rumah-sakit/EditFasilitas.vue'
 import IndexSpesialis from '@/views/master-data/spesialis-penyakit/IndexSpesialis.vue'
 import EditSpesialisPenyakit from '@/views/master-data/spesialis-penyakit/EditSpesialisPenyakit.vue'
+import IndexRs from '../../views/master-data/owner-rs/IndexOwnerRs.vue'
 import { checkRoles, roles } from '../../middleware/redirect';
 
 export default [{
@@ -71,7 +72,7 @@ export default [{
             name: 'Edit Kategori Artikel',
             component: EditKategoriArtikel,
             meta: {
-                middleware: checkRoles(roles.adminDokter)
+                middleware: checkRoles(roles.admin)
             }
         },
         {
@@ -100,32 +101,56 @@ export default [{
             path: 'rumah_sakit/create',
             name: 'Tambah Rumah Sakit',
             component: TambahRumahSakit,
+            meta: {
+                middleware: checkRoles(roles.admin)
+            }
         },
         {
             path: 'rumah_sakit/:id/edit',
             name: 'Edit Rumah Sakit',
             component: EditRumahSakit,
+            meta: {
+                middleware: checkRoles(roles.admin)
+            }
         },
         {
             path: 'fasilitas_rs',
             name: 'Fasilitas Rumah Sakit',
             component: FasilitasRumahSakit,
+            meta: {
+                middleware: checkRoles(roles.adminRsadminWeb)
+            }
         },
         {
             path: 'fasilitas_rs/:id/edit',
             name: 'Edit Fasilitas Rumah Sakit',
             component: EditFasilitas,
+            meta: {
+                middleware: checkRoles(roles.adminRsadminWeb)
+            }
+        },
+        // Owner Rumah Sakit
+        {
+            path: 'owner_rs',
+            name: 'Owner Rumah Sakit',
+            component: IndexRs,
         },
         // Routes Spesialis
         {
             path: 'spesialis_penyakit',
             name: 'Spesialis Penyakit',
-            component: IndexSpesialis
+            component: IndexSpesialis,
+            meta: {
+                middleware: checkRoles(roles.admin)
+            }
         },
         {
             path: 'spesialis_penyakit/:id/edit',
             name: 'Edit Spesialis Penyakit',
-            component: EditSpesialisPenyakit
+            component: EditSpesialisPenyakit,
+            meta: {
+                middleware: checkRoles(roles.admin)
+            }
         }
     ]
 }

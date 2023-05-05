@@ -99,7 +99,7 @@ export default {
     },
     created() {
         this.getFasilitas(),
-            this.getRumahSakit()
+        this.getRumahSakit()
     },
     methods: {
         getFasilitas() {
@@ -121,7 +121,8 @@ export default {
             this.isLoading = true
             this.$store.dispatch(type, url).then((result) => {
                 this.dataRumahSakit = result.data
-                this.isLoading = false
+                this.isLoading = false,
+                console.log(result.data);
             }).catch((err) => {
                 console.log(err);
             })
