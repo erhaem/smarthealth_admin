@@ -1,0 +1,103 @@
+<template>
+    <ul class="navbar-nav bg-gradient-dark sidebar sidebar-dark accordion" id="accordionSidebar">
+        <router-link class="sidebar-brand d-flex align-items-center justify-content-center" to="/dashboard">
+            <div class="sidebar-brand-icon rotate-n-15">
+                <i class="fas fa-laugh-wink"></i>
+            </div>
+            <div class="sidebar-brand-text mx-3">BEROBAT+</div>
+        </router-link>
+        <hr class="sidebar-divider my-0">
+        <li class="nav-item active">
+            <router-link class="nav-link" to="index.html">
+                <i class="fas fa-fw fa-tachometer-alt"></i>
+                <span>Dashboard</span></router-link>
+        </li>
+        <hr class="sidebar-divider">
+        <div class="sidebar-heading">
+            Interface
+        </div>
+        <li class="nav-item">
+            <router-link class="nav-link collapsed" to="#" data-toggle="collapse" data-target="#collapseTwo"
+                aria-expanded="true" aria-controls="collapseTwo">
+                <i class="fas fa-fw fa-cog"></i>
+                <span>Master Data</span>
+            </router-link>
+            <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                <div class="bg-white py-2 collapse-inner rounded">
+                    <div v-if="$can('show', 'Kategori Produk')">
+                        <h6 class="collapse-header">Obat & Produk:</h6>
+                        <router-link class="collapse-item" to="/master/kategori_produk">Kategori Produk</router-link>
+                    </div>
+                    <div v-if="$can('show', 'Artikel')">
+                        <h6 class="collapse-header">Artikel</h6>
+                        <router-link class="collapse-item" to="/master/kategori_artikel">Kategori Artikel</router-link>
+                        <router-link class="collapse-item" to="/master/artikel">Data Artikel</router-link>
+                        <router-link class="collapse-item" to="/master/grouping_artikel">Grouping Artikel</router-link>
+                    </div>
+                    <div>
+                        <h6 class="collapse-header">Rumah Sakit</h6>
+                        <router-link class="collapse-item" v-if="$can('show', 'Rumah Sakit')" to="/master/rumah_sakit">Data Rumah Sakit</router-link>
+                        <router-link class="collapse-item" to="/master/fasilitas_rs">Fasilitas Rumah Sakit</router-link>
+                    </div>
+                    <h6 class="collapse-header">Spesialis Penyakit</h6>
+                    <router-link class="collapse-item" to="/master/spesialis_penyakit">Data Spesialis</router-link>
+                </div>
+            </div>
+        </li>
+        <NavItem v-if="$can('show', 'Dokter')" span="Dokter" icon="fa-user-doctor" target="#collapseDokter">
+            <template #item>
+                <CollapseItem v-if="$can('show', 'Dokter')" id="collapseDokter" title="Dokter & Keahlian">
+                    <template #router>
+                        <router-link class="collapse-item" to="/dokter">Data Dokter</router-link>
+                        <router-link class="collapse-item" to="/dokter/keahlian_dokter">Keahlian Dokter</router-link>
+                        <router-link class="collapse-item" to="/dokter/dokter_keahlian">Dokter Keahlian </router-link>
+                    </template>
+                </CollapseItem>
+            </template>
+        </NavItem>
+        <NavItem span="Perawat" icon="fa-user-nurse" target="#collapsePerawat">
+            <template #item>
+                <CollapseItem header="Perawat dan Rekap" id="collapsePerawat" title="Perawat & Rekap">
+                    <template #router>
+                        <router-link class="collapse-item" to="/perawat">Data Perawat</router-link>
+                    </template>
+                </CollapseItem>
+            </template>
+        </NavItem>
+        <NavItem span="Konsumen" icon="fa-users" target="#collapseKomponen">
+            <template #item>
+                <CollapseItem header="Konsumen & Rekap" id="collapseKomponen" title="Konsumen & Rekap">
+                    <template #router>
+                        <router-link class="collapse-item" to="/konsumen">Data Konsumen</router-link>
+                        <router-link class="collapse-item" to="/konsumen/riwayat">Riwatat Konsumen</router-link>
+                    </template>
+                </CollapseItem>
+            </template>
+        </NavItem>
+        <NavItem span="Apotek" icon="fa-users" target="#collapseApotek">
+            <template #item>
+                <CollapseItem header="Konsumen & Rekap" id="collapseApotek" title="Apotek & Rekap">
+                    <template #router>
+                        <router-link class="collapse-item" to="/owner_apotek">Data Apotek</router-link>
+                        <router-link class="collapse-item" to="/apotek/grouping_produk">Grouping Produk</router-link>
+                        <router-link class="collapse-item" to="/apotek/produk_apotek">Data Produk Apotek</router-link>
+                    </template>
+                </CollapseItem>
+            </template>
+        </NavItem>
+    </ul>
+</template>
+
+<script>
+import NavItem from '../sidebar-additional/NavItem.vue';
+import CollapseItem from '../sidebar-additional/CollapseItem.vue';
+import HeaderCollapseItem from '../sidebar-additional/HeaderCollapseItem.vue';
+import '../../stores/services/abilities'
+export default {
+    components: {
+        NavItem,
+        CollapseItem,
+        HeaderCollapseItem
+    }
+}
+</script>

@@ -1,0 +1,8 @@
+import '../assets/vendor/jquery/jquery'
+import '../assets/vendor/bootstrap/js/bootstrap.bundle'
+import '../assets/vendor/jquery-easing/jquery.easing'
+import '../assets/js/sb-admin-2'
+import '../assets/vendor/datatables/jquery.dataTables.min.js'
+import '../assets/vendor/datatables/dataTables.bootstrap4.min.js'
+import '../assets/js/demo/datatables-demo.js'
+import 'https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js'
