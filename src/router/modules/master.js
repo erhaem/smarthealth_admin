@@ -15,6 +15,7 @@ import EditFasilitas from '@/views/master-data/rumah-sakit/EditFasilitas.vue'
 import IndexSpesialis from '@/views/master-data/spesialis-penyakit/IndexSpesialis.vue'
 import EditSpesialisPenyakit from '@/views/master-data/spesialis-penyakit/EditSpesialisPenyakit.vue'
 import IndexRs from '../../views/master-data/owner-rs/IndexOwnerRs.vue'
+import EditOwnerRs from '@/views/master-data/owner-rs/EditOwnerRs.vue'
 import { checkRoles, roles } from '../../middleware/redirect';
 
 export default [{
@@ -134,6 +135,11 @@ export default [{
             path: 'owner_rs',
             name: 'Owner Rumah Sakit',
             component: IndexRs,
+        },
+        {
+            path: 'owner_rs/:id/edit',
+            name: 'Edit Owner Rumah Sakit',
+            component: EditOwnerRs,
         },
         // Routes Spesialis
         {

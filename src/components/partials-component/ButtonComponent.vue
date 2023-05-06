@@ -1,5 +1,8 @@
 <template>
-    <button type="submit" :class="[styLe] + Color">{{Message}}
+    <button type="submit" :class="[styLe] + Color">
+        <i class="fas fa-trash">
+        </i>
+        {{Message}} 
     </button>
 </template>
 

@@ -3,8 +3,9 @@
         <div class="card-header py-3">
             <div class="d-flex justify-content-between">
                 <h6 class="m-0 font-weight-bold text-primary">Data {{ $route.name }}</h6>
-                <ButtonComponent v-if="$can('create' , 'Artikel')" Color="btn-dark" Message="Tambah Data +" data-bs-toggle="modal"
-                    data-bs-target="#tambahData" />
+                <ButtonComponent Color="btn-danger" Message="hapus" @click="deleteSelectedArtikels" />
+                <ButtonComponent v-if="$can('create', 'Artikel')" Color="btn-dark" Message="Tambah Data +"
+                    data-bs-toggle="modal" data-bs-target="#tambahData" />
             </div>
         </div>
         <div class="card-body">
@@ -12,9 +13,11 @@
                 <table class="table table-bordered" width="100%" cellspacing="0">
                     <thead>
                         <tr>
+                            <th>id</th>
                             <th>Judul</th>
                             <th>Deskripsi</th>
                             <th>Penulis</th>
+                            <th>foto artikel</th>
                             <th v-if="$can('edit', 'Artikel')">Aksi</th>
                         </tr>
                     </thead>
@@ -27,22 +30,33 @@
                     <template v-else>
                         <tbody v-for="data in dataArtikel" :key="index">
                             <tr>
+                                <td>
+                                    <input type="checkbox" :value="data.idArtikel" v-model="selectedArtikelIds">
+                                </td>
                                 <td>{{ data.judulArtikel }}</td>
                                 <td>{{ data.deskripsi }}</td>
                                 <td>{{ data.getUser.nama }}</td>
-                                <td  v-if="$can('edit', 'Artikel')">
+                                <td>
+                                    <ButtonComponent data-bs-target="#lihatFoto" Color="btn-success" Message="lihat foto"
+                                        data-bs-toggle="modal" />
+                                    <ModalComponent id="lihatFoto">
+                                        <template #modal>
+                                            <img class="img-fluid" :src="data.foto" alt="">
+                                        </template>
+                                    </ModalComponent>
+                                </td>
+                                <td v-if="$can('edit', 'Artikel')">
                                     <div class="d-flex justify-content-start">
                                         <router-link :to="'artikel/' + data.idArtikel + '/edit'">
                                             <ButtonComponent Message="edit" Color="btn-warning" />
                                         </router-link>
-                                        <ButtonComponent Message="hapus" Color="btn-danger"
-                                            @click="deleteArtikel(data.idArtikel)" />
                                     </div>
                                 </td>
                             </tr>
                         </tbody>
                     </template>
                 </table>
+                {{ selectedArtikelIds }}
             </div>
         </div>
     </div>
@@ -65,11 +79,12 @@
                     <textarea name="deskripsi" class="form-control border-primary" v-model="artikels.deskripsi"></textarea>
                 </div>
                 <div>
-                    <ButtonComponent @click="handleKontol()"/>
+                    <ButtonComponent @click="handleKontol()" />
                 </div>
             </Form>
         </template>
     </ModalComponent>
+    <ButtonComponent @click="test()"/>
 </template>
 
 <script>
@@ -88,10 +103,11 @@ export default {
             artikels: {
                 judul_artikel: '',
                 deskripsi: '',
-                foto: ''
+                foto: null
             },
             isLoading: false,
-            error: 'text-danger'
+            error: 'text-danger',
+            selectedArtikelIds: []
         };
     },
     computed: {
@@ -131,6 +147,9 @@ export default {
                 console.log(err);
             });
         },
+        getImage(foto) {
+            return '/storage/' + foto
+        },
         goBack() {
             window.location = '/master/artikel'
         },
@@ -151,24 +170,77 @@ export default {
                 console.log(err);
             })
         },
-        handleKontol() {
-            let type = "postDataUpload"
-            this.$store.dispatch(type, [this.formData, '/master/artikel']).then((result) => {
-                iziToast.success({
-                    title: 'success',
-                    position: 'topRight',
-                    message: 'Data Artikel Berhasil Ditambahkan',
-                    timeout: 1000
-                })
-                this.goBack()
-            }).catch((err) => {
-                console.log(err);
+        test(){
+            this.$swal({
+                icon: 'question',
+                title: "Apakah kamu ingin menyimpan perubahan",
+                showDenyButton: true,
+                showCancelButton: true,
+                confirmButtonText: "Ya, Hapus",
+                denyButtonText: "Jangan Hapus"
             })
         },
+        deleteSelectedArtikels() {
+            if (this.selectedArtikelIds.length === 0) {
+                return;
+            }
+            let type = "deleteData";
+            let urls = this.selectedArtikelIds.map((idArtikel) => ["master/artikel", idArtikel]);
+            Promise.all(urls.map((url) => this.$store.dispatch(type, url)))
+                .then((results) => {
+                    iziToast.success({
+                        title: 'Berhasil',
+                        message: 'Data Artikel Berhasil Dihapus',
+                        position: 'topRight',
+                        timeout: 1000
+                    });
+                    this.getArtikel();
+                })
+                .catch((err) => {
+                    console.log(err);
+                });
+            this.selectedArtikelIds = [];
+        },
+        handleKontol() {
+            const allowedFormats = ['image/jpeg', 'image/png', 'image/jpg'];
+            const file = this.artikels.foto;
+            const maxSizeInBytes = 5 * 1024 * 1024;
+
+            if (file && allowedFormats.includes(file.type)) {
+                if (file.size <= maxSizeInBytes) {
+                    const formData = this.formData;
+                    let type = "postDataUpload";
+                    this.$store
+                        .dispatch(type, [formData, '/master/artikel'])
+                        .then((result) => {
+                            iziToast.success({
+                                title: 'Success',
+                                position: 'topRight',
+                                message: 'Data Artikel Berhasil Ditambahkan',
+                                timeout: 1000
+                            });
+                            this.goBack();
+                        })
+                        .catch((err) => {
+                            console.log(err);
+                        });
+                } else {
+                    iziToast.error({
+                        title: 'Error',
+                        message: 'Maaf, ukuran file gambar terlalu besar. Maksimum ukuran file adalah 5MB.',
+                        position: 'topRight'
+                    });
+                }
+            } else {
+                iziToast.error({
+                    title: 'Error',
+                    message: 'Maaf, format yang diperbolehkan hanya jpg, png, jpeg',
+                    position: 'topRight'
+                });
+            }
+        },
         chooseFoto(event) {
-            console.log(event);
             this.artikels.foto = event.target.files[0]
-            console.log(this.artikels.foto)
         }
     },
     components: {

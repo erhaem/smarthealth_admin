@@ -6,13 +6,15 @@ import './components/app.js'
 import './components/style.css' 
 import store from './stores'
 import iziToast from 'izitoast'
+import VueSweetalert2 from 'vue-sweetalert2';
+import 'sweetalert2/dist/sweetalert2.min.css';
 import {
     abilitiesPlugin
 } from "@casl/vue";
 import ability from "./stores/services/abilities"
 
 const app = createApp(App)
-app.use(iziToast).use(createPinia()).use(router).use(store).use(abilitiesPlugin, ability, {
+app.use(iziToast).use(createPinia()).use(router).use(store).use(VueSweetalert2).use(abilitiesPlugin, ability, {
     useGlobalProperties:true
 }).mount('#app')
 

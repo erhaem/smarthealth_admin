@@ -3,9 +3,14 @@
         <div class="card-header">
             <h6><b class="text-primary">{{ $route.name }}</b></h6>
         </div>
+        {{ form.judulArtikel }}
         <div class="card-body">
             <Form @submit="submitEdit" :validation-schema="schema" v-slot="{ errors }">
-                <div>
+                <div class="w-25">
+                    <input type="file" class="form-control" @change="chooseFoto">
+                    <img :src="form.foto" class="img-fluid mt-3" alt="">
+                </div>
+                <div class="mt-3">
                     <label for="">Judul Artikel</label>
                     <InputField class="w-25" Name="judulArtikel" v-model="form.judulArtikel" />
                     <span>{{ errors.judulArtikel }}</span>
@@ -34,7 +39,9 @@ export default {
         return {
             form: {
                 judulArtikel: '',
-                deskripsi: ''
+                deskripsi: '',
+                foto: null,
+                gambarLama: ''
             }
         }
     },
@@ -47,6 +54,16 @@ export default {
             return valid.object({
                 judulArtikel: valid.string().required(message)
             })
+        },
+        formData() {
+            const formData = new FormData()
+
+            formData.append('foto', this.form.foto)
+            formData.append('judul_artikel', this.form.judulArtikel)
+            formData.append('deskripsi', this.form.deskripsi)
+            formData.append('gambarLama', this.form.gambarLama)
+
+            return formData;
         }
     },
     components: {
@@ -73,8 +90,9 @@ export default {
         },
         submitEdit() {
             let type = "updateData"
+            const formData = this.formData
             let url = [
-                "master/artikel", this.idFromParams, this.form
+                "master/artikel", this.idFromParams, formData
             ]
             this.$store.dispatch(type, url).then((result) => {
                 iziToast.success({
@@ -87,6 +105,11 @@ export default {
             }).catch((err) => {
                 console.log(err);
             })
+        },
+        chooseFoto(event) {
+            this.form.foto = event.target.files[0]
+            console.log(event);
+            console.log(this.form.foto);
         }
     },
 }

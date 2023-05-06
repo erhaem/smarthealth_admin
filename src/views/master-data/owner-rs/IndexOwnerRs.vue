@@ -27,46 +27,75 @@
                             Aksi
                         </th>
                     </thead>
-                    <tbody v-for="data in dataOwnerRs" :key="index">
-                        <tr>
-                            <td>{{data.user.nama}}</td>
-                            <td>{{data.user.email}}</td>
-                            <td>{{data.user.nomorHp}}</td>
-                            <td>{{data.noKtp}}</td>
-                            <td>
-                                <div class="d-flex justify-content-start">
-                                    <ButtonComponent Color="btn-warning" Message="Edit"/>
-                                    <ButtonComponent Color="btn-danger" Message="Hapus"/>
-                                </div>
-                            </td>
-                        </tr>
+                    <tbody v-if="isLoading">
+                        <EmptyLoading />
                     </tbody>
+                    <tbody v-else-if="dataOwnerRs.length == 0">
+                        <EmptyData />
+                    </tbody>
+                    <template v-else>
+                        <tbody v-for="data in dataOwnerRs" :key="index">
+                            <tr>
+                                <td>{{ data.user.nama }}</td>
+                                <td>{{ data.user.email }}</td>
+                                <td>{{ data.user.nomorHp }}</td>
+                                <td>{{ data.noKtp }}</td>
+                                <td>
+                                    <div class="d-flex justify-content-start">
+                                        <router-link :to="'owner_rs/' + data.idOwner + '/edit'">
+                                            <ButtonComponent Color="btn-warning" Message="Edit" />
+                                        </router-link>
+                                        <ButtonComponent Color="btn-danger" Message="Hapus"
+                                            @click="deleteData(data.idOwner)" />
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </template>
                 </table>
             </div>
         </div>
     </div>
     <ModalComponent id="tambahData" :modalTitle="'Tambah ' + $route.name">
         <template #modal>
-            <Form @submit="postOwner">
+            <Form @submit="postOwner" :validation-schema="schema" v-slot="{ errors }">
                 <div class="row">
                     <div class="col-sm-6 col-6">
-                        <label for="">Nama</label>
-                        <InputField Name="nama" v-model="form.nama"/>
-                        <label for="">Email</label>
-                        <InputField Name="email" v-model="form.email"/>
-                        <label for="">Password</label>
-                        <InputField Name="password" v-model="form.password"/>
+                        <div>
+                            <label for="">Nama</label>
+                            <InputField Name="nama" v-model="form.nama" />
+                            <span :class="[error]">{{ errors.nama }}</span>
+                        </div>
+                        <div>
+                            <label for="">Email</label>
+                            <InputField Name="email" v-model="form.email" />
+                            <span :class="[error]">{{ errors.email }}</span>
+                        </div>
+                        <div>
+                            <label for="">Password</label>
+                            <InputField Name="password" v-model="form.password" />
+                            <span :class="[error]">{{ errors.password }}</span>
+                        </div>
                     </div>
                     <div class="col-sm-6 col-6">
-                        <label for="">Nomor Hp</label>
-                        <InputField Name="nomor_hp" v-model="form.nomor_hp"/>
-                        <label for="">Alamat</label>
-                        <InputField Name="alamat" v-model="form.alamat"/>
-                        <label for="">NIK</label>
-                        <InputField Name="noktp" v-model="form.no_ktp"/>
+                        <div>
+                            <label for="">Nomor Hp</label>
+                            <InputField Name="nomor_hp" v-model="form.nomor_hp" />
+                            <span :class="[error]">{{ errors.nomor_hp }}</span>
+                        </div>
+                        <div>
+                            <label for="">Alamat</label>
+                            <InputField Name="alamat" v-model="form.alamat" />
+                            <span :class="[error]">{{ errors.alamat }}</span>
+                        </div>
+                        <div>
+                            <label for="">NIK</label>
+                            <InputField Name="noktp" v-model="form.no_ktp" />
+                            <span :class="[error]">{{ errors.noktp }}</span>
+                        </div>
                     </div>
                 </div>
-                <ButtonComponent/>
+                <ButtonComponent />
             </Form>
         </template>
     </ModalComponent>
@@ -77,8 +106,11 @@ import ButtonComponent from '../../../components/partials-component/ButtonCompon
 import { Form } from 'vee-validate';
 import InputField from '../../../components/partials-component/InputField.vue';
 import iziToast from 'izitoast';
+import EmptyData from '../../../components/empty-table/EmptyData.vue';
+import EmptyLoading from '../../../components/empty-table/EmptyLoading.vue';
+import * as valid from 'yup'
 export default {
-    data(){
+    data() {
         return {
             dataOwnerRs: [],
             form: {
@@ -88,45 +120,76 @@ export default {
                 nomor_hp: '',
                 alamat: '',
                 no_ktp: ''
-            }
+            },
+            isLoading: false,
+            error: 'text-danger'
         }
     },
-    created(){
+    computed: {
+        schema() {
+            let message = "wajib diisi"
+            return valid.object({
+                nama: valid.string().required(message),
+                email: valid.string().required(message).email(),
+                password: valid.string().required(message).min(8, "minimal 8 karakter"),
+                nomor_hp: valid.string().required(message).min(12, "minimal 12 karakter").max(13, "minimal 13 karakter"),
+                alamat: valid.string().required(message),
+                noktp: valid.string().required(message).min(16, "minimal 16 karakter").max(16, "maksimal 16 karajtr")
+            })
+        }
+    },
+    created() {
         this.getOwner()
     },
     methods: {
-        getOwner(){
-            let type = "getData" 
+        getOwner() {
+            let type = "getData"
             let url = [
                 "akun/owner_rs", {}
             ]
-            this.$store.dispatch(type, url).then((result)=>{
-                console.log(result);
+            this.isLoading = true
+            this.$store.dispatch(type, url).then((result) => {
                 this.dataOwnerRs = result.data
-            }).catch((err)=>{
+                this.isLoading = false
+            }).catch((err) => {
                 console.log(err);
             })
         },
-        goBack(){
+        goBack() {
             window.location = '/master/owner_rs'
         },
-        postOwner(){
+        postOwner() {
             let type = "postData"
             let url = [
                 "akun/owner_rs", this.form
             ]
-            this.$store.dispatch(type, url).then((result)=>{
+            this.$store.dispatch(type, url).then((result) => {
                 this.goBack()
-            }).catch((err)=>{
+            }).catch((err) => {
                 console.log(err);
             })
         },
+        deleteData(idOwner) {
+            let type = "deleteData"
+            let url = [
+                "akun/owner_rs", idOwner
+            ]
+            this.$store.dispatch(type, url).then((result) => {
+                iziToast.success({
+                    title: 'success',
+                    message: 'berhasil hapus data',
+                    timeout: 1000,
+                    position: 'topRight'
+                })
+                this.getOwner()
+            }).catch((err) => {
+                console.log(err);
+            })
+        }
     },
     components: {
-        InputField, Form, ButtonComponent, ModalComponent
+        InputField, Form, ButtonComponent, ModalComponent, EmptyData, EmptyLoading
     }
 }
 </script>
-<style >
-    
-</style>
+<style ></style>
