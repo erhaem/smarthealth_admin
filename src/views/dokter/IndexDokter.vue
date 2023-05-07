@@ -87,8 +87,6 @@ export default {
             } else {
                 status = 1;
             }
-
-
             let type = "updateData";
             let url = [
                 "akun/active_account",

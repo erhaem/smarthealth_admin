@@ -39,7 +39,7 @@
                                         <i>Data Gak Ada</i>
                                     </strong>
                                 </td>
-                                <td>
+                                <td v-if="$can('create', 'Fasilitas')">
                                     <div class="d-flex justify-content-start">
                                         <router-link :to="'fasilitas_rs/' + data.idFasilitas + '/edit'">
                                             <ButtonComponent Color="btn-warning" Message="edit" />

@@ -34,6 +34,10 @@
                     <div class="col-sm-6 col-6">
                         <label for="">Deskripsi RS</label>
                         <InputField Name="deskripsi" v-model="form.deskripsiRs" />
+                        <label for="">Latitude RS</label>
+                        <InputField Name="latitude" v-model="form.latitude" />
+                        <label for="">Longitude RS</label>
+                        <InputField Name="longitude" v-model="form.longitude" />
                     </div>
                 </div>
             </Form>
@@ -55,7 +59,9 @@ export default {
                 nomorHp: '',
                 namaRs: '',
                 deskripsiRs: '',
-                alamatRs: ''
+                alamatRs: '',
+                latitude: '',
+                longitude: ''
             }
         }
     },

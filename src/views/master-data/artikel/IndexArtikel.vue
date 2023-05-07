@@ -88,6 +88,7 @@
 </template>
 
 <script>
+import Cookies from 'js-cookie'
 import InputField from '../../../components/partials-component/InputField.vue';
 import { Form } from 'vee-validate'
 import iziToast from 'izitoast';
@@ -133,11 +134,18 @@ export default {
     },
     methods: {
         getArtikel() {
-            let type = "getData";
-            let url = [
-                "master/artikel",
-                {}
-            ];
+            const parsing = JSON.parse(Cookies.get('user'));
+            const userId = parsing.data.id;
+            const cekRole = parsing.data.getRole.idRole;
+            const type = "getData";
+            let url = null;
+            if(cekRole === "RO-2003061"){
+                url = [
+                    "master/artikel", {}
+                ]
+            } else if (cekRole === "RO-2003062"){
+                url = [`master/artikel/${userId}`, {}];
+            }
             this.isLoading = true
             this.$store.dispatch(type, url).then((result) => {
                 this.dataArtikel = result.data;

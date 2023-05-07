@@ -83,7 +83,8 @@
             <template #item>
                 <CollapseItem header="Konsumen & Rekap" id="collapseApotek" title="Apotek & Rekap">
                     <template #router>
-                        <router-link class="collapse-item" to="/owner_apotek">Data Apotek</router-link>
+                        <router-link class="collapse-item" to="/owner_apotek">Data Owner Apotek</router-link>
+                        <router-link class="collapse-item" to="/apotek">Data Apotek</router-link>
                         <router-link class="collapse-item" to="/apotek/grouping_produk">Grouping Produk</router-link>
                         <router-link class="collapse-item" to="/apotek/produk_apotek">Data Produk Apotek</router-link>
                     </template>
