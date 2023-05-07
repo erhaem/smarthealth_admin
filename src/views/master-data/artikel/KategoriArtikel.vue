@@ -4,8 +4,12 @@
             <div class="card-header py-3">
                 <div class="d-flex justify-content-between">
                     <h6 class="m-0 font-weight-bold text-primary">Data {{ $route.name }}</h6>
-                    <ButtonComponent Color="btn-dark" Message="Tambah Data +" data-bs-toggle="modal"
-                        data-bs-target="#tambahData" v-if="$can('create', 'Kategori Artikel')" />
+                    <div class="d-flex justify-content-start">
+                        <ButtonComponent Color="btn-dark" Message="Tambah Data +" data-bs-toggle="modal"
+                            data-bs-target="#tambahData" v-if="$can('create', 'Kategori Artikel')" />
+                        <div v-if="selectedId.length === 0"></div>
+                        <ButtonComponent v-else-if="selectedId" Color="btn-danger" @click="deleteData()" Message="Hapus" />
+                    </div>
                 </div>
             </div>
             <div class="card-body">
@@ -13,9 +17,9 @@
                     <table class="table table-bordered" width="100%" cellspacing="0">
                         <thead>
                             <tr>
-                                <th>ID Kategori</th>
+                                <th>pilih</th>
                                 <th>Nama Kategori</th>
-                                <th v-if="$can('create', 'Kategori Artikel')" >Aksi</th>
+                                <th v-if="$can('create', 'Kategori Artikel')">Aksi</th>
                             </tr>
                         </thead>
                         <tbody v-if="isLoading">
@@ -27,15 +31,15 @@
                         <template v-else>
                             <tbody v-for="data in kategoriArtikel" :key="index">
                                 <tr>
-                                    <td>{{ data.idKategoriArtikel }}</td>
+                                    <td>
+                                        <input type="checkbox" v-model="selectedId" :value="data.idKategoriArtikel">
+                                    </td>
                                     <td>{{ data.namaKategori }}</td>
                                     <td v-if="$can('create', 'Kategori Artikel')">
                                         <div class="d-flex justify-content-start">
                                             <router-link :to="'kategori_artikel/' + data.idKategoriArtikel + '/edit'">
                                                 <ButtonComponent Color="btn-warning" Message="Edit" />
                                             </router-link>
-                                            <ButtonComponent Color="btn-danger" Message="Hapus"
-                                                @click="deleteData(data.idKategoriArtikel)" />
                                         </div>
                                     </td>
                                 </tr>
@@ -55,7 +59,7 @@
                     <InputField Name="namaKategori" v-model="kategoris.nama_kategori" />
                     <span :class="[error]">{{ errors.namaKategori }}</span>
                 </div>
-                    <ButtonComponent Message="submit" />
+                <ButtonComponent Message="submit" />
             </Form>
         </template>
     </ModalComponent>
@@ -79,6 +83,7 @@ export default {
             },
             isLoading: false,
             error: 'text-danger',
+            selectedId: []
         };
     },
     computed: {
@@ -127,22 +132,33 @@ export default {
                 console.log(err);
             })
         },
-        deleteData(idKategoriArtikel) {
-            let type = "deleteData"
-            let url = [
-                "master/kategori_artikel", idKategoriArtikel
-            ]
-            this.$store.dispatch(type, url).then((result) => {
-                iziToast.success({
-                    title: 'success',
-                    position: 'topRight',
-                    message: 'Data Kategori Artikel Berhasil Dihapus',
-                    timeout: 1000
-                })
-                this.getKategoriArtikel()
-            }).catch((err) => {
-                console.log(err);
+        deleteData() {
+            if (this.selectedId.length === 0) {
+                return;
+            }
+            let type = "deleteData";
+            let urls = this.selectedId.map((idKategoriArtikel) => ["master/kategori_artikel", idKategoriArtikel]);
+            this.$swal({
+                icon: 'question',
+                title: "Apakah kamu ingin menyimpan perubahan",
+                showDenyButton: true,
+                showCancelButton: false,
+                confirmButtonText: "Ya, Hapus",
+                denyButtonText: "Jangan Hapus"
+            }).then((results) => {
+                if (results.isConfirmed) {
+                    Promise.all(urls.map((url) => this.$store.dispatch(type, url)))
+                    this.$swal({
+                        icon: 'success',
+                        text: 'data berhasil dihapus'
+                    })
+                    this.getKategoriArtikel();
+                }
             })
+                .catch((err) => {
+                    console.log(err);
+                });
+            this.selectedId = [];
         },
     },
     components: { ButtonComponent, Form, InputField, ModalComponent, EmptyData, EmptyLoading }

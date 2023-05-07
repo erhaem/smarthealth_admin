@@ -3,21 +3,25 @@
         <div class="card-header py-3">
             <div class="d-flex justify-content-between">
                 <h6 class="m-0 font-weight-bold text-primary">Data {{ $route.name }}</h6>
-                <ButtonComponent Color="btn-danger" Message="hapus" @click="deleteSelectedArtikels" />
-                <ButtonComponent v-if="$can('create', 'Artikel')" Color="btn-dark" Message="Tambah Data +"
+                <div class="d-flex justify-content-start">
+                    <ButtonComponent v-if="$can('create', 'Artikel')" Color="btn-dark" Message="Tambah Data +"
                     data-bs-toggle="modal" data-bs-target="#tambahData" />
+                    <div v-if="selectedArtikelIds.length == 0">
+                    </div>
+                    <ButtonComponent Color="btn-danger" v-else-if="selectedArtikelIds" Message="hapus"
+                        @click="deleteSelectedArtikels" />
+                </div>
             </div>
-        </div>
+        </div> 
         <div class="card-body">
             <div class="table-responsive">
                 <table class="table table-bordered" width="100%" cellspacing="0">
                     <thead>
                         <tr>
-                            <th>id</th>
+                            <th>pilih</th>
                             <th>Judul</th>
                             <th>Deskripsi</th>
                             <th>Penulis</th>
-                            <th>foto artikel</th>
                             <th v-if="$can('edit', 'Artikel')">Aksi</th>
                         </tr>
                     </thead>
@@ -36,27 +40,24 @@
                                 <td>{{ data.judulArtikel }}</td>
                                 <td>{{ data.deskripsi }}</td>
                                 <td>{{ data.getUser.nama }}</td>
-                                <td>
-                                    <ButtonComponent data-bs-target="#lihatFoto" Color="btn-success" Message="lihat foto"
-                                        data-bs-toggle="modal" />
-                                    <ModalComponent id="lihatFoto">
-                                        <template #modal>
-                                            <img class="img-fluid" :src="data.foto" alt="">
-                                        </template>
-                                    </ModalComponent>
-                                </td>
                                 <td v-if="$can('edit', 'Artikel')">
                                     <div class="d-flex justify-content-start">
                                         <router-link :to="'artikel/' + data.idArtikel + '/edit'">
                                             <ButtonComponent Message="edit" Color="btn-warning" />
                                         </router-link>
+                                        <ButtonComponent data-bs-target="#lihatFoto" Color="btn-success"
+                                            Message="lihat foto" data-bs-toggle="modal" />
+                                        <ModalComponent id="lihatFoto">
+                                            <template #modal>
+                                                <img class="img-fluid" :src="data.foto" alt="">
+                                            </template>
+                                        </ModalComponent>
                                     </div>
                                 </td>
                             </tr>
                         </tbody>
                     </template>
                 </table>
-                {{ selectedArtikelIds }}
             </div>
         </div>
     </div>
@@ -84,7 +85,6 @@
             </Form>
         </template>
     </ModalComponent>
-    <ButtonComponent @click="test()"/>
 </template>
 
 <script>
@@ -153,49 +153,29 @@ export default {
         goBack() {
             window.location = '/master/artikel'
         },
-        deleteArtikel(idArtikel) {
-            let type = "deleteData"
-            let url = [
-                "master/artikel", idArtikel
-            ]
-            this.$store.dispatch(type, url).then((result) => {
-                iziToast.success({
-                    title: 'berhasil',
-                    message: 'Data Artikel Berhasil Dihapus',
-                    position: 'topRight',
-                    timeout: 1000
-                })
-                this.getArtikel()
-            }).catch((err) => {
-                console.log(err);
-            })
-        },
-        test(){
-            this.$swal({
-                icon: 'question',
-                title: "Apakah kamu ingin menyimpan perubahan",
-                showDenyButton: true,
-                showCancelButton: true,
-                confirmButtonText: "Ya, Hapus",
-                denyButtonText: "Jangan Hapus"
-            })
-        },
         deleteSelectedArtikels() {
             if (this.selectedArtikelIds.length === 0) {
                 return;
             }
             let type = "deleteData";
             let urls = this.selectedArtikelIds.map((idArtikel) => ["master/artikel", idArtikel]);
-            Promise.all(urls.map((url) => this.$store.dispatch(type, url)))
-                .then((results) => {
-                    iziToast.success({
-                        title: 'Berhasil',
-                        message: 'Data Artikel Berhasil Dihapus',
-                        position: 'topRight',
-                        timeout: 1000
-                    });
+            this.$swal({
+                icon: 'question',
+                title: "Apakah kamu ingin menyimpan perubahan",
+                showDenyButton: true,
+                showCancelButton: false,
+                confirmButtonText: "Ya, Hapus",
+                denyButtonText: "Jangan Hapus"
+            }).then((results) => {
+                if (results.isConfirmed) {
+                    Promise.all(urls.map((url) => this.$store.dispatch(type, url)))
+                    this.$swal({
+                        icon: 'success',
+                        text: 'data berhasil dihapus'
+                    })
                     this.getArtikel();
-                })
+                }
+            })
                 .catch((err) => {
                     console.log(err);
                 });

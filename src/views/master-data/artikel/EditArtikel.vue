@@ -3,7 +3,6 @@
         <div class="card-header">
             <h6><b class="text-primary">{{ $route.name }}</b></h6>
         </div>
-        {{ form.judulArtikel }}
         <div class="card-body">
             <Form @submit="submitEdit" :validation-schema="schema" v-slot="{ errors }">
                 <div class="w-25">

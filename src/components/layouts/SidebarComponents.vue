@@ -38,6 +38,7 @@
                         <h6 class="collapse-header">Rumah Sakit</h6>
                         <router-link class="collapse-item" to="/master/rumah_sakit">Data Rumah Sakit</router-link>
                         <router-link class="collapse-item" to="/master/fasilitas_rs">Fasilitas Rumah Sakit</router-link>
+                        <router-link class="collapse-item" to="/master/owner_rs">Owner Rumah Sakit</router-link>
                     </div>
                     <div v-if="$can('show', 'Spesialis')">
                         <h6 class="collapse-header">Spesialis Penyakit</h6>

@@ -3,14 +3,21 @@
         <div class="card-header">
             <div class="d-flex justify-content-between">
                 <h6 class="m-0 font-weight-bold text-primary">Data {{ $route.name }}</h6>
-                <ButtonComponent Color="btn-dark" Message="Tambah Data +" data-bs-toggle="modal"
+                <div class="d-flex justify-content-start">
+                    <ButtonComponent Color="btn-dark" Message="Tambah Data +" data-bs-toggle="modal"
                     data-bs-target="#tambahData" />
+                    <div v-if="selectedId.length === 0"></div>
+                    <ButtonComponent Color="btn-danger" @click="deleteData()" Message="Hapus" v-else-if="selectedId"/>
+                </div>
             </div>
         </div>
         <div class="card-body">
             <div class="table-responsive">
                 <table class="table table-bordered" width="100%" cellspacing="0">
                     <thead>
+                        <th>
+                            pilih
+                        </th>
                         <th>
                             Nama
                         </th>
@@ -36,6 +43,7 @@
                     <template v-else>
                         <tbody v-for="data in dataOwnerRs" :key="index">
                             <tr>
+                                <td><input type="checkbox" :value="data.idOwner" v-model="selectedId"></td>
                                 <td>{{ data.user.nama }}</td>
                                 <td>{{ data.user.email }}</td>
                                 <td>{{ data.user.nomorHp }}</td>
@@ -45,8 +53,6 @@
                                         <router-link :to="'owner_rs/' + data.idOwner + '/edit'">
                                             <ButtonComponent Color="btn-warning" Message="Edit" />
                                         </router-link>
-                                        <ButtonComponent Color="btn-danger" Message="Hapus"
-                                            @click="deleteData(data.idOwner)" />
                                     </div>
                                 </td>
                             </tr>
@@ -122,7 +128,8 @@ export default {
                 no_ktp: ''
             },
             isLoading: false,
-            error: 'text-danger'
+            error: 'text-danger',
+            selectedId: []
         }
     },
     computed: {
@@ -169,22 +176,32 @@ export default {
                 console.log(err);
             })
         },
-        deleteData(idOwner) {
+        deleteData() {
+            if(this.selectedId == 0){
+                return
+            }
             let type = "deleteData"
-            let url = [
-                "akun/owner_rs", idOwner
-            ]
-            this.$store.dispatch(type, url).then((result) => {
-                iziToast.success({
-                    title: 'success',
-                    message: 'berhasil hapus data',
-                    timeout: 1000,
-                    position: 'topRight'
-                })
-                this.getOwner()
-            }).catch((err) => {
+            let urls = this.selectedId.map((idOwner)=> ["akun/owner_rs", idOwner])
+            this.$swal({
+                icon: 'question',
+                title: 'apakah data ingin dihapus?',
+                showDenyButton: false,
+                showCancelButton: true,
+                confirmButtonText: 'ya, hapus',
+                denyButtonText: 'jangan hapus'
+            }).then((result)=>{
+                if(result.isConfirmed){
+                    Promise.all(urls.map((url)=>this.$store.dispatch(type, url)))
+                    this.$swal({
+                        icon: 'success',
+                        text: 'data berhasil dihapus'
+                    })
+                    this.getOwner()
+                }
+            }).catch((err)=>{
                 console.log(err);
             })
+            this.selectedId = []
         }
     },
     components: {

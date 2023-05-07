@@ -38,6 +38,7 @@ import { Form } from 'vee-validate'
 import ButtonComponent from '../../../components/partials-component/ButtonComponent.vue'
 import SelectOption from '../../../components/partials-component/SelectOption.vue'
 import iziToast from 'izitoast'
+import EmptyLoading from '../../../components/empty-table/EmptyLoading.vue'
 export default {
     data() {
         return {
@@ -121,7 +122,8 @@ export default {
     components: {
         ButtonComponent,
         Form,
-        SelectOption
+        SelectOption,
+        EmptyLoading
     }
 
 }

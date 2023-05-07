@@ -3,8 +3,12 @@
         <div class="card-header py-3">
             <div class="d-flex justify-content-between">
                 <h6 class="m-0 font-weight-bold text-primary">Data {{ $route.name }}</h6>
-                <ButtonComponent Color="btn-dark" Message="Tambah Data +" data-bs-toggle="modal"
+                <div class="d-flex justify-content-start">
+                    <ButtonComponent Color="btn-dark" Message="Tambah Data +" data-bs-toggle="modal"
                     data-bs-target="#tambahData" />
+                    <div v-if="selectedId.length === 0"></div>
+                    <ButtonComponent v-else-if="selectedId" Color="btn-danger" @click="deleteGroup()" Message="hapus"/>
+                </div>
             </div>
         </div>
         <div class="card-body">
@@ -12,7 +16,7 @@
                 <table class="table table-bordered" width="100%" cellspacing="0">
                     <thead>
                         <tr>
-                            <th>id</th>
+                            <th>pilih</th>
                             <th>Judul Artikel</th>
                             <th>kategori artikel</th>
                             <th>aksi</th>
@@ -28,7 +32,7 @@
                         <tbody v-for="data in grupArtikel">
                             <tr>
                                 <td v-if="data.idGroupingArtikel">
-                                    {{ data.idGroupingArtikel }}
+                                    <input type="checkbox" v-model="selectedId" :value="data.idGroupingArtikel">
                                 </td>
                                 <td v-else>
                                     <strong>
@@ -60,7 +64,6 @@
                                         <router-link :to="'grouping_artikel/' + data.idGroupingArtikel + '/edit'">
                                             <ButtonComponent Message="Edit" Color="btn-warning"/>
                                         </router-link>
-                                        <ButtonComponent Message="Hapus" Color="btn-danger" @click="deleteGroup(data.idGroupingArtikel)" />
                                     </div>
                                 </td>
                             </tr>
@@ -115,7 +118,8 @@ export default {
                 id_artikel: '',
                 id_kategori_artikel: ''
             },
-            isLoading: false
+            isLoading: false,
+            selectedId: []
         };
     },
     created() {
@@ -177,21 +181,32 @@ export default {
                 console.log(err);
             })
         },
-        deleteGroup(idGroupingArtikel) {
+        deleteGroup() {
+            if(this.selectedId.length === 0){
+                return
+            }
             let type = "deleteData"
-            let url = [
-                "master/grouping_artikel", idGroupingArtikel
-            ]
-            this.$store.dispatch(type, url).then((result) => {
-                iziToast.success({
-                    title: 'success',
-                    message: 'Data Berhasil Dihapus',
-                    position: 'topRight'
-                })
-                this.getGroupArtikel()
-            }).catch((err) => {
+            let urls = this.selectedId.map((idGroupingArtikel)=>["master/grouping_artikel", idGroupingArtikel])
+            this.$swal({
+                icon: 'question',
+                title: 'apakah ingin menghapus data?',
+                showDenyButton: true,
+                showCancelButton: false,
+                confirmButtonText: 'Ya, hapus',
+                denyButtonText: 'Jangan hapus'
+            }).then((result)=>{
+                if(result.isConfirmed){
+                    Promise.all(urls.map((url)=> this.$store.dispatch(type, url)))
+                    this.$swal({
+                        icon: 'success',
+                        text: 'data berhasil dihapus'
+                    })
+                    this.getGroupArtikel()
+                }
+            }).catch((err)=>{
                 console.log(err);
-            })
+            }) 
+            this.selectedId = []
         }
     },
     components: {

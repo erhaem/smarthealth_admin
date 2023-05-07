@@ -24,15 +24,7 @@
                         </tr>
                     </tbody>
                     <tbody v-else-if="dokter.length == 0">
-                        <tr>
-                            <td colspan="12" class="text-center">
-                                <strong>
-                                    <i>
-                                        Data Tidak Ada
-                                    </i>
-                                </strong>
-                            </td>
-                        </tr>
+                        <EmptyData/>
                     </tbody>
                     <template v-else>
                         <tbody v-for="data in dokter" :key="index">
@@ -62,6 +54,7 @@
 import ActiveSlider from '../../components/partials-component/ActiveSlider.vue'
 import LoadingIndicator from '../../components/partials-component/LoadingIndicator.vue';
 import SpanSlider from '../../components/partials-component/SpanSlider.vue'
+import EmptyData from '../../components/empty-table/EmptyData.vue'
 export default {
     data() {
         return {
@@ -111,6 +104,6 @@ export default {
             });
         }
     },
-    components: { ActiveSlider, SpanSlider, LoadingIndicator }
+    components: { ActiveSlider, SpanSlider, LoadingIndicator, EmptyData }
 }
 </script>

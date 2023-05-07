@@ -3,7 +3,11 @@
         <div class="card-header py-3">
             <div class="d-flex justify-content-between">
                 <h6 class="m-0 font-weight-bold text-primary">Data {{ $route.name }}</h6>
+                <div class="d-flex">
                 <ButtonComponent v-if="$can('create', 'Kategori Produk')" Message="Tambah Data +" data-bs-toggle="modal" data-bs-target="#tambahData" />
+                <div v-if="selectedId.length == 0"></div>
+                <ButtonComponent v-else-if="selectedId" @click="deleteKategori()" Color="btn-danger" Message="Hapus" />
+                </div>
             </div>
         </div>
         <div class="card-body">
@@ -11,7 +15,7 @@
                 <table class="table table-bordered" width="100%" cellspacing="0">
                     <thead>
                         <tr>
-                            <th>Id Produk</th>
+                            <th>pilih</th>
                             <th>Kategori Produk</th>
                             <th v-if="$can('edit', 'Kategori Produk')">Aksi</th>
                         </tr>
@@ -25,14 +29,15 @@
                     <template v-else>
                         <tbody v-for="data in kategoriProduk" :key="index">
                             <tr>
-                                <td>{{ data.idKategoriProduk }}</td>
+                                <td>
+                                    <input type="checkbox" :value="data.idKategoriProduk" v-model="selectedId">
+                                </td>
                                 <td>{{ data.namaKategoriProduk }}</td>
                                 <td v-if="$can('edit', 'Kategori Produk')">
                                     <div class="d-flex justify-content-start">
                                         <router-link :to="'kategori_produk/' + data.idKategoriProduk + '/edit'">
                                         <ButtonComponent Color="btn-warning" Message="edit"/>
                                         </router-link>
-                                        <ButtonComponent Color="btn-danger" Message="hapus" @click="deleteKategori(data.idKategoriProduk)" />
                                     </div>
                                 </td>
                             </tr>
@@ -73,7 +78,8 @@ export default {
             form: {
                 nama_kategori_produk: ''
             },
-            isLoading: false
+            isLoading: false,
+            selectedId: []
         }
     },
     created() {
@@ -117,22 +123,32 @@ export default {
                 console.log(err);
             })
         },
-        deleteKategori(idKategoriProduk){
+        deleteKategori(){
+            if(this.selectedId.length === 0){
+                return
+            }
             let type = "deleteData"
-            let url = [
-                "master/produk/kategori_produk", idKategoriProduk
-            ]
-            this.$store.dispatch(type, url).then((result)=>{
-                iziToast.success({
-                    title: 'success',
-                    message: 'Data Berhasil Dihapus',
-                    position: 'topRight',
-                    timeout: 1000
-                })
-                this.getKategoriProduk()
+            let urls = this.selectedId.map((idKategoriProduk)=>["master/produk/kategori_produk", idKategoriProduk])
+            this.$swal({
+                icon: 'question',
+                title: 'Apakah kamu ingin menghapus data?',
+                showDenyButton: true,
+                showCancelButton: false,
+                confirmButtonText: 'Ya, hapus',
+                denyButtonText: "jangan hapus"
+            }).then((result)=>{
+                if(result.isConfirmed){
+                    Promise.all(urls.map((url)=> this.$store.dispatch(type, url)))
+                    this.$swal({
+                        icon: 'success',
+                        text: 'data berhasil dihapus'
+                    })
+                    this.getKategoriProduk()
+                }
             }).catch((err)=>{
                 console.log(err);
             })
+            this.selectedId = []
         }
     },
     components: {

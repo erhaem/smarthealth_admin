@@ -3,35 +3,44 @@
         <div class="card-header py-3">
             <div class="d-flex justify-content-between">
                 <h6 class="m-0 font-weight-bold text-primary">Data {{ $route.name }}</h6>
-                <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#tambahData">Tambah Data
-                    +</button>
+                <div class="d-flex justify-content-start">
+                    <ButtonComponent Message="Tambah data +" data-bs-toggle="modal" data-bs-target="#tambahData"/>
+                    <div v-if="selectedId.length == 0"></div>
+                    <ButtonComponent v-else-if="selectedId" Color="btn-danger" @click="deleteSpesialis()" Message="Hapus" />
+                </div>
             </div>
         </div>
         <div class="card-body">
             <div class="table-responsive">
-                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                <table class="table table-bordered" width="100%" cellspacing="0">
                     <thead>
                         <tr>
-                            <th>Id Penyakit</th>
+                            <th>Pilih</th>
                             <th>Nama</th>
                             <th>Slug</th>
                             <th>Aksi</th>
                         </tr>
                     </thead>
-                    <tbody v-for="data in spesialis" :key="index">
-                        <tr>
-                            <td>{{ data.idPenyakit }}</td>
-                            <td>{{ data.namaSpesialis }}</td>
-                            <td>{{ data.slugSpesialis }}</td>
-                            <td>
-                                <router-link :to="'spesialis_penyakit/' + data.idPenyakit + '/edit'">
-                                    <ButtonComponent Message="Edit" Color="btn-warning" />
-                                </router-link>
-                                <ButtonComponent Message="Hapus" Color="btn-danger"
-                                    @click="deleteSpesialis(data.idPenyakit)" />
-                            </td>
-                        </tr>
+                    <tbody v-if="isLoading">
+                        <EmptyLoading />
                     </tbody>
+                    <tbody v-else-if="spesialis.length == 0">
+                        <EmptyData />
+                    </tbody>
+                    <template v-else>
+                        <tbody v-for="data in spesialis" :key="index">
+                            <tr>
+                                <td><input type="checkbox" :value="data.idPenyakit" v-model="selectedId"></td>
+                                <td>{{ data.namaSpesialis }}</td>
+                                <td>{{ data.slugSpesialis }}</td>
+                                <td>
+                                    <router-link :to="'spesialis_penyakit/' + data.idPenyakit + '/edit'">
+                                        <ButtonComponent Message="Edit" Color="btn-warning" />
+                                    </router-link>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </template>
                 </table>
             </div>
         </div>
@@ -57,13 +66,17 @@ import InputField from '../../../components/partials-component/InputField.vue'
 import ButtonComponent from '../../../components/partials-component/ButtonComponent.vue'
 import iziToast from 'izitoast'
 import * as valid from 'yup'
+import EmptyData from '../../../components/empty-table/EmptyData.vue'
+import EmptyLoading from '../../../components/empty-table/EmptyLoading.vue'
 export default {
     data() {
         return {
             spesialis: [],
             form: {
                 nama_spesialis: ''
-            }
+            },
+            isLoading: false,
+            selectedId: []
         }
     },
     created() {
@@ -82,7 +95,9 @@ export default {
             let url = [
                 "master/penyakit/spesialis_penyakit"
             ]
+            this.isLoading = true
             this.$store.dispatch(type, url).then((result) => {
+                this.isLoading = false
                 this.spesialis = result.data
             }).catch((err) => {
                 console.log(err);
@@ -102,26 +117,34 @@ export default {
                 console.log(err);
             })
         },
-        deleteSpesialis(idPenyakit) {
+        deleteSpesialis() {
+            if (this.selectedId == 0){
+                return
+            }
             let type = "deleteData"
-            let url = [
-                "master/penyakit/spesialis_penyakit", idPenyakit
-            ]
-            this.$store.dispatch(type, url).then((result) => {
-                iziToast.success({
-                    title: 'success',
-                    message: 'Data Berhasil Dihapus',
-                    timeout: 1000,
-                    position: 'topRight'
-                })
-                this.getSpesialis()
-            }).catch((err) => {
-                console.log(err);
+            let urls = this.selectedId.map((idPenyakit)=>["master/penyakit/spesialis_penyakit", idPenyakit])
+            this.$swal({
+                icon: 'question',
+                title: 'apakah data ingin dihapus?',
+                showDenyButton: false,
+                showCancelButton: true,
+                confirmButtonText: 'ya, hapus',
+                denyButtonText: 'jangan hapus'
+            }).then((result)=>{
+                if(result.isConfirmed){
+                    Promise.all(urls.map((url)=>this.$store.dispatch(type, url)))
+                    this.$swal({
+                        icon: 'question',
+                        text: 'data berhasil dihapus'
+                    })
+                    this.getSpesialis()
+                }
             })
+            this.selectedId = []
         }
     },
     components: {
-        ModalComponent, Form, InputField, ButtonComponent
+        ModalComponent, Form, InputField, ButtonComponent, EmptyData, EmptyLoading
     }
 }
 </script>
