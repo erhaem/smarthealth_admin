@@ -10,7 +10,6 @@ const permisionsByRole = {
         'show_Dokter',
         'show_User',
         'show_Keahlian',
-        'show_Rumah Sakit',
         'create_Kategori Produk', 'edit_Kategori Produk', 'show_Kategori Produk',
         'show_Spesialis'
     ],

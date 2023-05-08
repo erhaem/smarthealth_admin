@@ -26,7 +26,7 @@
                             <td>
                                 <ActiveSlider :checked="data.getUser.status == 1">
                                     <template #span>
-                                        <SpanSlider @click="updateStatus(data.getUser.id)"/>
+                                        <SpanSlider @click="updateStatus(data.getUser.id, data.getUser.status)"/>
                                     </template>
                                 </ActiveSlider>
                             </td>
@@ -66,12 +66,19 @@ export default {
                 console.log(err);
             });
         },
-        updateStatus(id_user) {
+        updateStatus(id_user, status) {
+            if (status == 1){
+                status = 0;
+            } else {
+                status = 1;
+            }
             let type = "updateData";
             let url = [
                 "akun/active_account",
                 id_user,
-                {}
+                {
+                    status: status,
+                }
             ];
             this.$store.dispatch(type, url).then((result) => {
                 console.log(result);

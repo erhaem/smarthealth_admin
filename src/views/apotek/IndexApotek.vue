@@ -34,15 +34,15 @@
     </div>
     <br>
     <br>
-    <Form @submit="postApotek">
+    <!-- <Form @submit="postApotek">
         <InputField Name="nama" v-model="form.nama"/>
         <InputField Name="email" v-model="form.email"/>
         <InputField Name="password" v-model="form.password"/>
         <InputField Name="alamat" v-model="form.alamat"/>
         <InputField Name="nomorhp" v-model="form.nomor_hp"/>
-        <!-- <InputField Name="status" hidden v-model="form.status"/> -->
+        <InputField Name="status" hidden v-model="form.status"/>
         <ButtonComponent/>
-    </Form>
+    </Form> -->
 </template>
 <script>
 import { Form } from 'vee-validate';
@@ -54,14 +54,14 @@ export default {
     data() {
         return {
             dataApotek: [],
-            form: {
-                nama: '',
-                email: '',
-                alamat: '',
-                password: '',
-                status: '0',
-                nomor_hp: ''
-            }
+            // form: {
+            //     nama: '',
+            //     email: '',
+            //     alamat: '',
+            //     password: '',
+            //     status: '0',
+            //     nomor_hp: ''
+            // }
         };
     },
     created() {
@@ -71,7 +71,7 @@ export default {
         getApotek() {
             let type = "getData";
             let url = [
-                "apotek/pengaturan/profil_apotek",
+                "apotek/pengaturan/profil_apotek/",
                 {}
             ];
             this.$store.dispatch(type, url).then((result) => {
@@ -89,7 +89,7 @@ export default {
             }
             let type = "updateData"
             let url = [
-                "apotek/pengaturan/profil_apotek/aktifkan", 
+                "apotek/pengaturan/profil_apotek/ubah_status", 
                 id_user,
                 {
                     status: status,

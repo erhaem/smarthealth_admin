@@ -5,23 +5,6 @@
         </div>
         <div class="card-body">
             <Form @submit="postRumahSakit">
-                <div class="container row">
-                    <h6><b>Data Diri</b></h6>
-                    <div class="col-sm-6 col-6">
-                        <label for="">Nama Pembuat</label>
-                        <InputField Name="nama" v-model="form.nama" />
-                        <label for="">Password</label>
-                        <InputField Name="password" v-model="form.password" />
-                        <label for="">Alamat</label>
-                        <textarea Name="alamat" rows="3" class="form-control" v-model="form.alamat"></textarea>
-                    </div>
-                    <div class="col-sm-6 col-6">
-                        <label for="">Email</label>
-                        <InputField Name="email" v-model="form.email" />
-                        <label for="">Nomor HP</label>
-                        <InputField Name="nomorHp" v-model="form.nomorHp" />
-                    </div>
-                </div>
                 <div class="container py-2 row">
                     <h6><b> {{ $route.name }} </b></h6>
                     <div class="col-sm-6 col-6">

@@ -6,33 +6,22 @@
         <div class="card-body">
             <Form @submit="postRumahSakit">
                 <div class="row">
-                    <h6><b>Data Diri</b></h6>
-                    <div class="col-sm-6 col-6">
-                        <label for="">Nama Pembuat</label>
-                        <InputField Name="nama" v-model="form.nama" />
-                        <label for="">Password</label>
-                        <InputField Name="password" v-model="form.password" />
-                        <label for="">Alamat</label>
-                        <textarea Name="alamat" rows="3" class="form-control" v-model="form.alamat"></textarea>
-                    </div>
-                    <div class="col-sm-6 col-6">
-                        <label for="">Email</label>
-                        <InputField Name="email" v-model="form.email" />
-                        <label for="">Nomor HP</label>
-                        <InputField Name="nomorHp" v-model="form.nomor_hp" />
-                    </div>
-                </div>
-                <div class="row">
-                    <h6 class="mt-4"><b>Data Rumah Sakit</b></h6>
+                    <h6 class="mt-1"><b>Data Rumah Sakit</b></h6>
                     <div class="col-sm-6 col-6">
                         <label for="">Nama Rumah Sakit</label>
                         <InputField Name="rumahSakit" v-model="form.nama_rs" />
+                        <label for="">Longitude</label>
+                        <InputField Name="longitude" v-model="form.longitude" />
                         <label for="">Deskripsi</label>
                         <textarea Name="deskripsi" class="form-control" rows="3" v-model="form.deskripsi_rs"></textarea>
                     </div>
                     <div class="col-sm-6 col-6">
                         <label for="">Alamat</label>
                         <InputField Name="alamat" v-model="form.alamat_rs" />
+                        <label for="">Latitude</label>
+                        <InputField Name="latitude" v-model="form.latitude" />
+                        <label for="">Alamat</label>
+                        <input Name="alamat" class="form-control" type="file" @change="chooseFoto">
                     </div>
                 </div>
                 <div class="d-flex justify-content-between mt-3">
@@ -54,35 +43,74 @@ export default {
     data() {
         return {
             form: {
-                nama: '',
-                nomor_hp: '',
-                password: '',
-                email: '',
-                alamat: '',
                 nama_rs: '',
                 deskripsi_rs: '',
-                alamat_rs: ''
+                alamat_rs: '',
+                latitude: '',
+                longitude: '',
+                foto_rs: null
             }
         }
     },
+    computed: {
+        formData() {
+            const { foto_rs, nama_rs, deskripsi_rs, alamat_rs, latitude, longitude } = this.form;
+            const formData = new FormData();
+
+            formData.append('foto_rs', foto_rs);
+            formData.append('nama_rs', nama_rs);
+            formData.append('deskripsi_rs', deskripsi_rs);
+            formData.append('alamat_rs', alamat_rs);
+            formData.append('latitude', latitude);
+            formData.append('longitude', longitude);
+
+            return formData;
+        }
+
+    },
     methods: {
         postRumahSakit() {
-            let type = "postData"
-            let url = [
-                "master/rumah_sakit/data", this.form
-            ]
-            this.$store.dispatch(type, url).then((result) => {
-                iziToast.success({
-                    title: 'success',
-                    message: 'berhasil data ditambah',
-                    position: 'topRight',
-                    timeout: 1000
-                })
-                this.$router.back()
-            }).catch((err) => {
-                console.log(err);
-            })
+            const allowedFormats = ['image/jpeg', 'image/png', 'image/jpg'];
+            const file = this.form.foto_rs;
+            const maxSizeInBytes = 5 * 1024 * 1024;
+
+            if (file && allowedFormats.includes(file.type)) {
+                if (file.size <= maxSizeInBytes) {
+                    const formData = this.formData;
+                    let type = "postDataUpload";
+                    this.$store
+                        .dispatch(type, [formData, '/master/rumah_sakit/data'])
+                        .then((result) => {
+                            iziToast.success({
+                                title: 'Success',
+                                position: 'topRight',
+                                message: 'Data Artikel Berhasil Ditambahkan',
+                                timeout: 1000
+                            });
+                        })
+                        .catch((err) => {
+                            console.log(err);
+                        });
+                } else {
+                    iziToast.error({
+                        title: 'Error',
+                        message: 'Maaf, ukuran file gambar terlalu besar. Maksimum ukuran file adalah 5MB.',
+                        position: 'topRight'
+                    });
+                }
+            } else {
+                iziToast.error({
+                    title: 'Error',
+                    message: 'Maaf, format yang diperbolehkan hanya jpg, png, jpeg',
+                    position: 'topRight'
+                });
+            }
         },
+        chooseFoto(event) {
+            this.form.foto_rs = event.target.files[0]
+            console.log(event);
+            console.log(this.form.foto_rs);
+        }
     },
     components: {
         ButtonComponent, InputField, Form

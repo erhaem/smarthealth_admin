@@ -3,9 +3,15 @@
         <div class="card-header py-3">
             <div class="d-flex justify-content-between">
                 <h6 class="m-0 font-weight-bold text-primary">Data {{ $route.name }}</h6>
-                <router-link to="/master/rumah_sakit/create">
-                    <ButtonComponent Message="Tambah Data +" />
-                </router-link>
+                <div class="d-flex justify-content-start">
+                    <div v-if="$can('show', 'Rumah Sakit')">
+                        <router-link to="/master/rumah_sakit/create">
+                            <ButtonComponent Message="Tambah Data +" />
+                        </router-link>
+                        <div v-if="selectedId.length === 0"></div>
+                        <ButtonComponent v-else-if="selectedId" Color="btn-danger" Message="hapus" @click="deleteRumahSakit" />
+                    </div>
+                </div>
             </div>
         </div>
         <div class="card-body">
@@ -13,10 +19,11 @@
                 <table class="table table-bordered" width="100%" cellspacing="0">
                     <thead>
                         <tr>
+                            <th v-if="$can('show', 'Rumah Sakit')">Pilih</th>
                             <th>Nama</th>
                             <th>Alamat</th>
-                            <th>Deskripsi</th>
-                            <th>Aksi</th>
+                            <th>Pemilik</th>
+                            <th v-if="$can('show', 'Rumah Sakit')">Aksi</th>
                         </tr>
                     </thead>
                     <tbody v-if="isLoading">
@@ -28,16 +35,17 @@
                     <template v-else>
                         <tbody v-for="data in rumahSakit" :key="index">
                             <tr>
+                                <td v-if="$can('show', 'Rumah Sakit')">
+                                    <input type="checkbox" v-model="selectedId" :value="data.idRumahSakit">
+                                </td>
                                 <td>{{ data.namaRs }}</td>
                                 <td>{{ data.alamatRs }}</td>
-                                <td>{{ data.deskripsiRs }}</td>
-                                <td>
+                                <td>{{ data.pemilik }}</td>
+                                <td v-if="$can('show', 'Rumah Sakit')">
                                     <div class="d-flex">
                                         <router-link :to="'rumah_sakit/' + data.idRumahSakit + '/edit'">
                                             <ButtonComponent Message="edit" Color="btn-warning" />
                                         </router-link>
-                                        <ButtonComponent Message="hapus" Color="btn-danger"
-                                            @click="deleteRumahSakit(data.idRumahSakit)" />
                                     </div>
                                 </td>
                             </tr>
@@ -60,7 +68,8 @@ export default {
     data() {
         return {
             rumahSakit: [],
-            isLoading: false
+            isLoading: false,
+            selectedId: []
         };
     },
     created() {
@@ -70,6 +79,7 @@ export default {
         getRumahSakit() {
             const parsing = JSON.parse(Cookies.get('user'));
             const userId = parsing.data.id;
+            console.log(userId);
             const cekRole = parsing.data.getRole.idRole;
             const type = "getData";
             let url = null;
@@ -91,20 +101,29 @@ export default {
                     console.log(err);
                 });
         },
-        deleteRumahSakit(idRumahSakit) {
+        deleteRumahSakit() {
+            if (this.rumahSakit.length === 0){
+                return;
+            }
             let type = "deleteData"
-            let url = [
-                "master/rumah_sakit/data", idRumahSakit
-            ]
-            this.$store.dispatch(type, url).then((result) => {
-                iziToast.success({
-                    title: 'success',
-                    message: 'data berhasil dihapus',
-                    position: 'topRight',
-                    timeout: 1000
-                })
+            let urls = this.rumahSakit.map((idRumahSakit)=> ["master/rumah_sakit/data", idRumahSakit]) 
+            this.$swal({
+                icon: 'question',
+                title: 'Apakah kamu ingin menghapus data?',
+                showDenyButton: true,
+                confirmButtonText: false,
+                confirmButtonText: 'Ya, hapus',
+                denyButtonText: 'jangan hapus'
+            }).then((result)=>{
+                if(result.isConfirmed){
+                    Promise.all(urls.map((url)=>this.$store.dispatch(type, url)))
+                    this.$swal({
+                        icon: 'success',
+                        text: 'data berhasil dihapus'
+                    })
                 this.getRumahSakit()
-            }).catch((err) => {
+                }
+            }).catch((err)=>{
                 console.log(err);
             })
         }

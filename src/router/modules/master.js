@@ -103,7 +103,7 @@ export default [{
             name: 'Tambah Rumah Sakit',
             component: TambahRumahSakit,
             meta: {
-                middleware: checkRoles(roles.admin)
+                middleware: checkRoles(roles.adminRsadminWeb)
             }
         },
         {
@@ -111,7 +111,7 @@ export default [{
             name: 'Edit Rumah Sakit',
             component: EditRumahSakit,
             meta: {
-                middleware: checkRoles(roles.admin)
+                middleware: checkRoles(roles.adminRsadminWeb)
             }
         },
         {
