@@ -165,20 +165,21 @@
                 <li class="nav-item dropdown no-arrow">
                     <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown"
                         aria-haspopup="true" aria-expanded="false">
-                        <span v-if="form.nama" class="mr-2 d-none d-lg-inline text-gray-600 small">{{form.nama}}</span>
-                        <span v-else-if="form.user" class="mr-2 d-none d-lg-inline text-gray-600 small">{{form.user.nama}}</span>
+                        <span v-if="form.nama" class="mr-2 d-none d-lg-inline text-gray-600 small">{{ form.nama }}</span>
+                        <span v-else-if="form.user"
+                            class="mr-2 d-none d-lg-inline text-gray-600 small">{{ form.user.nama }}</span>
                         <img class="img-profile rounded-circle" src="img/undraw_profile.svg">
                     </a>
                     <!-- Dropdown - User Information -->
                     <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
-                        <a class="dropdown-item" href="#">
+                        <router-link to="/profile" class="dropdown-item">
                             <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                             Profile
-                        </a>
-                        <a class="dropdown-item" href="#">
+                        </router-link>
+                        <router-link to="/change_password" class="dropdown-item">
                             <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
                             Settings
-                        </a>
+                        </router-link>
                         <a class="dropdown-item" href="#">
                             <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
                             Activity Log
@@ -218,8 +219,8 @@
 <script>
 import Cookies from 'js-cookie'
 export default {
-    data(){
-        return{
+    data() {
+        return {
             form: []
         }
     },
@@ -258,27 +259,27 @@ export default {
                 url = [
                     "akun/profil/dokter/profil", []
                 ]
-            } else if (cekRole === "RO-2003065"){
+            } else if (cekRole === "RO-2003065") {
                 url = [
                     "akun/profil/apotek/profil", []
                 ]
-            }   
-            this.$store.dispatch(type, url).then((result)=>{
+            }
+            this.$store.dispatch(type, url).then((result) => {
                 this.form = result.data
-            }).catch((err)=>{
+            }).catch((err) => {
                 console.log(err);
             })
         },
-        logout(){
+        logout() {
             let type = "getData"
             let url = [
                 "logout", {}
             ]
-            this.$store.dispatch(type, url).then((result)=>{
+            this.$store.dispatch(type, url).then((result) => {
                 Cookies.remove('token')
                 Cookies.remove('user')
                 window.location = '/login'
-            }).catch((err)=>{
+            }).catch((err) => {
                 console.log(err);
             })
         }
