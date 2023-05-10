@@ -14,6 +14,7 @@
                             <th>Produk</th>
                         </tr>
                     </thead>
+                    {{ groupingProduk }}
                     <tbody v-if="isLoading">
                         <EmptyLoading />
                     </tbody>
@@ -23,8 +24,8 @@
                     <template v-else-if="groupingProduk.length">
                         <tbody v-for="data in groupingProduk">
                             <tr>
-                                <td v-if="groupingProduk">
-                                    {{groupingProduk}}
+                                <td v-if="data.groupingProduk">
+                                    {{data.idKategoriProduk}}
                                 </td>
                                 <td v-else>
                                     <strong>

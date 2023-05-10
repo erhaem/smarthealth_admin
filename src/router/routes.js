@@ -5,7 +5,7 @@ import MasterData from './modules/master'
 import Apotek from './modules/apotek'
 import AutentikasiLogin from './modules/auth'
 import NotFound from '../views/not-found/page404.vue'
-
+import ProfilePage from './modules/profile'
 const routes = [
     ...IndexDokter,
     ...IndexPerawat,
@@ -13,6 +13,7 @@ const routes = [
     ...MasterData,
     ...Apotek,
     ...AutentikasiLogin,
+    ...ProfilePage,
     {
         path: '/dashboard',
         name: 'Dashboard',

@@ -4,7 +4,6 @@
             <h6 class="m-0 font-weight-bold text-primary">Data {{$route.name}}</h6>
         </div>
         <div class="card-body">
-            {{ produkApotek }}
             <div class="table-responsive">
                 <table class="table table-bordered" width="100%" cellspacing="0">
                     <thead>
