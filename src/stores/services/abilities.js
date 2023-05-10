@@ -7,6 +7,7 @@ const permisionsByRole = {
     "RO-2003061": [
         'show_Artikel', 'create_Artikel', 'edit_Artikel',
         'create_Kategori Artikel',
+        'show_Rumah Sakit',
         'show_Dokter',
         'show_User',
         'show_Keahlian',
@@ -23,7 +24,7 @@ const permisionsByRole = {
         'show_Kategori Produk'
     ],
     "RO-2003066": [
-        'show_Rumah Sakit',
+        'create_Rumah Sakit',
         'show_Fasilitas',
         'create_Fasilitas',
         'show_Dokter',

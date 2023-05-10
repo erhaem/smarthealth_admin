@@ -5,7 +5,7 @@
         </div>
         <div class="card-body">
             <div class="table-responsive">
-                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                <table class="table table-bordered" width="100%" cellspacing="0">
                     <thead>
                         <tr>
                             <th>Nama</th>
@@ -16,22 +16,30 @@
                             <th>Status</th>
                         </tr>
                     </thead>
-                    <tbody v-for="data in perawat" :key="index">
-                        <tr>
-                            <td>{{data.getUser.nama}}</td>
-                            <td>{{data.getUser.alamat}}</td>
-                            <td>{{data.getUser.email}}</td>
-                            <td>{{data.nip}}</td>
-                            <td>{{data.getUser.nomorHp}}</td>
-                            <td>
-                                <ActiveSlider :checked="data.getUser.status == 1">
-                                    <template #span>
-                                        <SpanSlider @click="updateStatus(data.getUser.id, data.getUser.status)"/>
-                                    </template>
-                                </ActiveSlider>
-                            </td>
-                        </tr>
+                    <tbody v-if="isLoading">
+                        <EmptyLoading/>
                     </tbody>
+                    <tbody v-else-if="perawat.length === 0">
+                        <EmptyData/>
+                    </tbody>
+                    <template v-else>
+                        <tbody v-for="data in perawat" :key="index">
+                            <tr>
+                                <td>{{data.getUser.nama}}</td>
+                                <td>{{data.getUser.alamat}}</td>
+                                <td>{{data.getUser.email}}</td>
+                                <td>{{data.nip}}</td>
+                                <td>{{data.getUser.nomorHp}}</td>
+                                <td>
+                                    <ActiveSlider :checked="data.getUser.status === 1">
+                                        <template #span>
+                                            <SpanSlider @click="updateStatus(data.getUser.id, data.getUser.status)"/>
+                                        </template>
+                                    </ActiveSlider>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </template>
                 </table>
             </div>
         </div>
@@ -41,11 +49,14 @@
 <script>
 import ActiveSlider from '../../components/partials-component/ActiveSlider.vue'
 import SpanSlider from '../../components/partials-component/SpanSlider.vue'
+import EmptyData from '../../components/empty-table/EmptyData.vue';
+import EmptyLoading from '../../components/empty-table/EmptyLoading.vue';
 export default {
     data() {
         return {
             perawat: [],
             status: 0,
+            isLoading: false
         };
     },
     created() {
@@ -60,7 +71,7 @@ export default {
             ];
             this.isLoading = true
             this.$store.dispatch(type, url).then((result) => {
-                console.log(result.data);
+                this.isLoading = false
                 this.perawat = result.data;
             }).catch((err) => {
                 console.log(err);
@@ -87,6 +98,6 @@ export default {
             });
         }
     },
-    components: { ActiveSlider, SpanSlider }
+    components: { ActiveSlider, SpanSlider, EmptyData, EmptyLoading }
 }
 </script>

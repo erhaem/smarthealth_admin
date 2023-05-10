@@ -34,11 +34,12 @@
                         <router-link class="collapse-item" to="/master/artikel">Data Artikel</router-link>
                         <router-link class="collapse-item" to="/master/grouping_artikel">Grouping Artikel</router-link>
                     </div>
-                    <div v-if="$can('show', 'Rumah Sakit')">
+                    <div v-if="$can('create', 'Rumah Sakit')">
                         <h6 class="collapse-header">Rumah Sakit</h6>
                         <router-link class="collapse-item" to="/master/rumah_sakit">Data Rumah Sakit</router-link>
                         <router-link class="collapse-item" to="/master/fasilitas_rs">Fasilitas Rumah Sakit</router-link>
                         <router-link class="collapse-item" to="/master/owner_rs">Owner Rumah Sakit</router-link>
+                        <router-link class="collapse-item" to="/master/praktek_dokter">Praktek Dokter</router-link>
                     </div>
                     <div v-if="$can('show', 'Spesialis')">
                         <h6 class="collapse-header">Spesialis Penyakit</h6>

@@ -13,20 +13,28 @@
                             <th>alamat</th>
                             <th>status</th>
                         </thead>
-                        <tbody v-for="data in dataApotek">
-                            <tr>
-                                <td>{{data.namaApotek}}</td>
-                                <td>{{data.nomorHp}}</td>
-                                <td>{{data.alamatApotek}}</td>
-                                <td>
-                                    <ActiveSlider :checked="data.status == 1">
-                                        <template #span>
-                                            <SpanSlider @click="updateStatus(data.idProfilApotek, data.status)"/>
-                                        </template>
-                                    </ActiveSlider>
-                                </td>
-                            </tr>
+                        <tbody v-if="isLoading">
+                            <EmptyLoading/>
                         </tbody>
+                        <tbody v-else-if="dataApotek.length === 0">
+                            <EmptyData/>
+                        </tbody>
+                        <template v-else>
+                            <tbody v-for="data in dataApotek">
+                                <tr>
+                                    <td>{{data.namaApotek}}</td>
+                                    <td>{{data.nomorHp}}</td>
+                                    <td>{{data.alamatApotek}}</td>
+                                    <td>
+                                        <ActiveSlider :checked="data.status == 1">
+                                            <template #span>
+                                                <SpanSlider @click="updateStatus(data.idProfilApotek, data.status)"/>
+                                            </template>
+                                        </ActiveSlider>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </template>
                     </table>
                 </div>
             </div>
@@ -50,6 +58,8 @@ import ActiveSlider from '../../components/partials-component/ActiveSlider.vue';
 import SpanSlider from '../../components/partials-component/SpanSlider.vue'
 import InputField from '../../components/partials-component/InputField.vue';
 import ButtonComponent from '../../components/partials-component/ButtonComponent.vue';
+import EmptyData from '../../components/empty-table/EmptyData.vue'
+import EmptyLoading from '../../components/empty-table/EmptyLoading.vue'
 export default {
     data() {
         return {
@@ -62,6 +72,7 @@ export default {
             //     status: '0',
             //     nomor_hp: ''
             // }
+            isLoading: false
         };
     },
     created() {
@@ -74,9 +85,10 @@ export default {
                 "apotek/pengaturan/profil_apotek/",
                 {}
             ];
+            this.isLoading = true
             this.$store.dispatch(type, url).then((result) => {
+                this.isLoading = false
                 this.dataApotek = result.data;
-                console.log(result);
             }).catch((err) => {
                 console.log(err);
             });
@@ -113,6 +125,6 @@ export default {
             })
         }
     },
-    components: { SpanSlider, ActiveSlider, InputField, ButtonComponent, Form }
+    components: { SpanSlider, ActiveSlider, InputField, ButtonComponent, Form, EmptyData, EmptyLoading }
 }
 </script>

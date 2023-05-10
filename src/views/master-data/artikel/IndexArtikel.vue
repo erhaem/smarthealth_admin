@@ -136,6 +136,7 @@ export default {
         getArtikel() {
             const parsing = JSON.parse(Cookies.get('user'));
             const userId = parsing.data.id;
+            console.log(userId);
             const cekRole = parsing.data.getRole.idRole;
             const type = "getData";
             let url = null;
@@ -144,7 +145,7 @@ export default {
                     "master/artikel", {}
                 ]
             } else if (cekRole === "RO-2003062"){
-                url = [`master/artikel/${userId}`, {}];
+                url = [`master/artikel/${userId}/get`, {}];
             }
             this.isLoading = true
             this.$store.dispatch(type, url).then((result) => {
@@ -207,7 +208,7 @@ export default {
                                 message: 'Data Artikel Berhasil Ditambahkan',
                                 timeout: 1000
                             });
-                            this.goBack();
+                            // this.goBack();
                         })
                         .catch((err) => {
                             console.log(err);

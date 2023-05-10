@@ -4,7 +4,7 @@
             <div class="d-flex justify-content-between">
                 <h6 class="m-0 font-weight-bold text-primary">Data {{ $route.name }}</h6>
                 <div class="d-flex justify-content-start">
-                    <div v-if="$can('show', 'Rumah Sakit')">
+                    <div v-if="$can('create', 'Rumah Sakit')">
                         <router-link to="/master/rumah_sakit/create">
                             <ButtonComponent Message="Tambah Data +" />
                         </router-link>
@@ -19,11 +19,11 @@
                 <table class="table table-bordered" width="100%" cellspacing="0">
                     <thead>
                         <tr>
-                            <th v-if="$can('show', 'Rumah Sakit')">Pilih</th>
+                            <th v-if="$can('create', 'Rumah Sakit')">Pilih</th>
                             <th>Nama</th>
                             <th>Alamat</th>
                             <th>Pemilik</th>
-                            <th v-if="$can('show', 'Rumah Sakit')">Aksi</th>
+                            <th v-if="$can('create', 'Rumah Sakit')">Aksi</th>
                         </tr>
                     </thead>
                     <tbody v-if="isLoading">
@@ -35,13 +35,13 @@
                     <template v-else>
                         <tbody v-for="data in rumahSakit" :key="index">
                             <tr>
-                                <td v-if="$can('show', 'Rumah Sakit')">
+                                <td v-if="$can('create', 'Rumah Sakit')">
                                     <input type="checkbox" v-model="selectedId" :value="data.idRumahSakit">
                                 </td>
                                 <td>{{ data.namaRs }}</td>
                                 <td>{{ data.alamatRs }}</td>
                                 <td>{{ data.pemilik }}</td>
-                                <td v-if="$can('show', 'Rumah Sakit')">
+                                <td v-if="$can('create', 'Rumah Sakit')">
                                     <div class="d-flex">
                                         <router-link :to="'rumah_sakit/' + data.idRumahSakit + '/edit'">
                                             <ButtonComponent Message="edit" Color="btn-warning" />

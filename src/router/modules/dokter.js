@@ -37,7 +37,7 @@ export default [
             name: 'Dokter Keahlian',
             component: DokterKeahlian,
             meta: {
-                middleware: checkRoles(roles.adminRs)
+                middleware: checkRoles(roles.admin)
             }
         },
         {
@@ -45,7 +45,7 @@ export default [
             name: 'Edit Dokter Keahlian',
             component: EditDokterKeahlian,
             meta: {
-                middleware: checkRoles(roles.adminRs)
+                middleware: checkRoles(roles.admin)
             }
         },
     ]

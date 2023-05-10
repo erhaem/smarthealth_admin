@@ -18,7 +18,7 @@
                     <tbody v-if="isLoading">
                         <EmptyLoading/>
                     </tbody>
-                    <tbody v-else-if="ownerApotek.length ==0 ">
+                    <tbody v-else-if="ownerApotek.length === 0 ">
                         <EmptyData/>
                     </tbody>
                     <template v-else>
@@ -39,7 +39,7 @@
                                 <td>
                                     <ActiveSlider :checked="data.getUser.status == 1">
                                         <template #span>
-                                            <SpanSlider @click="updateStatus(data.getUser.status)"/>
+                                            <SpanSlider @click="updateStatus(data.getUser.idOwnerApotek, data.getUser.status)"/>
                                         </template>
                                     </ActiveSlider>
                                 </td>
@@ -63,7 +63,8 @@ export default {
     data() {
         return {
             ownerApotek: [],
-            isLoading: false
+            isLoading: false,
+            status: 0
         }
     },
     created() {
@@ -83,6 +84,26 @@ export default {
                 console.log(err);
             })
         },
+        updateStatus(id_user, status){
+            if(status == 1){
+                status == 0
+            } else {
+                status == 1
+            }
+            let type = "updateData"
+            let url = [
+                "akun/active_account", 
+                id_user,
+                {
+                    status: status,
+                }
+            ]
+            this.$store.dispatch(type, url).then((result)=>{
+                console.log(result);
+            }).catch((err)=>{
+                console.log(err);
+            })
+        }, 
 
     },
     components: {

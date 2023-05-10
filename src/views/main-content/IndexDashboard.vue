@@ -91,11 +91,14 @@
             </div>
         </div>
     </div>
+    {{ locationName }}
 </template>
 
 <script>
 import LoadingIndicator from '@/components/partials-component/LoadingIndicator.vue';
+import axios from 'axios'
 import { Form } from 'vee-validate'
+import Cookies from "js-cookie"
 export default {
     data() {
         return {
@@ -103,12 +106,14 @@ export default {
             isLoading: false,
             latitude: null,
             longitude: null,
-            nearestResults: []
+            locationName: [],
+            nearestResults: [],
+            lokasi: []
         }
     },
     mounted() {
         this.getCountData(),
-            this.getLocation()
+        this.getLocation()
     },
     methods: {
         getCountData() {
@@ -136,7 +141,6 @@ export default {
             ]
             this.$store.dispatch(type, url).then((result) => {
                 this.nearestResults = result.data
-                console.log(result.data);
             }).catch((err) => {
                 console.log(err);
             })
@@ -147,7 +151,8 @@ export default {
                     position => {
                         this.latitude = position.coords.latitude;
                         this.longitude = position.coords.longitude;
-                        this.getNeareset()
+                        this.getNeareset();
+                        this.getLocationName();
                     },
                     error => {
                         console.error(error);
@@ -156,6 +161,59 @@ export default {
             } else {
                 console.error("Geolocation is not supported by this browser.");
             }
+        },
+        async getLocationName() {
+            const apiKey = 'AIzaSyB2Xd4GJtDxGPUI7nlMV-I99x5EQqYqhGc';
+            const url = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${this.latitude},${this.longitude}&key=${apiKey}`
+            const parsing = JSON.parse(Cookies.get("user"));
+
+            // axios.get(url)
+            //     .then((response) => {
+            //         console.log(response);
+            //     }).catch((error) => {
+            //         console.log(error);
+            //     })
+            try {
+                const response = await axios.get(url);
+                console.log(response);
+            } catch (error) {
+                console.log(error);
+            }
+            // axios({
+            //     url: url,
+            //     headers: {
+            //         Authorization: 'Bearer ' + parsing.data.token
+            //     },
+            //     method: "GET"
+            // }).then((response) => {
+            //     console.log(response);
+            // }).catch((error) => {
+            //     console.log(error);
+            // })
+
+            // axios({
+            //     url: url,
+            //     headers: {
+            //         Authorization: ''
+            //     }
+            // }).then((response) => {
+
+            // }).catch((error) => {
+
+            // });
+            // axios.get(url)
+            //     .then(response => {
+            //         // if (response.data.results.length > 0) {
+            //         //     const address = response.data.results[0].formatted_address;
+            //         //     this.locationName = address;
+            //         //     console.log(address);
+            //         // }
+            //         console.log("ada")
+            //     })
+            //     .catch(error => {
+            //         console.error('Error:', error);
+            //     });
+                
         }
     },
     components: {
