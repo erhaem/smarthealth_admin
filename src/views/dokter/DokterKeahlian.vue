@@ -3,7 +3,11 @@
         <div class="card-header py-3">
             <div class="d-flex justify-content-between">
                 <h6 class="m-0 font-weight-bold text-primary">Data {{ $route.name }}</h6>
-                <ButtonComponent Message="Tambah Data +" data-bs-toggle="modal" data-bs-target="#tambahData" />
+                <div class="d-flex justify-content-start">
+                    <ButtonComponent Message="Tambah Data +" data-bs-toggle="modal" data-bs-target="#tambahData" />
+                    <div v-if="selected.length === 0"></div>
+                    <ButtonComponent Color="btn-danger" Message="Hapus" v-else-if="selected" @click="deleteData" />
+                </div>
             </div>
         </div>
         <div class="card-body">
@@ -11,22 +15,24 @@
                 <table class="table table-bordered" width="100%" cellspacing="0">
                     <thead>
                         <tr>
-                            <th>ID Dokter Keahlian</th>
+                            <th>Pilih</th>
                             <th>Nama Dokter</th>
                             <th>Nama Keahlian</th>
                             <th class="text-center">Aksi</th>
                         </tr>
                     </thead>
                     <tbody v-if="isLoading">
-                        <EmptyLoading/>
+                        <EmptyLoading />
                     </tbody>
                     <tbody v-else-if="dokterKeahlian.length == 0">
-                        <EmptyData/>
+                        <EmptyData />
                     </tbody>
                     <template v-else>
                         <tbody v-for="data in dokterKeahlian" :key="index">
                             <tr>
-                                <td>{{ data.idDokterKeahlian }}</td>
+                                <td>
+                                    <input type="checkbox" :value="data.idDokterKeahlian" v-model="selected">
+                                </td>
                                 <td>{{ data.getDokter.nama }}</td>
                                 <td>{{ data.getKeahlian.namaKeahlian }}</td>
                                 <td>
@@ -34,8 +40,6 @@
                                         <router-link :to="'dokter_keahlian/' + data.idDokterKeahlian + '/edit'">
                                             <ButtonComponent Message="Edit" Color="btn-warning" />
                                         </router-link>
-                                        <ButtonComponent @click="deleteKeahlian(data.idDokterKeahlian)" Color="btn-danger"
-                                            Message="Hapus" />
                                     </div>
                                 </td>
                             </tr>
@@ -91,6 +95,7 @@ export default {
             dokterKeahlian: [],
             keahlianDokter: [],
             dokter: [],
+            selected: [],
             form: {
                 dokter_id: '',
                 keahlian_id: ''
@@ -136,7 +141,6 @@ export default {
             ]
             this.$store.dispatch(type, url).then((result) => {
                 this.dokterKeahlian = result.data
-                console.log(result.data);
             }).catch((err) => {
                 console.log(err);
             })
@@ -144,22 +148,33 @@ export default {
         goBack() {
             window.location = '/dokter/dokter_keahlian'
         },
-        deleteKeahlian(idDokterKeahlian) {
-            let type = "deleteData"
-            let url = [
-                "master/dokter_keahlian", idDokterKeahlian
-            ]
-            this.$store.dispatch(type, url).then((result) => {
-                iziToast.success({
-                    title: 'success',
-                    message: 'data berhasil dihapus',
-                    timeout: 1000,
-                    position: 'topRight'
-                })
-                this.getKeahlianDokter()
-            }).catch((err) => {
-                console.log(err);
+        deleteData() {
+            if (this.selected.length === 0) {
+                return;
+            }
+            let type = "deleteData";
+            let urls = this.selected.map((idDokterKeahlian) => ["master/dokter_keahlian", idDokterKeahlian]);
+            this.$swal({
+                icon: 'question',
+                title: "Apakah kamu ingin menyimpan perubahan",
+                showDenyButton: true,
+                showCancelButton: false,
+                confirmButtonText: "Ya, Hapus",
+                denyButtonText: "Jangan Hapus"
+            }).then((results) => {
+                if (results.isConfirmed) {
+                    Promise.all(urls.map((url) => this.$store.dispatch(type, url)))
+                    this.$swal({
+                        icon: 'success',
+                        text: 'data berhasil dihapus'
+                    })
+                    this.getKeahlianDokter();
+                }
             })
+                .catch((err) => {
+                    console.log(err);
+                });
+            this.selected = [];
         },
         postKeahlian() {
             let type = "postData"

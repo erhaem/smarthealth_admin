@@ -1,18 +1,42 @@
 <template>
+    <Form :validation-schema="schema" v-slot="{ errors }">
+        <input type="text" hidden v-model="artikels.id_artikel">
+        <div>
+            <Label for="foto">Foto Artikel</Label>
+            <input id="foto" type="file" @change="chooseFoto" class="form-control">
+            <span :class="[error]">{{ errors.foto }}</span>
+        </div>
+        <div>
+            <img :src="imagePreview" class="img-fluid">
+            {{ imagePreview }}
+        </div>
+        <div>
+            <Label>Judul Artikel</Label>
+            <InputField Name="judulArtikel" v-model="artikels.judul_artikel" />
+            <span :class="[error]">{{ errors.judulArtikel }}</span>
+        </div>
+        <div>
+            <Label>Deskripsi</Label>
+            <textarea name="deskripsi" class="form-control border-primary" v-model="artikels.deskripsi"></textarea>
+        </div>
+        <div>
+            <ButtonComponent @click="handleKontol()" />
+        </div>
+    </Form>
     <div class="card shadow mb-4">
         <div class="card-header py-3">
             <div class="d-flex justify-content-between">
                 <h6 class="m-0 font-weight-bold text-primary">Data {{ $route.name }}</h6>
                 <div class="d-flex justify-content-start">
                     <ButtonComponent v-if="$can('create', 'Artikel')" Color="btn-dark" Message="Tambah Data +"
-                    data-bs-toggle="modal" data-bs-target="#tambahData" />
+                        data-bs-toggle="modal" data-bs-target="#tambahData" />
                     <div v-if="selectedArtikelIds.length == 0">
                     </div>
                     <ButtonComponent Color="btn-danger" v-else-if="selectedArtikelIds" Message="hapus"
                         @click="deleteSelectedArtikels" />
                 </div>
             </div>
-        </div> 
+        </div>
         <div class="card-body">
             <div class="table-responsive">
                 <table class="table table-bordered" width="100%" cellspacing="0">
@@ -63,26 +87,6 @@
     </div>
     <ModalComponent id="tambahData" labelBy="exampleModalLabel" :modalTitle="'Tambah ' + $route.name">
         <template #modal>
-            <Form :validation-schema="schema" v-slot="{ errors }">
-                <input type="text" hidden v-model="artikels.id_artikel">
-                <div>
-                    <Label>Foto Artikel</Label>
-                    <input type="file" @change="chooseFoto" class="form-control">
-                    <span :class="[error]">{{ errors.foto }}</span>
-                </div>
-                <div>
-                    <Label>Judul Artikel</Label>
-                    <InputField Name="judulArtikel" v-model="artikels.judul_artikel" />
-                    <span :class="[error]">{{ errors.judulArtikel }}</span>
-                </div>
-                <div>
-                    <Label>Deskripsi</Label>
-                    <textarea name="deskripsi" class="form-control border-primary" v-model="artikels.deskripsi"></textarea>
-                </div>
-                <div>
-                    <ButtonComponent @click="handleKontol()" />
-                </div>
-            </Form>
         </template>
     </ModalComponent>
 </template>
@@ -106,6 +110,7 @@ export default {
                 deskripsi: '',
                 foto: null
             },
+            imagePreview: '',
             isLoading: false,
             error: 'text-danger',
             selectedArtikelIds: []
@@ -140,11 +145,11 @@ export default {
             const cekRole = parsing.data.getRole.idRole;
             const type = "getData";
             let url = null;
-            if(cekRole === "RO-2003061"){
+            if (cekRole === "RO-2003061") {
                 url = [
                     "master/artikel", {}
                 ]
-            } else if (cekRole === "RO-2003062"){
+            } else if (cekRole === "RO-2003062") {
                 url = [`master/artikel/${userId}/get`, {}];
             }
             this.isLoading = true
@@ -229,7 +234,8 @@ export default {
             }
         },
         chooseFoto(event) {
-            this.artikels.foto = event.target.files[0]
+            this.artikels.foto = event.target.files[0];
+            this.imagePreview = URL.createObjectURL(event.target.files[0]);
         }
     },
     components: {

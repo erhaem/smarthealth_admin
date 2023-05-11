@@ -43,6 +43,7 @@ export default {
             ]
             const allowRoles = ["Administrator", "Perawat", "Owner Apotek", "Dokter", "Admin Rumah Sakit"]
             this.$store.dispatch(type, url).then((result) => {
+                console.log(result);
                 const cekRole = result.data.getRole.namaRole;
                 if (allowRoles.includes(cekRole)) {
                     Cookies.set('token', result.data.token)
@@ -63,12 +64,16 @@ export default {
                     })
                 }
             }).catch((err) => {
-                iziToast.error({
-                    title: 'error',
-                    message: 'nomor hp dan password tidak sesuai',
-                    position: 'topRight',
-                    timeout: 2000
-                })
+                if (err.response && err.response.data && err.response.data.message === 'Incorrect password') {
+                    iziToast.error({
+                        title: 'error',
+                        message: 'nomor hp dan password tidak sesuai',
+                        position: 'topRight',
+                        timeout: 2000
+                    });
+                } else {
+                    console.log(err);
+                }
             })
         }
     },

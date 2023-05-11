@@ -25,6 +25,7 @@ const permisionsByRole = {
     ],
     "RO-2003066": [
         'create_Rumah Sakit',
+        'show_Rumah Sakit',
         'show_Fasilitas',
         'create_Fasilitas',
         'show_Dokter',
