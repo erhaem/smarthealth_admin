@@ -1,6 +1,7 @@
 import OwnerApotek from '../../views/apotek/OwnerApotek.vue'
 import DataApotek from '../../views/apotek/IndexApotek.vue'
 import GroupingProduk from '../../views/apotek/GroupingProduk.vue'
+import EditGroupingProduk from '../../views/apotek/EditGroupingProduk.vue'
 import ProdukApotek from '../../views/apotek/ProdukApotek.vue'
 export default[{
     path: '/owner_apotek',
@@ -12,6 +13,7 @@ export default[{
     name: 'Data Apotek',
     component: DataApotek
 },
+
 {
     path: '/apotek',
     children: [
@@ -21,11 +23,15 @@ export default[{
             component: GroupingProduk
         },
         {
+            path: 'grouping_produk/:id/edit',
+            name: 'Edit Data Grouping',
+            component: EditGroupingProduk
+        },
+        {
             path: 'produk_apotek',
             name: 'Produk Apotek',
             component: ProdukApotek
         },
     ]
-}
-
+},
 ]
