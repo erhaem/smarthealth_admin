@@ -22,7 +22,7 @@
 
 <script>
 import InputField from '@/components/partials-component/InputField.vue';
-import ButtonComponent from '../../../components/partials-component/ButtonComponent.vue';
+import ButtonComponent from '@/components/partials-component/ButtonComponent.vue';
 import { Form } from 'vee-validate'
 import iziToast from 'izitoast';
 import * as validate from 'yup'

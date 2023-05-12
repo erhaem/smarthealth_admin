@@ -27,7 +27,7 @@
 <script>
 import { Form } from 'vee-validate';
 import SelectOption from '@/components/partials-component/SelectOption.vue';
-import ButtonComponent from '../../components/partials-component/ButtonComponent.vue';
+import ButtonComponent from '@/components/partials-component/ButtonComponent.vue';
 import iziToast from 'izitoast';
 export default {
     data() {

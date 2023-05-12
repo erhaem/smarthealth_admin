@@ -51,10 +51,10 @@
 </template>
 
 <script>
-import ActiveSlider from '../../components/partials-component/ActiveSlider.vue'
-import LoadingIndicator from '../../components/partials-component/LoadingIndicator.vue';
-import SpanSlider from '../../components/partials-component/SpanSlider.vue'
-import EmptyData from '../../components/empty-table/EmptyData.vue'
+import ActiveSlider from '@/components/partials-component/ActiveSlider.vue'
+import LoadingIndicator from '@/components/partials-component/LoadingIndicator.vue';
+import SpanSlider from '@/components/partials-component/SpanSlider.vue'
+import EmptyData from '@/components/empty-table/EmptyData.vue'
 export default {
     data() {
         return {

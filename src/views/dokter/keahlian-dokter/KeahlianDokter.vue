@@ -70,8 +70,8 @@ import { Form } from 'vee-validate'
 import InputField from '@/components/partials-component/InputField.vue'
 import ModalComponent from '@/components/partials-component/ModalComponent.vue'
 import * as valid from 'yup'
-import EmptyLoading from '../../components/empty-table/EmptyLoading.vue'
-import EmptyData from '../../components/empty-table/EmptyData.vue'
+import EmptyLoading from '@/components/empty-table/EmptyLoading.vue'
+import EmptyData from '@/components/empty-table/EmptyData.vue'
 export default {
     data() {
         return {

@@ -20,10 +20,10 @@
     </div>
 </template>
 <script>
-import InputField from '../../components/partials-component/InputField.vue';
+import InputField from '@/components/partials-component/InputField.vue';
 import { Form } from 'vee-validate'
 import * as valid from 'yup'
-import ButtonComponent from '../../components/partials-component/ButtonComponent.vue'
+import ButtonComponent from '@/components/partials-component/ButtonComponent.vue'
 import iziToast from 'izitoast';
 export default {
     data() {

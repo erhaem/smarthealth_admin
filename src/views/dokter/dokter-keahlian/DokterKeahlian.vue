@@ -81,14 +81,14 @@
 </template>
 
 <script>
-import SelectOption from '../../components/partials-component/SelectOption.vue'
+import SelectOption from '@/components/partials-component/SelectOption.vue'
 import ButtonComponent from '@/components/partials-component/ButtonComponent.vue'
 import iziToast from 'izitoast'
 import { Form } from 'vee-validate'
 import InputField from '@/components/partials-component/InputField.vue'
 import ModalComponent from '@/components/partials-component/ModalComponent.vue'
-import EmptyLoading from '../../components/empty-table/EmptyLoading.vue';
-import EmptyData from '../../components/empty-table/EmptyData.vue';
+import EmptyLoading from '@/components/empty-table/EmptyLoading.vue';
+import EmptyData from '@/components/empty-table/EmptyData.vue';
 export default {
     data() {
         return {

@@ -62,9 +62,9 @@
 
 <script>
 import ButtonComponent from '@/components/partials-component/ButtonComponent.vue'
-import InputField from '../../../components/partials-component/InputField.vue'
-import EmptyLoading from '../../../components/empty-table/EmptyLoading.vue'
-import EmptyData from '../../../components/empty-table/EmptyData.vue'
+import InputField from '@/components/partials-component/InputField.vue'
+import EmptyLoading from '@/components/empty-table/EmptyLoading.vue'
+import EmptyData from '@/components/empty-table/EmptyData.vue'
 import iziToast from 'izitoast'
 import Cookies from 'js-cookie'
 export default {

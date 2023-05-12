@@ -34,7 +34,7 @@
 </template>
 <script>
 import ButtonComponent from '@/components/partials-component/ButtonComponent.vue'
-import SelectOption from '../../components/partials-component/SelectOption.vue'
+import SelectOption from '@/components/partials-component/SelectOption.vue'
 import iziToast from 'izitoast'
 import { Form } from 'vee-validate'
 import InputField from '@/components/partials-component/InputField.vue'

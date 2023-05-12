@@ -30,8 +30,8 @@
 import InputField from '@/components/partials-component/InputField.vue';
 import iziToast from 'izitoast'
 import { Form, Field } from 'vee-validate'
-import ButtonComponent from '../../../components/partials-component/ButtonComponent.vue';
-import TextArea from '../../../components/partials-component/TextArea.vue';
+import ButtonComponent from '@/components/partials-component/ButtonComponent.vue';
+import TextArea from '@/components/partials-component/TextArea.vue';
 import * as valid from 'yup'
 export default {
     data() {

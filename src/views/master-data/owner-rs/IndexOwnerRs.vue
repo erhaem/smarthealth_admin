@@ -107,13 +107,13 @@
     </ModalComponent>
 </template>
 <script>
-import ModalComponent from '../../../components/partials-component/ModalComponent.vue';
-import ButtonComponent from '../../../components/partials-component/ButtonComponent.vue';
+import ModalComponent from '@/components/partials-component/ModalComponent.vue';
+import ButtonComponent from '@/components/partials-component/ButtonComponent.vue';
 import { Form } from 'vee-validate';
-import InputField from '../../../components/partials-component/InputField.vue';
+import InputField from '@/components/partials-component/InputField.vue';
 import iziToast from 'izitoast';
-import EmptyData from '../../../components/empty-table/EmptyData.vue';
-import EmptyLoading from '../../../components/empty-table/EmptyLoading.vue';
+import EmptyData from '@/components/empty-table/EmptyData.vue';
+import EmptyLoading from '@/components/empty-table/EmptyLoading.vue';
 import * as valid from 'yup'
 export default {
     data() {

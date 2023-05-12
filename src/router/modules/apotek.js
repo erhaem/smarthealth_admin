@@ -1,8 +1,8 @@
-import OwnerApotek from '../../views/apotek/OwnerApotek.vue'
+import OwnerApotek from '../../views/apotek/owner-apotek/OwnerApotek.vue'
 import DataApotek from '../../views/apotek/IndexApotek.vue'
-import GroupingProduk from '../../views/apotek/GroupingProduk.vue'
-import EditGroupingProduk from '../../views/apotek/EditGroupingProduk.vue'
-import ProdukApotek from '../../views/apotek/ProdukApotek.vue'
+import GroupingProduk from '../../views/apotek/produk-apotek/GroupingProduk.vue'
+import EditGroupingProduk from '../../views/apotek/produk-apotek/EditGroupingProduk.vue'
+import ProdukApotek from '../../views/apotek/produk-apotek/ProdukApotek.vue'
 export default[{
     path: '/owner_apotek',
     name: 'Owner Apotek',

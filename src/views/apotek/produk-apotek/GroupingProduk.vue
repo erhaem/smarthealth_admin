@@ -94,12 +94,12 @@
 
 <script>
 import { Form } from 'vee-validate'
-import LoadingIndicator from '../../components/partials-component/LoadingIndicator.vue'
-import EmptyData from '../../components/empty-table/EmptyData.vue';
-import EmptyLoading from '../../components/empty-table/EmptyLoading.vue';
-import SelectOption from '../../components/partials-component/SelectOption.vue'
-import ButtonComponent from '../../components/partials-component/ButtonComponent.vue'
-import ModalComponent from '../../components/partials-component/ModalComponent.vue'
+import LoadingIndicator from '@/components/partials-component/LoadingIndicator.vue'
+import EmptyData from '@/components/empty-table/EmptyData.vue';
+import EmptyLoading from '@/components/empty-table/EmptyLoading.vue';
+import SelectOption from '@/components/partials-component/SelectOption.vue'
+import ButtonComponent from '@/components/partials-component/ButtonComponent.vue'
+import ModalComponent from '@/components/partials-component/ModalComponent.vue'
 export default {
     data() {
         return {

@@ -28,8 +28,8 @@
     </div>
 </template>
 <script>
-import InputField from '../../../components/partials-component/InputField.vue'
-import ButtonComponent from '../../../components/partials-component/ButtonComponent.vue'
+import InputField from '@/components/partials-component/InputField.vue'
+import ButtonComponent from '@/components/partials-component/ButtonComponent.vue'
 import { Form } from 'vee-validate'
 export default {
     data() {

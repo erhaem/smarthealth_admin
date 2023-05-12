@@ -89,13 +89,13 @@
 
 <script>
 import Cookies from 'js-cookie'
-import InputField from '../../../components/partials-component/InputField.vue';
+import InputField from '@/components/partials-component/InputField.vue';
 import { Form } from 'vee-validate'
 import iziToast from 'izitoast';
 import ButtonComponent from '@/components/partials-component/ButtonComponent.vue';
 import ModalComponent from '@/components/partials-component/ModalComponent.vue';
-import EmptyData from '../../../components/empty-table/EmptyData.vue';
-import EmptyLoading from '../../../components/empty-table/EmptyLoading.vue';
+import EmptyData from '@/components/empty-table/EmptyData.vue';
+import EmptyLoading from '@/components/empty-table/EmptyLoading.vue';
 import * as valid from 'yup'
 export default {
     data() {

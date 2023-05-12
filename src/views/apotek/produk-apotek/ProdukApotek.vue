@@ -49,8 +49,8 @@
 </template>
 
 <script>
-import EmptyLoading from '../../components/empty-table/EmptyLoading.vue'
-import EmptyData from '../../components/empty-table/EmptyData.vue'
+import EmptyLoading from '@/components/empty-table/EmptyLoading.vue'
+import EmptyData from '@/components/empty-table/EmptyData.vue'
 export default {
     data(){
         return {

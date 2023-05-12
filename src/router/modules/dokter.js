@@ -1,8 +1,8 @@
-import KeahlianDokter from '@/views/dokter/KeahlianDokter.vue'
-import DokterKeahlian from '@/views/dokter/DokterKeahlian.vue'
-import PageDokter from '@/views/dokter/IndexDokter.vue'
-import EditKeahlianDokter from '@/views/dokter/EditKeahlianDokter.vue'
-import EditDokterKeahlian from '@/views/dokter/EditDokterKeahlian.vue'
+import PageDokter from '@/views/dokter/data-dokter/IndexDokter.vue'
+import KeahlianDokter from '@/views/dokter/keahlian-dokter/KeahlianDokter.vue'
+import EditKeahlianDokter from '@/views/dokter/keahlian-dokter/EditKeahlianDokter.vue'
+import DokterKeahlian from '@/views/dokter/dokter-keahlian/DokterKeahlian.vue'
+import EditDokterKeahlian from '@/views/dokter/dokter-keahlian/EditDokterKeahlian.vue'
 import { checkRoles, roles } from '../../middleware/redirect'
 export default [
 {

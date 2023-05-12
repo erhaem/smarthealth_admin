@@ -105,9 +105,9 @@ import { Form } from 'vee-validate'
 import ButtonComponent from '@/components/partials-component/ButtonComponent.vue'
 import iziToast from 'izitoast';
 import ModalComponent from '@/components/partials-component/ModalComponent.vue'
-import SelectOption from '../../../components/partials-component/SelectOption.vue';
-import EmptyLoading from '../../../components/empty-table/EmptyLoading.vue';
-import EmptyData from '../../../components/empty-table/EmptyData.vue';
+import SelectOption from '@/components/partials-component/SelectOption.vue';
+import EmptyLoading from '@/components/empty-table/EmptyLoading.vue';
+import EmptyData from '@/components/empty-table/EmptyData.vue';
 export default {
     data() {
         return {

@@ -2,28 +2,27 @@ import MasterData from '@/views/master-data/IndexMasterData.vue'
 import KategoriProduk from '@/views/master-data/obat-produk/KategoriProduk.vue'
 import EditKategoriProduk from '@/views/master-data/obat-produk/EditKategoriProduk.vue'
 
-import IndexArtikel from '@/views/master-data/artikel/IndexArtikel.vue'
-import KategoriArtikel from '@/views/master-data/artikel/KategoriArtikel.vue'
-import EditArtikel from '@/views/master-data/artikel/EditArtikel.vue'
-import EditKategoriArtikel from '@/views/master-data/artikel/EditKategoriArtikel.vue'
-import GroupingArtikel from '@/views/master-data/artikel/GroupingArtikel.vue'
-import EditGroupingArtikel from '@/views/master-data/artikel/EditGroupingArtikel.vue'
+import IndexArtikel from '@/views/master-data/artikel/data-artikel/IndexArtikel.vue'
+import EditArtikel from '@/views/master-data/artikel/data-artikel/EditArtikel.vue'
+import KategoriArtikel from '@/views/master-data/artikel/kategori-artikel/KategoriArtikel.vue'
+import EditKategoriArtikel from '@/views/master-data/artikel/kategori-artikel/EditKategoriArtikel.vue'
+import GroupingArtikel from '@/views/master-data/artikel/grouping-artikel/GroupingArtikel.vue'
+import EditGroupingArtikel from '@/views/master-data/artikel/grouping-artikel/EditGroupingArtikel.vue'
 
-import IndexRumahSakit from '@/views/master-data/rumah-sakit/IndexRumahSakit.vue'
-import SpesialisRumahSakit from '@/views/master-data/rumah-sakit/SpesialisRumahSakit.vue'
-import DokterSpesialisRumahSakit from '@/views/master-data/rumah-sakit/DokterSpesialisRumahSakit.vue'
-import EditSpesialisRumahSakit from '@/views/master-data/rumah-sakit/EditSpesialisRumahSakit.vue'
-import TambahRumahSakit from '@/views/master-data/rumah-sakit/TambahRumahSakit.vue'
-import EditRumahSakit from '@/views/master-data/rumah-sakit/EditRumahSakit.vue'
-import FasilitasRumahSakit from '@/views/master-data/rumah-sakit/FasilitasRumahSakit.vue'
-import EditFasilitas from '@/views/master-data/rumah-sakit/EditFasilitas.vue'
+import IndexRumahSakit from '@/views/master-data/rumah-sakit/data-rs/IndexRumahSakit.vue'
+import TambahRumahSakit from '@/views/master-data/rumah-sakit/data-rs/TambahRumahSakit.vue'
+import EditRumahSakit from '@/views/master-data/rumah-sakit/data-rs/EditRumahSakit.vue'
+import SpesialisRumahSakit from '@/views/master-data/rumah-sakit/spesialis-rs/SpesialisRumahSakit.vue'
+import EditSpesialisRumahSakit from '@/views/master-data/rumah-sakit/spesialis-rs/EditSpesialisRumahSakit.vue'
+import FasilitasRumahSakit from '@/views/master-data/rumah-sakit/fasilitas-rs/FasilitasRumahSakit.vue'
+import EditFasilitas from '@/views/master-data/rumah-sakit/fasilitas-rs/EditFasilitas.vue'
+import DokterSpesialisRumahSakit from '@/views/master-data/rumah-sakit/dokter-spesialis-rs/DokterSpesialisRumahSakit.vue'
 
 import IndexSpesialis from '@/views/master-data/spesialis-penyakit/IndexSpesialis.vue'
 import EditSpesialisPenyakit from '@/views/master-data/spesialis-penyakit/EditSpesialisPenyakit.vue'
 
 import IndexRs from '../../views/master-data/owner-rs/IndexOwnerRs.vue'
 import EditOwnerRs from '@/views/master-data/owner-rs/EditOwnerRs.vue'
-import PraktekDokter from '@/views/master-data/rumah-sakit/PraktekDokter.vue'
 import { checkRoles, roles } from '../../middleware/redirect';
 
 export default [{
@@ -169,11 +168,6 @@ export default [{
             path: 'owner_rs/:id/edit',
             name: 'Edit Owner Rumah Sakit',
             component: EditOwnerRs,
-        },
-        {
-            path: 'praktek_dokter',
-            name: 'Praktek Dokter',
-            component: PraktekDokter
         },
         // Routes Spesialis
         {

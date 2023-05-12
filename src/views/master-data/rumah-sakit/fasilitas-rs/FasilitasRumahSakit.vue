@@ -80,11 +80,11 @@ import ButtonComponent from '@/components/partials-component/ButtonComponent.vue
 import PaginationComponent from '@/components/partials-component/PaginationComponent.vue';
 import { Form } from 'vee-validate'
 import iziToast from 'izitoast';
-import InputField from '../../../components/partials-component/InputField.vue';
-import ModalComponent from '../../../components/partials-component/ModalComponent.vue';
-import SelectOption from '../../../components/partials-component/SelectOption.vue';
-import EmptyData from '../../../components/empty-table/EmptyData.vue';
-import EmptyLoading from '../../../components/empty-table/EmptyLoading.vue';
+import InputField from '@/components/partials-component/InputField.vue';
+import ModalComponent from '@/components/partials-component/ModalComponent.vue';
+import SelectOption from '@/components/partials-component/SelectOption.vue';
+import EmptyData from '@/components/empty-table/EmptyData.vue';
+import EmptyLoading from '@/components/empty-table/EmptyLoading.vue';
 export default {
     data() {
         return {
