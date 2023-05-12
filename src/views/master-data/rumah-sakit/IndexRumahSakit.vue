@@ -46,6 +46,9 @@
                                         <router-link :to="'rumah_sakit/' + data.idRumahSakit + '/edit'">
                                             <ButtonComponent Message="edit" Color="btn-warning" />
                                         </router-link>
+                                        <router-link :to="'rumah_sakit/' + 'spesialis/' + data.idRumahSakit">
+                                        <ButtonComponent Color="btn-success" Message="tambah spesialis"/> 
+                                        </router-link>
                                     </div>
                                 </td>
                             </tr>
@@ -79,7 +82,6 @@ export default {
         getRumahSakit() {
             const parsing = JSON.parse(Cookies.get('user'));
             const userId = parsing.data.id;
-            console.log(userId);
             const cekRole = parsing.data.getRole.idRole;
             const type = "getData";
             let url = null;

@@ -1,19 +1,26 @@
 import MasterData from '@/views/master-data/IndexMasterData.vue'
 import KategoriProduk from '@/views/master-data/obat-produk/KategoriProduk.vue'
 import EditKategoriProduk from '@/views/master-data/obat-produk/EditKategoriProduk.vue'
+
 import IndexArtikel from '@/views/master-data/artikel/IndexArtikel.vue'
 import KategoriArtikel from '@/views/master-data/artikel/KategoriArtikel.vue'
 import EditArtikel from '@/views/master-data/artikel/EditArtikel.vue'
 import EditKategoriArtikel from '@/views/master-data/artikel/EditKategoriArtikel.vue'
 import GroupingArtikel from '@/views/master-data/artikel/GroupingArtikel.vue'
 import EditGroupingArtikel from '@/views/master-data/artikel/EditGroupingArtikel.vue'
+
 import IndexRumahSakit from '@/views/master-data/rumah-sakit/IndexRumahSakit.vue'
+import SpesialisRumahSakit from '@/views/master-data/rumah-sakit/SpesialisRumahSakit.vue'
+import DokterSpesialisRumahSakit from '@/views/master-data/rumah-sakit/DokterSpesialisRumahSakit.vue'
+import EditSpesialisRumahSakit from '@/views/master-data/rumah-sakit/EditSpesialisRumahSakit.vue'
 import TambahRumahSakit from '@/views/master-data/rumah-sakit/TambahRumahSakit.vue'
 import EditRumahSakit from '@/views/master-data/rumah-sakit/EditRumahSakit.vue'
 import FasilitasRumahSakit from '@/views/master-data/rumah-sakit/FasilitasRumahSakit.vue'
 import EditFasilitas from '@/views/master-data/rumah-sakit/EditFasilitas.vue'
+
 import IndexSpesialis from '@/views/master-data/spesialis-penyakit/IndexSpesialis.vue'
 import EditSpesialisPenyakit from '@/views/master-data/spesialis-penyakit/EditSpesialisPenyakit.vue'
+
 import IndexRs from '../../views/master-data/owner-rs/IndexOwnerRs.vue'
 import EditOwnerRs from '@/views/master-data/owner-rs/EditOwnerRs.vue'
 import PraktekDokter from '@/views/master-data/rumah-sakit/PraktekDokter.vue'
@@ -114,6 +121,27 @@ export default [{
             meta: {
                 middleware: checkRoles(roles.adminRsadminWeb)
             }
+        },
+        {
+            path: 'rumah_sakit/spesialis/:id',
+            name: 'Spesialis Rumah Sakit',
+            component: SpesialisRumahSakit,
+            meta: {
+                middleware: checkRoles(roles.adminRsadminWeb)
+            }
+        },
+        {
+            path: 'rumah_sakit/spesialis/:id/:idSpesialis',
+            name: 'Edit Spesialis Rumah Sakit',
+            component: EditSpesialisRumahSakit,
+            meta: {
+                middleware: checkRoles(roles.adminRsadminWeb)
+            }
+        },
+        {
+            path: 'rumah_sakit/dokter/:idSpesialis/:id',
+            name: 'Dokter Spesialis',
+            component: DokterSpesialisRumahSakit
         },
         {
             path: 'fasilitas_rs',

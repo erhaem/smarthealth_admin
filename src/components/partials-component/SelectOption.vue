@@ -37,5 +37,7 @@ select.form-select:focus {
 select.form-select option {
     width: 200px;
     height: 1000px;
+    max-height: 200px;
+    overflow-y: auto;
 }
 </style>

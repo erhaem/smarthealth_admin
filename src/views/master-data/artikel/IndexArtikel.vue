@@ -1,28 +1,4 @@
 <template>
-    <Form :validation-schema="schema" v-slot="{ errors }">
-        <input type="text" hidden v-model="artikels.id_artikel">
-        <div>
-            <Label for="foto">Foto Artikel</Label>
-            <input id="foto" type="file" @change="chooseFoto" class="form-control">
-            <span :class="[error]">{{ errors.foto }}</span>
-        </div>
-        <div>
-            <img :src="imagePreview" class="img-fluid">
-            {{ imagePreview }}
-        </div>
-        <div>
-            <Label>Judul Artikel</Label>
-            <InputField Name="judulArtikel" v-model="artikels.judul_artikel" />
-            <span :class="[error]">{{ errors.judulArtikel }}</span>
-        </div>
-        <div>
-            <Label>Deskripsi</Label>
-            <textarea name="deskripsi" class="form-control border-primary" v-model="artikels.deskripsi"></textarea>
-        </div>
-        <div>
-            <ButtonComponent @click="handleKontol()" />
-        </div>
-    </Form>
     <div class="card shadow mb-4">
         <div class="card-header py-3">
             <div class="d-flex justify-content-between">
@@ -87,6 +63,26 @@
     </div>
     <ModalComponent id="tambahData" labelBy="exampleModalLabel" :modalTitle="'Tambah ' + $route.name">
         <template #modal>
+            <Form :validation-schema="schema" v-slot="{ errors }">
+                <input type="text" hidden v-model="artikels.id_artikel">
+                <div>
+                    <Label for="foto">Foto Artikel</Label>
+                    <input id="foto" type="file" @change="chooseFoto" class="form-control">
+                    <span :class="[error]">{{ errors.foto }}</span>
+                </div>
+                <div>
+                    <Label>Judul Artikel</Label>
+                    <InputField Name="judulArtikel" v-model="artikels.judul_artikel" />
+                    <span :class="[error]">{{ errors.judulArtikel }}</span>
+                </div>
+                <div>
+                    <Label>Deskripsi</Label>
+                    <textarea name="deskripsi" class="form-control border-primary" v-model="artikels.deskripsi"></textarea>
+                </div>
+                <div>
+                    <ButtonComponent @click="handleKontol()"/>
+                </div>
+            </Form>
         </template>
     </ModalComponent>
 </template>
@@ -110,7 +106,6 @@ export default {
                 deskripsi: '',
                 foto: null
             },
-            imagePreview: '',
             isLoading: false,
             error: 'text-danger',
             selectedArtikelIds: []
@@ -141,7 +136,6 @@ export default {
         getArtikel() {
             const parsing = JSON.parse(Cookies.get('user'));
             const userId = parsing.data.id;
-            console.log(userId);
             const cekRole = parsing.data.getRole.idRole;
             const type = "getData";
             let url = null;
@@ -205,7 +199,7 @@ export default {
                     const formData = this.formData;
                     let type = "postDataUpload";
                     this.$store
-                        .dispatch(type, [formData, '/master/artikel'])
+                        .dispatch(type, [formData, 'master/artikel'])
                         .then((result) => {
                             iziToast.success({
                                 title: 'Success',
@@ -213,7 +207,7 @@ export default {
                                 message: 'Data Artikel Berhasil Ditambahkan',
                                 timeout: 1000
                             });
-                            // this.goBack();
+                            this.goBack();
                         })
                         .catch((err) => {
                             console.log(err);
@@ -235,7 +229,6 @@ export default {
         },
         chooseFoto(event) {
             this.artikels.foto = event.target.files[0];
-            this.imagePreview = URL.createObjectURL(event.target.files[0]);
         }
     },
     components: {
