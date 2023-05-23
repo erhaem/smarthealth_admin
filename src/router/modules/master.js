@@ -143,7 +143,7 @@ export default [{
             component: DokterSpesialisRumahSakit
         },
         {
-            path: 'fasilitas_rs',
+            path: 'fasilitas_rs/:id/show',
             name: 'Fasilitas Rumah Sakit',
             component: FasilitasRumahSakit,
             meta: {
@@ -163,11 +163,17 @@ export default [{
             path: 'owner_rs',
             name: 'Owner Rumah Sakit',
             component: IndexRs,
+            meta: {
+                middleware: checkRoles(roles.admin)
+            }
         },
         {
             path: 'owner_rs/:id/edit',
             name: 'Edit Owner Rumah Sakit',
             component: EditOwnerRs,
+            meta: {
+                middleware: checkRoles(roles.admin)
+            }
         },
         // Routes Spesialis
         {
@@ -175,7 +181,7 @@ export default [{
             name: 'Spesialis Penyakit',
             component: IndexSpesialis,
             meta: {
-                middleware: checkRoles(roles.admin)
+                middleware: checkRoles(roles.adminRsadminWeb)
             }
         },
         {

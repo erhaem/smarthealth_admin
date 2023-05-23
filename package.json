@@ -15,6 +15,7 @@
     "axios": "^1.4.0",
     "camelcase-keys": "^8.0.2",
     "crypto-js": "^4.1.1",
+    "exceljs": "^4.3.0",
     "izitoast": "^1.4.0",
     "js-cookie": "^3.0.5",
     "pinia": "^2.0.32",

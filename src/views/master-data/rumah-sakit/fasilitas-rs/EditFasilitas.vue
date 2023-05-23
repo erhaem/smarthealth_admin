@@ -16,8 +16,8 @@
                     <SelectOption Width="w-100" v-model="form.idRumahSakit" Label="Rumah Sakit">
                         <template #option>
                             <option value="">Pilih nama rumah sakit</option>
-                            <option :value="data.idRumahSakit" v-for="data in dataRumahSakit" :key="index">
-                                {{ data.namaRs }}</option>
+                            <option :value="form.rumahSakit.idRumahSakit">
+                                {{form.rumahSakit.namaRs}}</option>
                         </template>
                     </SelectOption>
                 </div>
@@ -39,7 +39,11 @@ export default {
             dataRumahSakit: [],
             form: {
                 namaFasilitas: '',
-                idRumahSakit: ''
+                idRumahSakit: '',
+                rumahSakit: {
+                    namaRs: '',
+                    idRumahSakit: ''
+                }
             },
             limit: 1
         }

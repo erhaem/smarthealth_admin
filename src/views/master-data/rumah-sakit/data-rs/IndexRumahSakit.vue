@@ -11,6 +11,7 @@
                         <div v-if="selectedId.length === 0"></div>
                         <ButtonComponent v-else-if="selectedId" Color="btn-danger" Message="hapus" @click="deleteRumahSakit" />
                     </div>
+                    <ButtonComponent Message="Download Rekap RS"/>
                 </div>
             </div>
         </div>
@@ -43,11 +44,14 @@
                                 <td>{{ data.pemilik }}</td>
                                 <td v-if="$can('create', 'Rumah Sakit')">
                                     <div class="d-flex">
-                                        <router-link :to="'rumah_sakit/' + data.idRumahSakit + '/edit'">
-                                            <ButtonComponent Message="edit" Color="btn-warning" />
+                                        <router-link :to="{ name: 'Edit Rumah Sakit', params: { id: data.idRumahSakit } }">
+                                            <ButtonComponent Message="edit rs" Color="btn-warning" />
+                                        </router-link>
+                                        <router-link :to="'fasilitas_rs/' + data.idRumahSakit + '/show'">
+                                            <ButtonComponent Color="btn-secondary" Message="fasilitas" />
                                         </router-link>
                                         <router-link :to="'rumah_sakit/' + 'spesialis/' + data.idRumahSakit">
-                                        <ButtonComponent Color="btn-success" Message="tambah spesialis"/> 
+                                        <ButtonComponent Color="btn-success" Message="spesialis"/> 
                                         </router-link>
                                     </div>
                                 </td>

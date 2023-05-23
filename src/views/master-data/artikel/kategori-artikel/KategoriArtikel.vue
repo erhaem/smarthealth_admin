@@ -6,7 +6,7 @@
                     <h6 class="m-0 font-weight-bold text-primary">Data {{ $route.name }}</h6>
                     <div class="d-flex justify-content-start">
                         <ButtonComponent Color="btn-dark" Message="Tambah Data +" data-bs-toggle="modal"
-                            data-bs-target="#tambahData" v-if="$can('create', 'Kategori Artikel')" />
+                            data-bs-target="#tambahData" v-if="$can('action', 'Artikel')" />
                         <div v-if="selectedId.length === 0"></div>
                         <ButtonComponent v-else-if="selectedId" Color="btn-danger" @click="deleteData()" Message="Hapus" />
                     </div>
@@ -19,7 +19,7 @@
                             <tr>
                                 <th>pilih</th>
                                 <th>Nama Kategori</th>
-                                <th v-if="$can('create', 'Kategori Artikel')">Aksi</th>
+                                <th v-if="$can('action', 'Artikel')">Aksi</th>
                             </tr>
                         </thead>
                         <tbody v-if="isLoading">
@@ -35,7 +35,7 @@
                                         <input type="checkbox" v-model="selectedId" :value="data.idKategoriArtikel">
                                     </td>
                                     <td>{{ data.namaKategori }}</td>
-                                    <td v-if="$can('create', 'Kategori Artikel')">
+                                    <td v-if="$can('action', 'Artikel')">
                                         <div class="d-flex justify-content-start">
                                             <router-link :to="'kategori_artikel/' + data.idKategoriArtikel + '/edit'">
                                                 <ButtonComponent Color="btn-warning" Message="Edit" />

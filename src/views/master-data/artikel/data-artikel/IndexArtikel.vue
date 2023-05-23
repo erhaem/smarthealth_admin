@@ -80,7 +80,7 @@
                     <textarea name="deskripsi" class="form-control border-primary" v-model="artikels.deskripsi"></textarea>
                 </div>
                 <div>
-                    <ButtonComponent @click="handleKontol()"/>
+                    <ButtonComponent @click="handleKontol()" />
                 </div>
             </Form>
         </template>
@@ -205,7 +205,7 @@ export default {
                                 position: 'topRight',
                                 message: 'Data Artikel Berhasil Ditambahkan',
                                 timeout: 1000
-                            }); 
+                            });
                             // this.goBack();
                         })
                         .catch((err) => {

@@ -16,32 +16,42 @@
             <div class="table-responsive">
                 <table class="table table-bordered" cellspacing="0">
                     <thead>
-                        <th>pilih</th>
+                        <th>Pilih</th>
                         <th>Nama</th>
                         <th>Aksi</th>
                     </thead>
-                    <tbody v-if="isLoading">
-                        <EmptyLoading />
-                    </tbody>
-                    <tbody v-else-if="dataSpesialis.length === 0">
-                        <EmptyData />
-                    </tbody>
+                    <template v-if="isLoading">
+                        <tbody>
+                            <EmptyLoading />
+                        </tbody>
+                    </template>
+                    <template v-else-if="dataSpesialis.length === 0">
+                        <tbody>
+                            <EmptyData />
+                        </tbody>
+                    </template>
                     <template v-else>
-                        <tbody v-for="data in dataSpesialis">
+                        <tbody v-for="data in dataSpesialis" :key="data.idSpesialis">
                             <tr>
-                                <td>
-                                    {{ data.idSpesialis }}
-                                </td>
-                                <td>{{ data.penyakit.namaSpesialis }}</td>
+                                <td>{{ data.idSpesialis }}</td>
+                                <td>{{ data.penyakit ? data.penyakit.namaSpesialis : 'Data tidak ada' }}</td>
                                 <td>
                                     <div class="d-flex">
-                                        <router-link :to="'/master/rumah_sakit/spesialis/' + idFromParams + '/' + data.idSpesialis">
+                                        <router-link
+                                            :to="'/master/rumah_sakit/spesialis/' + idFromParams + '/' + data.idSpesialis">
                                             <ButtonComponent Message="edit" Color="btn-warning" />
-                                          </router-link>                                          
-                                        <ButtonComponent Color="btn-danger" Message="hapus" @click="deleteData(data.idSpesialis)"/>
-                                        <router-link :to="'/master/rumah_sakit/dokter/' + data.penyakit.idPenyakit + '/' + idFromParams">
-                                            <ButtonComponent Color="btn-success" Message="+ dokter spesialis" />
                                         </router-link>
+                                        <ButtonComponent Color="btn-danger" Message="hapus"
+                                            @click="deleteData(data.idSpesialis)" />
+                                        <div v-if="data.penyakit">
+                                            <router-link
+                                                :to="'/master/rumah_sakit/dokter/' + data.penyakit.idPenyakit + '/' + idFromParams">
+                                                <ButtonComponent Color="btn-success" Message="+ dokter spesialis" />
+                                            </router-link>
+                                        </div>
+                                        <div v-else>
+                                            <ButtonComponent Color="btn-success disabled" Message="+ dokter spesialis" />
+                                        </div>
                                     </div>
                                 </td>
                             </tr>
@@ -102,6 +112,7 @@ export default {
             ]
             this.isLoading = true
             this.$store.dispatch(type, url).then((result) => {
+                console.log(result);
                 this.isLoading = false
                 this.dataSpesialis = result.data
             }).catch((err) => {
@@ -141,14 +152,14 @@ export default {
                 console.log(err);
             })
         },
-        deleteData(idSpesialis){
+        deleteData(idSpesialis) {
             let type = "deleteData"
             let url = [
                 "master/rumah_sakit/spesialis", idSpesialis
             ]
-            this.$store.dispatch(type, url).then((result)=>{
+            this.$store.dispatch(type, url).then((result) => {
                 this.getSpesialis()
-            }).catch((err)=>{
+            }).catch((err) => {
                 console.log(err);
             })
         }

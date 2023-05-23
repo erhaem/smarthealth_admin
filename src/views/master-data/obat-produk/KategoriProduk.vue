@@ -4,7 +4,7 @@
             <div class="d-flex justify-content-between">
                 <h6 class="m-0 font-weight-bold text-primary">Data {{ $route.name }}</h6>
                 <div class="d-flex">
-                <ButtonComponent v-if="$can('create', 'Kategori Produk')" Message="Tambah Data +" data-bs-toggle="modal" data-bs-target="#tambahData" />
+                <ButtonComponent v-if="$can('action', 'Kategori Produk')" Message="Tambah Data +" data-bs-toggle="modal" data-bs-target="#tambahData" />
                 <div v-if="selectedId.length == 0"></div>
                 <ButtonComponent v-else-if="selectedId" @click="deleteKategori()" Color="btn-danger" Message="Hapus" />
                 </div>
@@ -15,9 +15,9 @@
                 <table class="table table-bordered" width="100%" cellspacing="0">
                     <thead>
                         <tr>
-                            <th>pilih</th>
+                            <th v-if="$can('action', 'Kategori Produk')">pilih</th>
                             <th>Kategori Produk</th>
-                            <th v-if="$can('edit', 'Kategori Produk')">Aksi</th>
+                            <th v-if="$can('action', 'Kategori Produk')">Aksi</th>
                         </tr>
                     </thead>
                     <tbody v-if="isLoading">
@@ -29,11 +29,11 @@
                     <template v-else>
                         <tbody v-for="data in kategoriProduk" :key="index">
                             <tr>
-                                <td>
+                                <td v-if="$can('action', 'Kategori Produk')">
                                     <input type="checkbox" :value="data.idKategoriProduk" v-model="selectedId">
                                 </td>
                                 <td>{{ data.namaKategoriProduk }}</td>
-                                <td v-if="$can('edit', 'Kategori Produk')">
+                                <td v-if="$can('action', 'Kategori Produk')">
                                     <div class="d-flex justify-content-start">
                                         <router-link :to="'kategori_produk/' + data.idKategoriProduk + '/edit'">
                                         <ButtonComponent Color="btn-warning" Message="edit"/>

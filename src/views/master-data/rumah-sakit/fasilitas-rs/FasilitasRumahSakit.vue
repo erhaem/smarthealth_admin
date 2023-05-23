@@ -11,7 +11,7 @@
                 <table class="table table-bordered" width="100%" cellspacing="0">
                     <thead>
                         <tr>
-                            <th>Nama Fasilitas</th>
+                            <th>Id Rs</th>
                             <th>Nama Rumah Sakit</th>
                             <th v-if="$can('create', 'Fasilitas')">Aksi</th>
                         </tr>
@@ -25,31 +25,28 @@
                     <template v-else-if="fasilitasRs.length">
                         <tbody v-for="data in fasilitasRs" :key="index">
                             <tr>
-                                <td v-if="data.namaFasilitas">
+                                <td>
+                                    {{ data.idFasilitas }}
+                                </td>
+                                <td>
                                     {{ data.namaFasilitas }}
-                                </td>
-                                <td v-else>
-                                    <strong>
-                                        <i>Data Gak Ada</i>
-                                    </strong>
-                                </td>
-                                <td v-if="data.rumahSakit">{{ data.rumahSakit.namaRs }}</td>
-                                <td v-else>
-                                    <strong>
-                                        <i>Data Gak Ada</i>
-                                    </strong>
                                 </td>
                                 <td v-if="$can('create', 'Fasilitas')">
                                     <div class="d-flex justify-content-start">
-                                        <router-link :to="'fasilitas_rs/' + data.idFasilitas + '/edit'">
+                                        <router-link :to="{ name: 'Edit Fasilitas Rumah Sakit', params: { id: data.idFasilitas } }">
                                             <ButtonComponent Color="btn-warning" Message="edit" />
-                                        </router-link>
+                                          </router-link>
                                         <ButtonComponent Color="btn-danger" Message="hapus"
                                             @click="deleteFasilitas(data.idFasilitas)" />
                                     </div>
                                 </td>
                             </tr>
                         </tbody>
+                    </template>
+                    <template>
+                        <div class="vr">
+                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Temporibus voluptatem possimus repellat sunt numquam excepturi ullam illum quae recusandae asperiores id repellendus, non fugiat, iure odio ipsam quam beatae eos.
+                        </div>
                     </template>
                 </table>
                 <PaginationComponent />
@@ -64,7 +61,7 @@
                 <SelectOption v-model="form.id_rumah_sakit" Width="w-100" Label="Rumah Sakit">
                     <template #option>
                         <option value="">Pilih nama rumah sakit</option>
-                        <option :value="data.idRumahSakit" v-for="data in dataRumahSakit" :key="index">{{ data.namaRs }}
+                        <option :value="data.rumahSakit.idRumahSakit" v-for="data in fasilitasRs" :key="index">{{ data.rumahSakit.namaRs }}
                         </option>
                     </template>
                 </SelectOption>
@@ -89,40 +86,35 @@ export default {
     data() {
         return {
             fasilitasRs: [],
-            dataRumahSakit: [],
             form: {
                 nama_fasilitas: '',
                 id_rumah_sakit: ''
             },
-            isLoading: false
+            isLoading: false,
+            limit: 1
+        }
+    },
+    computed: {
+        idFromParams(){
+            return this.$route.params.id
+        },
+        limitData(){
+            
         }
     },
     created() {
-        this.getFasilitas(),
-        this.getRumahSakit()
+        this.getFasilitas()
     },
     methods: {
         getFasilitas() {
             let type = "getData"
             let url = [
-                "master/rumah_sakit/fasilitas_rs", {}
-            ]
-            this.$store.dispatch(type, url).then((result) => {
-                this.fasilitasRs = result.data
-            }).catch((err) => {
-                console.log(err);
-            })
-        },
-        getRumahSakit() {
-            let type = "getData"
-            let url = [
-                "master/rumah_sakit/data", {}
+                "master/rumah_sakit/fasilitas_rs/rs/" + this.idFromParams, {}
             ]
             this.isLoading = true
             this.$store.dispatch(type, url).then((result) => {
-                this.dataRumahSakit = result.data
-                this.isLoading = false,
-                console.log(result.data);
+                this.isLoading = false
+                this.fasilitasRs = result.data
             }).catch((err) => {
                 console.log(err);
             })

@@ -5,8 +5,7 @@ import Cookie from "js-cookie";
 
 const permisionsByRole = {
     "RO-2003061": [
-        'show_Artikel', 'create_Artikel', 'edit_Artikel',
-        'create_Kategori Artikel',
+        'show_Artikel', 'action_Artikel',
         'show_Rumah Sakit',
         'show_Dokter',
         'show_Konsumen',
@@ -14,7 +13,7 @@ const permisionsByRole = {
         'show_User',
         'show_Apotek',
         'show_Keahlian',
-        'create_Kategori Produk', 'edit_Kategori Produk', 'show_Kategori Produk',
+        'action_Kategori Produk', 'show_Kategori Produk',
         'show_Spesialis'
     ],
     "RO-2003062": [
@@ -24,8 +23,7 @@ const permisionsByRole = {
         'show_Kategori Produk', 'show_Perawat'
     ],
     "RO-2003065": [
-        'show_Kategori Produk',
-        'show_Apotek'
+        'show_Apotek', 'show_Kategori Produk'
     ],
     "RO-2003066": [
         'create_Rumah Sakit',
