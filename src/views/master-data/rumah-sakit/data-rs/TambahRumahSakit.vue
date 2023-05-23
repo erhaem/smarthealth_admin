@@ -21,7 +21,7 @@
                         <label for="">Latitude</label>
                         <InputField Name="latitude" v-model="form.latitude" />
                         <label for="">Alamat</label>
-                        <input Name="alamat" class="form-control" type="file" @change="chooseFoto">
+                        <!-- <input Name="alamat" class="form-control" type="file" @change="chooseFoto"> -->
                     </div>
                 </div>
                 <div class="d-flex justify-content-between mt-3">
@@ -48,16 +48,16 @@ export default {
                 alamat_rs: '',
                 latitude: '',
                 longitude: '',
-                foto_rs: null
+                // foto_rs: null
             }
         }
     },
     computed: {
         formData() {
-            const { foto_rs, nama_rs, deskripsi_rs, alamat_rs, latitude, longitude } = this.form;
+            const { nama_rs, deskripsi_rs, alamat_rs, latitude, longitude } = this.form;
             const formData = new FormData();
 
-            formData.append('foto_rs', foto_rs);
+            // formData.append('foto_rs', foto_rs);
             formData.append('nama_rs', nama_rs);
             formData.append('deskripsi_rs', deskripsi_rs);
             formData.append('alamat_rs', alamat_rs);
@@ -70,47 +70,26 @@ export default {
     },
     methods: {
         postRumahSakit() {
-            const allowedFormats = ['image/jpeg', 'image/png', 'image/jpg'];
-            const file = this.form.foto_rs;
-            const maxSizeInBytes = 5 * 1024 * 1024;
+            // const allowedFormats = ['image/jpeg', 'image/png', 'image/jpg'];
+            // const file = this.form.foto_rs;
+            // const maxSizeInBytes = 5 * 1024 * 1024;
 
-            if (file && allowedFormats.includes(file.type)) {
-                if (file.size <= maxSizeInBytes) {
-                    const formData = this.formData;
-                    let type = "postDataUpload";
-                    this.$store
-                        .dispatch(type, [formData, '/master/rumah_sakit/data'])
-                        .then((result) => {
-                            iziToast.success({
-                                title: 'Success',
-                                position: 'topRight',
-                                message: 'Data Artikel Berhasil Ditambahkan',
-                                timeout: 1000
-                            });
-                        })
-                        .catch((err) => {
-                            console.log(err);
-                        });
-                } else {
-                    iziToast.error({
-                        title: 'Error',
-                        message: 'Maaf, ukuran file gambar terlalu besar. Maksimum ukuran file adalah 5MB.',
-                        position: 'topRight'
+            const formData = this.formData;
+            let type = "postDataUpload";
+            this.$store
+                .dispatch(type, [formData, '/master/rumah_sakit/data'])
+                .then((result) => {
+                    iziToast.success({
+                        title: 'Success',
+                        position: 'topRight',
+                        message: 'Data Artikel Berhasil Ditambahkan',
+                        timeout: 1000
                     });
-                }
-            } else {
-                iziToast.error({
-                    title: 'Error',
-                    message: 'Maaf, format yang diperbolehkan hanya jpg, png, jpeg',
-                    position: 'topRight'
-                });
+                })
+                .catch((err) => {
+                    console.log(err);
+                })
             }
-        },
-        chooseFoto(event) {
-            this.form.foto_rs = event.target.files[0]
-            console.log(event);
-            console.log(this.form.foto_rs);
-        }
     },
     components: {
         ButtonComponent, InputField, Form

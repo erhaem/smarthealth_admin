@@ -3,6 +3,7 @@ import DataApotek from '../../views/apotek/IndexApotek.vue'
 import GroupingProduk from '../../views/apotek/produk-apotek/GroupingProduk.vue'
 import EditGroupingProduk from '../../views/apotek/produk-apotek/EditGroupingProduk.vue'
 import ProdukApotek from '../../views/apotek/produk-apotek/ProdukApotek.vue'
+import TambahApotek from '../../views/apotek/TambahApotek.vue'
 export default[{
     path: '/owner_apotek',
     name: 'Owner Apotek',
@@ -32,6 +33,11 @@ export default[{
             name: 'Produk Apotek',
             component: ProdukApotek
         },
+        {
+            path: 'create',
+            name: 'Tambah Apotek',
+            component: TambahApotek
+        }
     ]
 },
 ]

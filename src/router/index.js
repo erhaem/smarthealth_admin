@@ -22,6 +22,5 @@ router.beforeEach((to, from, next) => {
   }
 })
 
-// buatkan handle routing ketika ada role user yang tidak sesuai maka redirect ke routes asal
 
 export default router

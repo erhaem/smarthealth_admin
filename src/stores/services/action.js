@@ -47,7 +47,7 @@ const process = {
             console.log(param)
             return new Promise((resolve) => {
                 Api.init();
-                Api.postFormData(param[1], param[0]).then(
+                Api.postFormData(param[0], param[1]).then(
                     (response) => {
                         resolve(response.data);
                     },
@@ -56,6 +56,9 @@ const process = {
                     }
                 );
             });
+        },
+        postDataUploadDewek(context, param) {
+            console.log(param);
         },
         updateData(state, param) {
             return new Promise((resolve) => {

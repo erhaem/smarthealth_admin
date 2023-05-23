@@ -23,6 +23,7 @@
             </Form>
         </div>
     </div>
+    {{ dataEdit }}
 </template>
 <script>
 import { Form } from 'vee-validate';
@@ -32,6 +33,7 @@ import iziToast from 'izitoast';
 export default {
     data() {
         return {
+            dataEdit: [],
             dataProduk: [],
             dataKategoriProduk: [],
             form: {
@@ -49,7 +51,8 @@ export default {
     },
     created() {
         this.getProdukApotek(),
-        this.getKategoriProduk()
+        this.getKategoriProduk(),
+        this.detailGrouping()
     },
     methods: {
         getKategoriProduk() {
@@ -91,6 +94,18 @@ export default {
                 console.log(err);
             })
         },
+        detailGrouping(){
+            let type = "getData"
+            let url = [
+                "apotek/produk/produk_kategori/" + this.idFromParams + "/edit", {}
+            ]
+            this.$store.dispatch(type, url).then((result)=>{
+                this.dataEdit = result.data
+                console.log(result);
+            }).catch((err)=>{
+                console.log(err);
+            })
+        }
     },
     components: {
         SelectOption, ButtonComponent, Form

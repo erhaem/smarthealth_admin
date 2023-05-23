@@ -63,7 +63,7 @@
     </div>
     <ModalComponent id="tambahData" labelBy="exampleModalLabel" :modalTitle="'Tambah ' + $route.name">
         <template #modal>
-            <Form :validation-schema="schema" v-slot="{ errors }">
+            <Form :validation-schema="schema" v-slot="{ errors }" @submit="handleKontol">
                 <input type="text" hidden v-model="artikels.id_artikel">
                 <div>
                     <Label for="foto">Foto Artikel</Label>
@@ -196,18 +196,17 @@ export default {
 
             if (file && allowedFormats.includes(file.type)) {
                 if (file.size <= maxSizeInBytes) {
-                    const formData = this.formData;
                     let type = "postDataUpload";
                     this.$store
-                        .dispatch(type, [formData, 'master/artikel'])
+                        .dispatch("postDataUploadDewek", ['master/artikel', this.formData])
                         .then((result) => {
                             iziToast.success({
                                 title: 'Success',
                                 position: 'topRight',
                                 message: 'Data Artikel Berhasil Ditambahkan',
                                 timeout: 1000
-                            });
-                            this.goBack();
+                            }); 
+                            // this.goBack();
                         })
                         .catch((err) => {
                             console.log(err);

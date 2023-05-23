@@ -110,7 +110,7 @@ export default [{
             name: 'Tambah Rumah Sakit',
             component: TambahRumahSakit,
             meta: {
-                middleware: checkRoles(roles.adminRsadminWeb)
+                middleware: checkRoles(roles.adminRs)
             }
         },
         {
@@ -118,7 +118,7 @@ export default [{
             name: 'Edit Rumah Sakit',
             component: EditRumahSakit,
             meta: {
-                middleware: checkRoles(roles.adminRsadminWeb)
+                middleware: checkRoles(roles.adminRs)
             }
         },
         {
@@ -155,7 +155,7 @@ export default [{
             name: 'Edit Fasilitas Rumah Sakit',
             component: EditFasilitas,
             meta: {
-                middleware: checkRoles(roles.adminRsadminWeb)
+                middleware: checkRoles(roles.adminRs)
             }
         },
         // Owner Rumah Sakit

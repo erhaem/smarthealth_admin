@@ -1,36 +1,55 @@
 <template>
     <div class="card shadow">
-        <div class="card-header">
-            <h6 class="font-weight-bold text-primary">
-                {{ $route.name }}
-            </h6>
+        <div class="card-header py-3">
+            <div class="d-flex justify-content-between">
+                <h6 class="m-0 font-weight-bold text-primary">Data {{ $route.name }}</h6>
+                <div class="d-flex justify-content-start">
+                    <router-link to="apotek/create">
+                    <ButtonComponent Color="btn-dark" Message="Tambah Data +"/>
+                    </router-link>
+                    <div v-if="selected.length == 0">
+                    </div>
+                    <ButtonComponent Color="btn-danger" v-else-if="selected" Message="hapus"
+                        @click="deleteData" />
+                </div>
+            </div>
             <div class="card-body">
                 <div class="table-responsive">
                     <table class="table table-bordered" cellspacing="0">
                         <thead>
+                            <th>
+                                pilih
+                            </th>
                             <th>nama</th>
                             <th>nomor hp</th>
                             <th>alamat</th>
                             <th>status</th>
+                            <th>aksi</th>
                         </thead>
                         <tbody v-if="isLoading">
-                            <EmptyLoading/>
+                            <EmptyLoading />
                         </tbody>
                         <tbody v-else-if="dataApotek.length === 0">
-                            <EmptyData/>
+                            <EmptyData />
                         </tbody>
                         <template v-else>
                             <tbody v-for="data in dataApotek">
                                 <tr>
-                                    <td>{{data.namaApotek}}</td>
-                                    <td>{{data.nomorHp}}</td>
-                                    <td>{{data.alamatApotek}}</td>
+                                    <td>
+                                        <input type="checkbox" v-model="selected" :value="data.idProfilApotek">
+                                    </td>
+                                    <td>{{ data.namaApotek }} </td>
+                                    <td>{{ data.nomorHp }}</td>
+                                    <td>{{ data.alamatApotek }}</td>
                                     <td>
                                         <ActiveSlider :checked="data.status == 1">
                                             <template #span>
-                                                <SpanSlider @click="updateStatus(data.idProfilApotek, data.status)"/>
+                                                <SpanSlider @click="updateStatus(data.idProfilApotek, data.status)" />
                                             </template>
                                         </ActiveSlider>
+                                    </td>
+                                    <td>
+                                        <ButtonComponent :class="{'disabled':data.status == 0}"  Message="lihat produk" Color="btn-warning"/>
                                     </td>
                                 </tr>
                             </tbody>
@@ -40,17 +59,6 @@
             </div>
         </div>
     </div>
-    <br>
-    <br>
-    <!-- <Form @submit="postApotek">
-        <InputField Name="nama" v-model="form.nama"/>
-        <InputField Name="email" v-model="form.email"/>
-        <InputField Name="password" v-model="form.password"/>
-        <InputField Name="alamat" v-model="form.alamat"/>
-        <InputField Name="nomorhp" v-model="form.nomor_hp"/>
-        <InputField Name="status" hidden v-model="form.status"/>
-        <ButtonComponent/>
-    </Form> -->
 </template>
 <script>
 import { Form } from 'vee-validate';
@@ -64,67 +72,81 @@ export default {
     data() {
         return {
             dataApotek: [],
-            // form: {
-            //     nama: '',
-            //     email: '',
-            //     alamat: '',
-            //     password: '',
-            //     status: '0',
-            //     nomor_hp: ''
-            // }
+            status: 0,
+            selected: [],
             isLoading: false
-        };
+        }
+    },
+    computed: {
+
     },
     created() {
-        this.getApotek();
+        this.getDataApotek()
     },
     methods: {
-        getApotek() {
-            let type = "getData";
+        getDataApotek() {
+            let type = "getData"
             let url = [
-                "apotek/pengaturan/profil_apotek/",
-                {}
-            ];
+                "apotek/pengaturan/profil_apotek", {}
+            ]
             this.isLoading = true
             this.$store.dispatch(type, url).then((result) => {
                 this.isLoading = false
-                this.dataApotek = result.data;
+                this.dataApotek = result.data
             }).catch((err) => {
                 console.log(err);
-            });
+            })
         },
-        updateStatus(id_user, status){
-            if(status == 1){
+        updateStatus(id_user, status) {
+            if (status == 1) {
                 status == 0
             } else {
                 status == 1
             }
             let type = "updateData"
             let url = [
-                "apotek/pengaturan/profil_apotek/ubah_status", 
+                "apotek/pengaturan/profil_apotek/ubah_status",
                 id_user,
                 {
                     status: status,
                 }
             ]
-            this.$store.dispatch(type, url).then((result)=>{
-                console.log(result);
-            }).catch((err)=>{
+            this.$store.dispatch(type, url).then((result) => {
+                this.getDataApotek()
+            }).catch((err) => {
                 console.log(err);
             })
-        }, 
-        postApotek(){
-            let type = "postData"
-            let url = [
-                "akun/apotek", this.form, {}
-            ]
-            this.$store.dispatch(type, url).then((result)=>{
-                console.log(result);
-            }).catch((err)=>{
-                console.log(err);
+        },
+        deleteData(){
+            if (this.selected.length === 0) {
+                return;
+            }
+            let type = "deleteData";
+            let urls = this.selected.map((idProfilApotek) => ["apotek/pengaturan/profil_apotek", idProfilApotek]);
+            this.$swal({
+                icon: 'question',
+                title: "Apakah kamu ingin menyimpan perubahan",
+                showDenyButton: true,
+                showCancelButton: false,
+                confirmButtonText: "Ya, Hapus",
+                denyButtonText: "Jangan Hapus"
+            }).then((results) => {
+                if (results.isConfirmed) {
+                    Promise.all(urls.map((url) => this.$store.dispatch(type, url)))
+                    this.$swal({
+                        icon: 'success',
+                        text: 'data berhasil dihapus'
+                    })
+                    this.getDataApotek();
+                }
             })
+                .catch((err) => {
+                    console.log(err);
+                });
+            this.selected = [];
         }
     },
     components: { SpanSlider, ActiveSlider, InputField, ButtonComponent, Form, EmptyData, EmptyLoading }
+
 }
 </script>

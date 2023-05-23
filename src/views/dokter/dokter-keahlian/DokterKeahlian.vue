@@ -33,8 +33,18 @@
                                 <td>
                                     <input type="checkbox" :value="data.idDokterKeahlian" v-model="selected">
                                 </td>
-                                <td>{{ data.getDokter.nama }}</td>
-                                <td>{{ data.getKeahlian.namaKeahlian }}</td>
+                                <td v-if="data.getDokter">
+                                    {{ data.getDokter.nama }}
+                                </td>
+                                <td v-else>
+                                    data ga ada
+                                </td>
+                                <td  v-if="data.getKeahlian">
+                                        {{ data.getKeahlian.namaKeahlian }}
+                                </td>
+                                <td v-else>
+                                    data tidak ada
+                                </td>
                                 <td>
                                     <div class="d-flex justify-content-center">
                                         <router-link :to="'dokter_keahlian/' + data.idDokterKeahlian + '/edit'">

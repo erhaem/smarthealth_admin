@@ -61,7 +61,7 @@
                 </CollapseItem>
             </template>
         </NavItem>
-        <NavItem v-if="$can('show', 'User')" span="Perawat" icon="fa-user-nurse" target="#collapsePerawat">
+        <NavItem v-if="$can('show', 'Perawat')" span="Perawat" icon="fa-user-nurse" target="#collapsePerawat">
             <template #item>
                 <CollapseItem header="Perawat dan Rekap" id="collapsePerawat" title="Perawat & Rekap">
                     <template #router>
@@ -70,7 +70,7 @@
                 </CollapseItem>
             </template>
         </NavItem>
-        <NavItem v-if="$can('show', 'User')" span="Konsumen" icon="fa-users" target="#collapseKomponen">
+        <NavItem v-if="$can('show', 'Konsumen')" span="Konsumen" icon="fa-users" target="#collapseKomponen">
             <template #item>
                 <CollapseItem header="Konsumen & Rekap" id="collapseKomponen" title="Konsumen & Rekap">
                     <template #router>
@@ -80,7 +80,7 @@
                 </CollapseItem>
             </template>
         </NavItem>
-        <NavItem v-if="$can('show', 'User')" span="Apotek" icon="fa-users" target="#collapseApotek">
+        <NavItem v-if="$can('show', 'Apotek')" span="Apotek" icon="fa-users" target="#collapseApotek">
             <template #item>
                 <CollapseItem header="Konsumen & Rekap" id="collapseApotek" title="Apotek & Rekap">
                     <template #router>

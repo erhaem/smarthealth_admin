@@ -80,7 +80,7 @@ export default {
         getDokter() {
             let type = "getData";
             let url = [
-                "akun/dokter/",
+                "akun/dokter",
                 {}
             ];
             this.$store.dispatch(type, url).then((result) => {
