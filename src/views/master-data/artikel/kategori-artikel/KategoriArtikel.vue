@@ -1,6 +1,6 @@
 <template>
     <div class="col-lg-12 col-12">
-        <div class="card shadow mb-4">
+        <div class="card shadow mb-4 w-50">
             <div class="card-header py-3">
                 <div class="d-flex justify-content-between">
                     <h6 class="m-0 font-weight-bold text-primary">Data {{ $route.name }}</h6>
@@ -14,10 +14,10 @@
             </div>
             <div class="card-body">
                 <div class="table-responsive">
-                    <table class="table table-bordered" width="100%" cellspacing="0">
+                    <table class="table table-bordered" cellspacing="0">
                         <thead>
                             <tr>
-                                <th>pilih</th>
+                                <th v-if="$can('action', 'Artikel')">pilih</th>
                                 <th>Nama Kategori</th>
                                 <th v-if="$can('action', 'Artikel')">Aksi</th>
                             </tr>
@@ -31,7 +31,7 @@
                         <template v-else>
                             <tbody v-for="data in kategoriArtikel" :key="index">
                                 <tr>
-                                    <td>
+                                    <td v-if="$can('action', 'Artikel')">
                                         <input type="checkbox" v-model="selectedId" :value="data.idKategoriArtikel">
                                     </td>
                                     <td>{{ data.namaKategori }}</td>

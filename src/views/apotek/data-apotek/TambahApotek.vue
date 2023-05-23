@@ -29,7 +29,7 @@
     </div>
 </template>
 <script>
-import ButtonComponent from '../../components/partials-component/ButtonComponent.vue';
+import ButtonComponent from '@/components/partials-component/ButtonComponent.vue';
 import InputField from '@/components/partials-component/InputField.vue';
 export default {
     data() {

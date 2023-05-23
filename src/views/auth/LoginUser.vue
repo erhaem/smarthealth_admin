@@ -1,6 +1,6 @@
 <template>
-    <div class="container d-flex justify-content-center align-items-center" style="height: 100vh;">
-        <div class="">
+    <div class="container col-xxl-12 bg-dark">
+        <div class="d-flex justify-content-center align-items-center" style="height: 100vh;">
             <div class="card shadow" style="width: 70vh;">
                 <div class="card-header text-center">
                     <h4 class="text-dark font-weight-bold">
@@ -11,7 +11,7 @@
                     <label for="">Nomor HP</label>
                     <InputField Name="nama" v-model="form.nomor_hp" />
                     <label for="">Password</label>
-                    <InputField v-model="form.password" />
+                    <InputField v-model="form.password" type="password" />
                     <div class="d-flex justify-content-end">
                         <ButtonComponent />
                     </div>
@@ -41,10 +41,10 @@ export default {
             let url = [
                 "autentikasi/login", this.form, {}
             ]
-            const allowRoles = ["Administrator", "Perawat", "Owner Apotek", "Dokter", "Admin Rumah Sakit"]
+            const allowRoles = ["RO-2003061", "RO-2003063", "RO-2003065", "RO-2003066", "RO-2003062"]
             this.$store.dispatch(type, url).then((result) => {
                 console.log(result);
-                const cekRole = result.data.getRole.namaRole;
+                const cekRole = result.data.getRole.idRole;
                 if (allowRoles.includes(cekRole)) {
                     Cookies.set('token', result.data.token)
                     Cookies.set('user', JSON.stringify(result))
@@ -64,7 +64,7 @@ export default {
                     })
                 }
             }).catch((err) => {
-                if (err.response && err.response.data && err.response.data.message === 'Incorrect password') {
+                if (err.result && err.result.data && err.result.data.message === 'Incorrect password') {
                     iziToast.error({
                         title: 'error',
                         message: 'nomor hp dan password tidak sesuai',

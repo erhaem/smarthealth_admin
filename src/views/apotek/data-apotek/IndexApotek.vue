@@ -4,27 +4,29 @@
             <div class="d-flex justify-content-between">
                 <h6 class="m-0 font-weight-bold text-primary">Data {{ $route.name }}</h6>
                 <div class="d-flex justify-content-start">
-                    <router-link to="apotek/create">
-                    <ButtonComponent Color="btn-dark" Message="Tambah Data +"/>
+                    <router-link to="apotek/create" v-if="$can('action', 'Owner')">
+                        <ButtonComponent Color="btn-dark" Message="Tambah Data +" />
                     </router-link>
                     <div v-if="selected.length == 0">
                     </div>
-                    <ButtonComponent Color="btn-danger" v-else-if="selected" Message="hapus"
-                        @click="deleteData" />
+                    <ButtonComponent Color="btn-danger" v-else-if="selected" Message="hapus" @click="deleteData" />
                 </div>
             </div>
             <div class="card-body">
                 <div class="table-responsive">
                     <table class="table table-bordered" cellspacing="0">
                         <thead>
-                            <th>
+                            <th v-if="$can('action', 'Owner')">
                                 pilih
                             </th>
                             <th>nama</th>
                             <th>nomor hp</th>
                             <th>alamat</th>
-                            <th>status</th>
-                            <th>aksi</th>
+                            <th v-if="$can('action', 'Apotek')">pemilik</th>
+                            <template v-if="$can('action', 'Owner')">
+                                <th>status</th>
+                                <th>aksi</th>
+                            </template>
                         </thead>
                         <tbody v-if="isLoading">
                             <EmptyLoading />
@@ -35,22 +37,28 @@
                         <template v-else>
                             <tbody v-for="data in dataApotek">
                                 <tr>
-                                    <td>
+                                    <td v-if="$can('action', 'Owner')">
                                         <input type="checkbox" v-model="selected" :value="data.idProfilApotek">
                                     </td>
                                     <td>{{ data.namaApotek }} </td>
                                     <td>{{ data.nomorHp }}</td>
                                     <td>{{ data.alamatApotek }}</td>
-                                    <td>
-                                        <ActiveSlider :checked="data.status == 1">
-                                            <template #span>
-                                                <SpanSlider @click="updateStatus(data.idProfilApotek, data.status)" />
-                                            </template>
-                                        </ActiveSlider>
-                                    </td>
-                                    <td>
-                                        <ButtonComponent :class="{'disabled':data.status == 0}"  Message="lihat produk" Color="btn-warning"/>
-                                    </td>
+                                    <td v-if="$can('action', 'Apotek')">{{data.user.nama}}</td>
+                                    <template v-if="$can('action', 'Owner')">
+                                        <td>
+                                            <ActiveSlider :checked="data.status == 1">
+                                                <template #span>
+                                                    <SpanSlider @click="updateStatus(data.idProfilApotek, data.status)" />
+                                                </template>
+                                            </ActiveSlider>
+                                        </td>
+                                        <td>
+                                            <router-link :to="{name: 'Produk Apotek', params: {id: data.idProfilApotek}}">
+                                                <ButtonComponent :class="{ 'disabled': data.status == 0 }" Message="lihat produk"
+                                                Color="btn-warning" />
+                                            </router-link>
+                                        </td>
+                                    </template>
                                 </tr>
                             </tbody>
                         </template>
@@ -62,12 +70,12 @@
 </template>
 <script>
 import { Form } from 'vee-validate';
-import ActiveSlider from '../../components/partials-component/ActiveSlider.vue';
-import SpanSlider from '../../components/partials-component/SpanSlider.vue'
-import InputField from '../../components/partials-component/InputField.vue';
-import ButtonComponent from '../../components/partials-component/ButtonComponent.vue';
-import EmptyData from '../../components/empty-table/EmptyData.vue'
-import EmptyLoading from '../../components/empty-table/EmptyLoading.vue'
+import ActiveSlider from '@/components/partials-component/ActiveSlider.vue';
+import SpanSlider from '@/components/partials-component/SpanSlider.vue'
+import InputField from '@/components/partials-component/InputField.vue';
+import ButtonComponent from '@/components/partials-component/ButtonComponent.vue';
+import EmptyData from '@/components/empty-table/EmptyData.vue'
+import EmptyLoading from '@/components/empty-table/EmptyLoading.vue'
 export default {
     data() {
         return {
@@ -117,7 +125,7 @@ export default {
                 console.log(err);
             })
         },
-        deleteData(){
+        deleteData() {
             if (this.selected.length === 0) {
                 return;
             }

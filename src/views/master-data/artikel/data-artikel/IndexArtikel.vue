@@ -22,7 +22,7 @@
                             <th>Judul</th>
                             <th>Deskripsi</th>
                             <th>Penulis</th>
-                            <th v-if="$can('edit', 'Artikel')">Aksi</th>
+                            <th v-if="$can('show', 'Artikel')">Aksi</th>
                         </tr>
                     </thead>
                     <tbody v-if="isLoading">
@@ -40,7 +40,7 @@
                                 <td>{{ data.judulArtikel }}</td>
                                 <td>{{ data.deskripsi }}</td>
                                 <td>{{ data.getUser.nama }}</td>
-                                <td v-if="$can('edit', 'Artikel')">
+                                <td v-if="$can('show', 'Artikel')">
                                     <div class="d-flex justify-content-start">
                                         <router-link :to="'artikel/' + data.idArtikel + '/edit'">
                                             <ButtonComponent Message="edit" Color="btn-warning" />

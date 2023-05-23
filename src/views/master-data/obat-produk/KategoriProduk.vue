@@ -1,5 +1,5 @@
 <template>
-    <div class="card shadow mb-4">
+    <div class="card shadow mb-4 w-50">
         <div class="card-header py-3">
             <div class="d-flex justify-content-between">
                 <h6 class="m-0 font-weight-bold text-primary">Data {{ $route.name }}</h6>

@@ -3,7 +3,7 @@
         <div class="card-header py-3">
             <div class="d-flex justify-content-between">
                 <h6 class="m-0 font-weight-bold text-primary">Data {{ $route.name }}</h6>
-                <div class="d-flex justify-content-start">
+                <div class="d-flex justify-content-start" v-if="$can('action', 'Owner')">
                     <ButtonComponent Message="Tambah Data +" data-bs-toggle="modal" data-bs-target="#tambahData" />
                     <div v-if="selected.length === 0"></div>
                     <ButtonComponent v-else-if="selected" Color="btn-danger" Message="Hapus" @click="deleteGroup"/>
@@ -15,10 +15,10 @@
                 <table class="table table-bordered" id="" width="100%" cellspacing="0">
                     <thead>
                         <tr>
-                            <th>Pilih</th>
+                            <th v-if="$can('action', 'Owner')">Pilih</th>
                             <th>Kategori Produk</th>
                             <th>Nama Produk</th>
-                            <th>Aksi</th>
+                            <th v-if="$can('action', 'Owner')">Aksi</th>
                         </tr>
                     </thead>
                     <tbody v-if="isLoading">
@@ -30,7 +30,7 @@
                     <template v-else-if="groupingProduk.length">
                         <tbody v-for="data in groupingProduk">
                             <tr>
-                                <td>
+                                <td v-if="$can('action', 'Owner')">
                                     <input type="checkbox" :value="data.idProdukKategori" v-model="selected">
                                 </td>
                                 <td v-if="data.kategori">
@@ -53,7 +53,7 @@
                                         </i>
                                     </strong>
                                 </td>
-                                <td>
+                                <td v-if="$can('action', 'Owner')">
                                     <router-link :to="'grouping_produk/' + data.idProdukKategori + '/edit'">
                                     <ButtonComponent Color="btn-warning" Message="edit" />
                                     </router-link>

@@ -11,19 +11,19 @@ const permisionsByRole = {
         'show_Konsumen',
         'show_Perawat',
         'show_User',
-        'show_Apotek',
+        'show_Apotek', 'action_Apotek',
         'show_Keahlian',
         'action_Kategori Produk', 'show_Kategori Produk',
         'show_Spesialis'
     ],
     "RO-2003062": [
-        'show_Artikel', 'create_Artikel', 'edit_Artikel',
+        'show_Artikel',
     ],
     "RO-2003063": [
-        'show_Kategori Produk', 'show_Perawat'
+         'show_Perawat'
     ],
     "RO-2003065": [
-        'show_Apotek', 'show_Kategori Produk'
+        'show_Apotek','action_Owner', 'show_Kategori Produk'
     ],
     "RO-2003066": [
         'create_Rumah Sakit',
