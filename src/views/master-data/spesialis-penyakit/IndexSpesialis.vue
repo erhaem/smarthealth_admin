@@ -3,7 +3,7 @@
         <div class="card-header py-3">
             <div class="d-flex justify-content-between">
                 <h6 class="m-0 font-weight-bold text-primary">Data {{ $route.name }}</h6>
-                <div class="d-flex justify-content-start">
+                <div class="d-flex justify-content-start" v-if="$can('action', 'Admin')">
                     <ButtonComponent Message="Tambah data +" data-bs-toggle="modal" data-bs-target="#tambahData"/>
                     <div v-if="selectedId.length == 0"></div>
                     <ButtonComponent v-else-if="selectedId" Color="btn-danger" @click="deleteSpesialis()" Message="Hapus" />
@@ -15,10 +15,10 @@
                 <table class="table table-bordered" width="100%" cellspacing="0">
                     <thead>
                         <tr>
-                            <th>Pilih</th>
+                            <th v-if="$can('action', 'Admin')">Pilih</th>
                             <th>Nama</th>
                             <th>Slug</th>
-                            <th>Aksi</th>
+                            <th v-if="$can('action', 'Admin')">Aksi</th>
                         </tr>
                     </thead>
                     <tbody v-if="isLoading">
@@ -30,10 +30,10 @@
                     <template v-else>
                         <tbody v-for="data in spesialis" :key="index">
                             <tr>
-                                <td><input type="checkbox" :value="data.idPenyakit" v-model="selectedId"></td>
+                                <td v-if="$can('action', 'Admin')"><input type="checkbox" :value="data.idPenyakit" v-model="selectedId"></td>
                                 <td>{{ data.namaSpesialis }}</td>
                                 <td>{{ data.slugSpesialis }}</td>
-                                <td>
+                                <td v-if="$can('action', 'Admin')">
                                     <router-link :to="'spesialis_penyakit/' + data.idPenyakit + '/edit'">
                                         <ButtonComponent Message="Edit" Color="btn-warning" />
                                     </router-link>

@@ -6,7 +6,7 @@ import Cookie from "js-cookie";
 const permisionsByRole = {
     "RO-2003061": [
         'show_Artikel', 'action_Artikel',
-        'show_Rumah Sakit',
+        'show_Rumah Sakit', 'action_Admin',
         'show_Dokter',
         'show_Konsumen',
         'show_Perawat',
@@ -26,7 +26,7 @@ const permisionsByRole = {
         'show_Apotek','action_Owner', 'show_Kategori Produk'
     ],
     "RO-2003066": [
-        'create_Rumah Sakit',
+        'action_Rumah Sakit',
         'show_Rumah Sakit',
         'show_Fasilitas',
         'create_Fasilitas',

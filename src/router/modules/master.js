@@ -134,7 +134,7 @@ export default [{
             name: 'Edit Spesialis Rumah Sakit',
             component: EditSpesialisRumahSakit,
             meta: {
-                middleware: checkRoles(roles.adminRsadminWeb)
+                middleware: checkRoles(roles.adminRs)
             }
         },
         {

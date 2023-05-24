@@ -4,7 +4,7 @@
             <div class="d-flex justify-content-between">
                 <h6 class="m-0 font-weight-bold text-primary">Data {{ $route.name }}</h6>
                 <div class="d-flex justify-content-start">
-                    <ButtonComponent v-if="$can('create', 'Artikel')" Color="btn-dark" Message="Tambah Data +"
+                    <ButtonComponent v-if="$can('action', 'Artikel')" Color="btn-dark" Message="Tambah Data +"
                         data-bs-toggle="modal" data-bs-target="#tambahData" />
                     <div v-if="selectedArtikelIds.length == 0">
                     </div>

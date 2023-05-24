@@ -22,11 +22,9 @@
                             <th>nama</th>
                             <th>nomor hp</th>
                             <th>alamat</th>
-                            <th v-if="$can('action', 'Apotek')">pemilik</th>
-                            <template v-if="$can('action', 'Owner')">
-                                <th>status</th>
-                                <th>aksi</th>
-                            </template>
+                            <th v-if="$can('action', 'Admin')">pemilik</th>
+                            <th v-if="$can('action', 'Owner')">status</th>
+                            <th>aksi</th>
                         </thead>
                         <tbody v-if="isLoading">
                             <EmptyLoading />
@@ -43,22 +41,25 @@
                                     <td>{{ data.namaApotek }} </td>
                                     <td>{{ data.nomorHp }}</td>
                                     <td>{{ data.alamatApotek }}</td>
-                                    <td v-if="$can('action', 'Apotek')">{{data.user.nama}}</td>
-                                    <template v-if="$can('action', 'Owner')">
-                                        <td>
-                                            <ActiveSlider :checked="data.status == 1">
-                                                <template #span>
-                                                    <SpanSlider @click="updateStatus(data.idProfilApotek, data.status)" />
-                                                </template>
-                                            </ActiveSlider>
-                                        </td>
-                                        <td>
-                                            <router-link :to="{name: 'Produk Apotek', params: {id: data.idProfilApotek}}">
-                                                <ButtonComponent :class="{ 'disabled': data.status == 0 }" Message="lihat produk"
-                                                Color="btn-warning" />
+                                    <td v-if="$can('action', 'Admin')">{{ data.user.nama }}</td>
+                                    <td v-if="$can('action', 'Owner')">
+                                        <ActiveSlider :checked="data.status == 1">
+                                            <template #span>
+                                                <SpanSlider @click="updateStatus(data.idProfilApotek, data.status)" />
+                                            </template>
+                                        </ActiveSlider>
+                                    </td>
+                                    <td v-if="$can('show', 'Apotek')">
+                                        <div v-if="data.status === 0">
+                                            <ButtonComponent disabled Message="lihat produk" Color="btn-warning"/>
+                                        </div>
+                                        <div v-else>
+                                            <router-link :to="{ name: 'Produk Apotek', params: { id: data.idProfilApotek } }">
+                                                <ButtonComponent
+                                                    Message="lihat produk" Color="btn-warning" />
                                             </router-link>
-                                        </td>
-                                    </template>
+                                        </div>
+                                    </td>
                                 </tr>
                             </tbody>
                         </template>

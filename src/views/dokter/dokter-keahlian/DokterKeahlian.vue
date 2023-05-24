@@ -17,7 +17,8 @@
                         <tr>
                             <th>Pilih</th>
                             <th>Nama Dokter</th>
-                            <th>Nama Keahlian</th>
+                            <!-- <th>Keahlian</th> -->
+                            <th>Bidang Keahlian</th>
                             <th class="text-center">Aksi</th>
                         </tr>
                     </thead>
@@ -39,12 +40,15 @@
                                 <td v-else>
                                     data ga ada
                                 </td>
-                                <td  v-if="data.getKeahlian">
-                                        {{ data.getKeahlian.namaKeahlian }}
+                                <td v-if="data.getKeahlian">
+                                    {{ data.getKeahlian.namaKeahlian }}
                                 </td>
                                 <td v-else>
                                     data tidak ada
                                 </td>
+                                <!-- <td>
+                                    gada
+                                </td> -->
                                 <td>
                                     <div class="d-flex justify-content-center">
                                         <router-link :to="'dokter_keahlian/' + data.idDokterKeahlian + '/edit'">
@@ -73,15 +77,25 @@
                     </SelectOption>
                 </div>
                 <div class="mb-3">
-                    <SelectOption v-model="form.keahlian_id" Width="w-100" Label="Nama Keahlian">
+                    <SelectOption v-model="form.keahlian_id" Width="w-100" Label="Nama Spesialis">
                         <template #option>
                             <option value="">pilih keahlian</option>
-                            <option :value="data.idKeahlian" v-for="data in keahlianDokter" :key="index">{{
+                            <option :value="data.idKeahlian" v-for="data in keahlian" :key="index">{{
                                 data.namaKeahlian }}
                             </option>
                         </template>
                     </SelectOption>
                 </div>
+                <!-- <div class="mb-3">
+                    <SelectOption v-model="form.keahlian_id" Width="w-100" Label="Nama Spesialis">
+                        <template #option>
+                            <option value="">pilih spesialis</option>
+                            <option :value="data.idSpesialis" v-for="data in spesialis" :key="index">{{
+                                data.namaSpesialis }}
+                            </option>
+                        </template>
+                    </SelectOption>
+                </div> -->
                 <div>
                     <ButtonComponent />
                 </div>
@@ -103,7 +117,8 @@ export default {
     data() {
         return {
             dokterKeahlian: [],
-            keahlianDokter: [],
+            spesialis: [],
+            keahlian: [],
             dokter: [],
             selected: [],
             form: {
@@ -114,19 +129,20 @@ export default {
         }
     },
     created() {
-        this.getKeahlianDokter(),
+        this.getSpesialis(),
             this.getDokter(),
+            this.getKeahlianDokter(),
             this.getKeahlian()
     },
     methods: {
-        getKeahlian() {
+        getKeahlianDokter() {
             let type = "getData"
             let url = [
-                "master/keahlian", {}
+                "master/dokter_keahlian", {}
             ]
             this.isLoading = true
             this.$store.dispatch(type, url).then((result) => {
-                this.keahlianDokter = result.data
+                this.dokterKeahlian = result.data
                 this.isLoading = false
             }).catch((err) => {
                 console.log(err);
@@ -144,14 +160,27 @@ export default {
                 console.log(err);
             });
         },
-        getKeahlianDokter() {
+        getSpesialis() {
             let type = "getData"
             let url = [
-                "master/dokter_keahlian", {}
+                "master/penyakit/spesialis_penyakit"
             ]
+            this.isLoading = true
             this.$store.dispatch(type, url).then((result) => {
-                this.dokterKeahlian = result.data
+                this.isLoading = false
+                this.spesialis = result.data
             }).catch((err) => {
+                console.log(err);
+            })
+        },
+        getKeahlian(){
+            let type = "getData"
+            let url = [
+                "master/keahlian", {}
+            ]
+            this.$store.dispatch(type, url).then((result)=>{
+                this.keahlian = result.data
+            }).catch((err)=>{
                 console.log(err);
             })
         },
@@ -194,8 +223,8 @@ export default {
             this.$store.dispatch(type, url).then((result) => {
                 iziToast.success({
                     title: 'success'
-                }),
-                    this.goBack()
+                })
+                // this.goBack()
             }).catch((err) => {
                 console.log(err);
             })

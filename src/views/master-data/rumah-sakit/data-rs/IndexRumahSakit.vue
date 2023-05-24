@@ -4,7 +4,7 @@
             <div class="d-flex justify-content-between">
                 <h6 class="m-0 font-weight-bold text-primary">Data {{ $route.name }}</h6>
                 <div class="d-flex justify-content-start">
-                    <div v-if="$can('create', 'Rumah Sakit')">
+                    <div v-if="$can('action', 'Rumah Sakit')">
                         <router-link to="/master/rumah_sakit/create">
                             <ButtonComponent Message="Tambah Data +" />
                         </router-link>
@@ -24,7 +24,7 @@
                             <th>Nama</th>
                             <th>Alamat</th>
                             <th>Pemilik</th>
-                            <th v-if="$can('create', 'Rumah Sakit')">Aksi</th>
+                            <th v-if="$can('show', 'Rumah Sakit')">Aksi</th>
                         </tr>
                     </thead>
                     <tbody v-if="isLoading">
@@ -42,9 +42,9 @@
                                 <td>{{ data.namaRs }}</td>
                                 <td>{{ data.alamatRs }}</td>
                                 <td>{{ data.pemilik }}</td>
-                                <td v-if="$can('create', 'Rumah Sakit')">
+                                <td v-if="$can('show', 'Rumah Sakit')">
                                     <div class="d-flex">
-                                        <router-link :to="{ name: 'Edit Rumah Sakit', params: { id: data.idRumahSakit } }">
+                                        <router-link v-if="$can('action', 'Rumah Sakit')" :to="{ name: 'Edit Rumah Sakit', params: { id: data.idRumahSakit } }">
                                             <ButtonComponent Message="edit rs" Color="btn-warning" />
                                         </router-link>
                                         <router-link :to="'fasilitas_rs/' + data.idRumahSakit + '/show'">

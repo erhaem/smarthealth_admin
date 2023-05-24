@@ -3,7 +3,7 @@
         <div class="card-header">
             <div class="d-flex justify-content-between">
                 <h6 class="m-0 font-weight-bold text-primary">Data {{ $route.name }}</h6>
-                <div class="d-flex justify-content-start">
+                <div class="d-flex justify-content-start" v-if="$can('action', 'Rumah Sakit')">
                     <div>
                         <ButtonComponent data-bs-toggle="modal" data-bs-target="#tambahData" Message="Tambah Data +" />
                         <!-- <div v-if="selected.length === 0"></div>
@@ -37,16 +37,18 @@
                                 <td>{{ data.penyakit ? data.penyakit.namaSpesialis : 'Data tidak ada' }}</td>
                                 <td>
                                     <div class="d-flex">
-                                        <router-link
+                                        <template v-if="$can('action', 'Rumah Sakit')">
+                                            <router-link
                                             :to="'/master/rumah_sakit/spesialis/' + idFromParams + '/' + data.idSpesialis">
                                             <ButtonComponent Message="edit" Color="btn-warning" />
                                         </router-link>
                                         <ButtonComponent Color="btn-danger" Message="hapus"
                                             @click="deleteData(data.idSpesialis)" />
+                                        </template>
                                         <div v-if="data.penyakit">
                                             <router-link
                                                 :to="'/master/rumah_sakit/dokter/' + data.penyakit.idPenyakit + '/' + idFromParams">
-                                                <ButtonComponent Color="btn-success" Message="+ dokter spesialis" />
+                                                <ButtonComponent Color="btn-success" Message="lihat dokter" />
                                             </router-link>
                                         </div>
                                         <div v-else>

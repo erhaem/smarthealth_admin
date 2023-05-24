@@ -20,7 +20,7 @@
                         <th>pilih</th>
                         <th>nama</th>
                         <th>harga</th>
-                        <th>aksi</th>
+                        <th v-if="$can('action', 'Owner')">aksi</th>
                     </thead>
                     <tbody v-if="isLoading">
                         <EmptyLoading />
@@ -34,7 +34,7 @@
                                 <td><input type="checkbox" v-model="selected" :value="data.kodeProduk"></td>
                                 <td>{{ data.namaProduk }}</td>
                                 <td>{{ data.hargaProduk }}</td>
-                                <td>
+                                <td v-if="$can('action', 'Owner')">
                                     <router-link :to="{name: 'Edit Produk Apotek', params:{profilApotek: this.idFromParams, id:data.kodeProduk}}">
                                         <ButtonComponent Message="Edit" Color="btn-warning"/>
                                     </router-link>
@@ -68,7 +68,7 @@ import EmptyData from '@/components/empty-table/EmptyData.vue'
 export default {
     data() {
         return {
-            dataProduk: '',
+            dataProduk: [],
             form: {
                 nama_produk: '',
                 harga_produk: '',

@@ -11,8 +11,8 @@
                 <table class="table table-bordered" width="100%" cellspacing="0">
                     <thead>
                         <tr>
-                            <th>Id Rs</th>
-                            <th>Nama Rumah Sakit</th>
+                            <th>Id Fasilitas</th>
+                            <th>Fasilitas</th>
                             <th v-if="$can('create', 'Fasilitas')">Aksi</th>
                         </tr>
                     </thead>

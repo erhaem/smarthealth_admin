@@ -17,7 +17,7 @@
                     <thead>
                         <tr>
                             <th>Pilih</th>
-                            <th>Nama Keahlian</th>
+                            <th>Bidang Keahlian</th>
                             <th class="text-center">Aksi</th>
                         </tr>
                     </thead>

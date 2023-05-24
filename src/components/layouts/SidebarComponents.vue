@@ -39,22 +39,20 @@
                         <router-link class="collapse-item" to="/master/rumah_sakit">Data Rumah Sakit</router-link>
                         <router-link class="collapse-item" v-if="$can('show', 'Owner Rumah Sakit')" to="/master/owner_rs">Owner Rumah Sakit</router-link>
                     </div>
-                    <div v-if="$can('show', 'Spesialis')">
+                    <div v-if="$can('show', 'Rumah Sakit')">
                         <h6 class="collapse-header">Spesialis Penyakit</h6>
                         <router-link class="collapse-item" to="/master/spesialis_penyakit">Data Spesialis</router-link>
                     </div>
                 </div>
             </div>
         </li>
-        <NavItem v-if="$can('show', 'Dokter')" span="Dokter" icon="fa-user-doctor" target="#collapseDokter">
+        <NavItem v-if="$can('action', 'Admin')" span="Dokter" icon="fa-user-doctor" target="#collapseDokter">
             <template #item>
                 <CollapseItem id="collapseDokter" title="Dokter & Keahlian">
                     <template #router>
-                        <div v-if="$can('show', 'Keahlian')">
                             <router-link class="collapse-item" to="/dokter">Data Dokter</router-link>
                             <router-link class="collapse-item" to="/dokter/keahlian_dokter">Keahlian Dokter</router-link>
-                        </div>
-                        <router-link class="collapse-item" to="/dokter/dokter_keahlian">Dokter Keahlian </router-link>
+                            <router-link class="collapse-item" to="/dokter/dokter_keahlian">Dokter Keahlian </router-link>
                     </template>
                 </CollapseItem>
             </template>
@@ -85,7 +83,6 @@
                         <router-link class="collapse-item" v-if="$can('action', 'Apotek')" to="/owner_apotek">Data Owner Apotek</router-link>
                         <router-link class="collapse-item" to="/apotek">Data Apotek</router-link>
                         <router-link class="collapse-item" to="/apotek/grouping_produk">Grouping Produk</router-link>
-                        <router-link class="collapse-item" to="/apotek/produk_apotek">Data Produk Apotek</router-link>
                     </template>
                 </CollapseItem>
             </template>
