@@ -12,8 +12,8 @@
                             <th>Alamat</th>
                             <th>Email</th>
                             <th>Nomor STR</th>
-                            <th>Biaya Dokter</th>
                             <th>Status</th>
+                            <th>Aksi</th>
                         </tr>
                     </thead>
                     <tbody v-if="isLoading">
@@ -33,13 +33,17 @@
                                 <td>{{data.userId.alamat}}</td>
                                 <td>{{data.userId.email}}</td>
                                 <td>{{data.nomorStr}}</td>
-                                <td>{{data.biaya.biaya}}</td>
                                 <td>
                                     <ActiveSlider :checked="data.userId.status == 1">
                                         <template #span>
                                             <SpanSlider @click="updateStatus(data.userId.id, data.userId.status)"/>
                                         </template>
                                     </ActiveSlider>
+                                </td>
+                                <td>
+                                    <router-link :to="'dokter/' + data.idDokter">
+                                        <ButtonComponent Message="Update STR" Color="btn-warning"/>
+                                    </router-link>
                                 </td>
                             </tr>
                         </tbody>
@@ -55,6 +59,7 @@ import ActiveSlider from '@/components/partials-component/ActiveSlider.vue'
 import LoadingIndicator from '@/components/partials-component/LoadingIndicator.vue';
 import SpanSlider from '@/components/partials-component/SpanSlider.vue'
 import EmptyData from '@/components/empty-table/EmptyData.vue'
+import ButtonComponent from '@/components/partials-component/ButtonComponent.vue'
 export default {
     data() {
         return {
@@ -70,7 +75,7 @@ export default {
         getDokter() {
             let type = "getData";
             let url = [
-                "akun/dokter",
+                "akun/dokter/data",
                 {}
             ];
             this.isLoading = true
@@ -100,8 +105,8 @@ export default {
             }).catch((err) => {
                 console.log(err);
             });
-        }
+        },
     },
-    components: { ActiveSlider, SpanSlider, LoadingIndicator, EmptyData }
+    components: { ActiveSlider, SpanSlider, LoadingIndicator, EmptyData, ButtonComponent }
 }
 </script>

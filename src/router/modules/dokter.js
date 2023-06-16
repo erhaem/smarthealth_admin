@@ -3,6 +3,7 @@ import KeahlianDokter from '@/views/dokter/keahlian-dokter/KeahlianDokter.vue'
 import EditKeahlianDokter from '@/views/dokter/keahlian-dokter/EditKeahlianDokter.vue'
 import DokterKeahlian from '@/views/dokter/dokter-keahlian/DokterKeahlian.vue'
 import EditDokterKeahlian from '@/views/dokter/dokter-keahlian/EditDokterKeahlian.vue'
+import UpdateDokter from '@/views/dokter/data-dokter/UpdateDokter.vue'
 import { checkRoles, roles } from '../../middleware/redirect'
 export default [
 {
@@ -48,6 +49,14 @@ export default [
                 middleware: checkRoles(roles.admin)
             }
         },
+        {
+            path: ':id',
+            name: 'Update Nomor STR Dokter',
+            component: UpdateDokter,
+            meta: {
+                middleware: checkRoles(roles.admin)
+            }
+        }
     ]
 }
 ]

@@ -10,10 +10,10 @@
                         <tr>
                             <th>Nama</th>
                             <th>Alamat</th>
-                            <th>Email</th>
-                            <th>Nomor STR</th>
-                            <th>Biaya perawat</th>
+                            <th>Nomor Hp</th>
+                            <th>Nomor STRP</th>
                             <th>Status</th>
+                            <th>aksi</th>
                         </tr>
                     </thead>
                     <tbody v-if="isLoading">
@@ -25,18 +25,18 @@
                     <template v-else>
                         <tbody v-for="data in perawat" :key="index">
                             <tr>
-                                <td>{{data.getUser.nama}}</td>
-                                <td>{{data.getUser.alamat}}</td>
-                                <td>{{data.getUser.email}}</td>
-                                <td>{{data.nip}}</td>
-                                <td>{{data.getUser.nomorHp}}</td>
+                                <td>{{data.user.nama}}</td>
+                                <td>{{data.user.alamat}}</td>
+                                <td>{{data.user.nomorHp}}</td>
+                                <td>{{data.user.nomorHP}}</td>
                                 <td>
-                                    <ActiveSlider :checked="data.getUser.status === 1">
+                                    <ActiveSlider :checked="data.user.status === 1">
                                         <template #span>
                                             <SpanSlider @click="updateStatus(data.getUser.id, data.getUser.status)"/>
                                         </template>
                                     </ActiveSlider>
                                 </td>
+                                <td></td>
                             </tr>
                         </tbody>
                     </template>
