@@ -8,11 +8,10 @@
                 <table class="table table-bordered" width="100%" cellspacing="0">
                     <thead>
                         <tr>
+                            <th>no</th>
                             <th>Nama</th>
                             <th>Alamat</th>
                             <th>Email</th>
-                            <th>Nomor STR</th>
-                            <th>Status</th>
                             <th>Aksi</th>
                         </tr>
                     </thead>
@@ -27,23 +26,21 @@
                         <EmptyData/>
                     </tbody>
                     <template v-else>
-                        <tbody v-for="data in dokter" :key="index">
+                        <tbody v-for="(data, index) in dokter" :key="index">
                             <tr>
+                                <td>
+                                    {{ index + 1 }}
+                                </td>
                                 <td>{{data.userId.nama}}</td>
                                 <td>{{data.userId.alamat}}</td>
                                 <td>{{data.userId.email}}</td>
-                                <td>{{data.nomorStr}}</td>
                                 <td>
-                                    <ActiveSlider :checked="data.userId.status == 1">
-                                        <template #span>
-                                            <SpanSlider @click="updateStatus(data.userId.id, data.userId.status)"/>
-                                        </template>
-                                    </ActiveSlider>
-                                </td>
-                                <td>
-                                    <router-link :to="'dokter/' + data.idDokter">
-                                        <ButtonComponent Message="Update STR" Color="btn-warning"/>
+                                    <router-link :to="'dokter/' + data.userId.id">
+                                        <ButtonComponent Message="Aktifkan akun" Color="btn-warning"/>
                                     </router-link>
+                                    <a :href="data.fileDokumen" class="btn btn-sm btn-info" target="_blank">
+                                        lihat dokumen pendukung
+                                    </a>
                                 </td>
                             </tr>
                         </tbody>

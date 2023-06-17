@@ -16,6 +16,7 @@
             <div class="table-responsive">
                 <table class="table table-bordered" cellspacing="0">
                     <thead>
+                        <th>no</th>
                         <th>Pilih</th>
                         <th>Nama</th>
                         <th>Aksi</th>
@@ -31,8 +32,11 @@
                         </tbody>
                     </template>
                     <template v-else>
-                        <tbody v-for="data in dataSpesialis" :key="data.idSpesialis">
+                        <tbody v-for="(data, index) in dataSpesialis" :key="index">
                             <tr>
+                                <td>
+                                    {{ index + 1 }}
+                                </td>
                                 <td>{{ data.idSpesialis }}</td>
                                 <td>{{ data.penyakit ? data.penyakit.namaSpesialis : 'Data tidak ada' }}</td>
                                 <td>

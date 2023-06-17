@@ -1,5 +1,5 @@
 <template>
-    <ul class="navbar-nav bg-gradient-dark sidebar sidebar-dark accordion" id="accordionSidebar">
+    <ul class="navbar-nav sidebar sidebar-dark accordion" id="accordionSidebar" style="background-color:darkslategrey">
         <router-link class="sidebar-brand d-flex align-items-center justify-content-center" to="/dashboard">
             <div class="sidebar-brand-icon rotate-n-15">
                 <i class="fas fa-laugh-wink"></i>

@@ -17,6 +17,7 @@
             <div class="table-responsive">
                 <table class="table table-bordered" cellspacing="0">
                     <thead>
+                        <th>no</th>
                         <th>pilih</th>
                         <th>nama</th>
                         <th>harga</th>
@@ -29,8 +30,11 @@
                         <EmptyData />
                     </tbody>
                     <template v-else>
-                        <tbody v-for="data in dataProduk">
+                        <tbody v-for="(data, index) in dataProduk" :key="index">
                             <tr>
+                                <td>
+                                    {{ index + 1 }}
+                                </td>
                                 <td><input type="checkbox" v-model="selected" :value="data.kodeProduk"></td>
                                 <td>{{ data.namaProduk }}</td>
                                 <td>{{ data.hargaProduk }}</td>

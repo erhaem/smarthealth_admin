@@ -8,11 +8,10 @@
                 <table class="table table-bordered" width="100%" cellspacing="0">
                     <thead>
                         <tr>
+                            <th>No</th>
                             <th>Nama</th>
                             <th>Alamat</th>
-                            <th>Nomor Hp</th>
                             <th>Nomor STRP</th>
-                            <th>Status</th>
                             <th>aksi</th>
                         </tr>
                     </thead>
@@ -23,20 +22,22 @@
                         <EmptyData/>
                     </tbody>
                     <template v-else>
-                        <tbody v-for="data in perawat" :key="index">
+                        <tbody v-for="(data, index) in perawat" :key="index">
                             <tr>
+                                <td>
+                                    {{ index + 1 }}
+                                </td>
                                 <td>{{data.user.nama}}</td>
                                 <td>{{data.user.alamat}}</td>
-                                <td>{{data.user.nomorHp}}</td>
-                                <td>{{data.user.nomorHP}}</td>
+                                <td>{{data.nomorStrp}}</td>
                                 <td>
-                                    <ActiveSlider :checked="data.user.status === 1">
-                                        <template #span>
-                                            <SpanSlider @click="updateStatus(data.getUser.id, data.getUser.status)"/>
-                                        </template>
-                                    </ActiveSlider>
+                                    <router-link :to="'perawat/' + data.user.id">
+                                        <ButtonComponent Message="Aktifkan akun" Color="btn-warning"/>
+                                    </router-link>
+                                    <a :href="data.fileDokumen" class="btn btn-sm btn-info" target="_blank">
+                                        lihat dokumen pendukung
+                                    </a>
                                 </td>
-                                <td></td>
                             </tr>
                         </tbody>
                     </template>
@@ -47,6 +48,7 @@
 </template>
 
 <script>
+import ButtonComponent from '@/components/partials-component/ButtonComponent.vue'
 import ActiveSlider from '../../components/partials-component/ActiveSlider.vue'
 import SpanSlider from '../../components/partials-component/SpanSlider.vue'
 import EmptyData from '../../components/empty-table/EmptyData.vue';
@@ -98,6 +100,6 @@ export default {
             });
         }
     },
-    components: { ActiveSlider, SpanSlider, EmptyData, EmptyLoading }
+    components: { ActiveSlider, SpanSlider, EmptyData, EmptyLoading, ButtonComponent }
 }
 </script>

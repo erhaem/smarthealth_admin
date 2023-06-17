@@ -16,6 +16,7 @@
                 <table class="table table-bordered" width="100%" cellspacing="0">
                     <thead>
                         <tr>
+                            <th>no</th>
                             <th>pilih</th>
                             <th>Judul Artikel</th>
                             <th>kategori artikel</th>
@@ -29,35 +30,22 @@
                         <EmptyData/>
                     </tbody>
                     <template v-else-if="grupArtikel.length">
-                        <tbody v-for="data in grupArtikel">
+                        <tbody v-for="(data, index) in grupArtikel" :key="index">
                             <tr>
+                                <td>
+                                    {{ index + 1 }}
+                                </td>
                                 <td v-if="data.idGroupingArtikel">
                                     <input type="checkbox" v-model="selectedId" :value="data.idGroupingArtikel">
                                 </td>
-                                <td v-else>
-                                    <strong>
-                                        <i>
-                                            Data Tidak Ada
-                                        </i>
-                                    </strong>
+                                <td>
+                                    {{ data.judulArtikel }}
                                 </td>
-                                <td v-if="data.getArtikel">
-                                    {{ data.getArtikel.judulArtikel }}
+                                <td v-if="data.namaKategori === null">
+                                    {{ data.namaKategori }}
                                 </td>
                                 <td v-else>
-                                    <strong>
-                                        <i>
-                                            Data Tidak Ada
-                                        </i>
-                                    </strong>
-                                </td>
-                                <td v-if="data.getKategoriArtikel">
-                                    {{data.getKategoriArtikel.namaKategori}}
-                                </td>
-                                <td v-else>
-                                    <strong>
-                                        <i>Data Tidak Ada</i>
-                                    </strong>
+                                    kosong
                                 </td>
                                 <td>
                                     <div class="d-flex justify-content-start">

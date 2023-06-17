@@ -16,6 +16,7 @@
                 <div class="table-responsive">
                     <table class="table table-bordered" cellspacing="0">
                         <thead>
+                            <th>no</th>
                             <th v-if="$can('action', 'Owner')">
                                 pilih
                             </th>
@@ -33,8 +34,11 @@
                             <EmptyData />
                         </tbody>
                         <template v-else>
-                            <tbody v-for="data in dataApotek">
+                            <tbody v-for="(data, index) in dataApotek" :key="index">
                                 <tr>
+                                    <td>
+                                        {{ index + 1 }}
+                                    </td>
                                     <td v-if="$can('action', 'Owner')">
                                         <input type="checkbox" v-model="selected" :value="data.idProfilApotek">
                                     </td>

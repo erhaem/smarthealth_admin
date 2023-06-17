@@ -1,5 +1,5 @@
 <template>
-    <InputField v-model="form.nomorStr"/>
+    <InputField v-model="form.nomorStrp"/>
     <button @click="updateData">submit</button>
 </template>
 <script>
@@ -8,7 +8,7 @@ export default {
     data(){
         return {
             form: {
-                nomorStr: ''
+                nomorStrp: ''
             }
         }
     },
@@ -22,10 +22,10 @@ export default {
     },
     methods: {
         updateData(){
-            const idDokter = this.idFromParams
+            const idPerawat = this.idFromParams
             let type = "putData"
-            this.$store.dispatch(type, [`akun/active_account/${idDokter}/account` ,[], {
-                nomor_str:this.form.nomorStr
+            this.$store.dispatch(type, [`akun/active_account/${idPerawat}/account` ,[], {
+                nomor_strp:this.form.nomorStrp
             }]).then((result)=>{
                 this.$router.back()
             }).catch((err)=>{

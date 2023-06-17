@@ -16,6 +16,7 @@
                 <table class="table table-bordered" width="100%" cellspacing="0">
                     <thead>
                         <tr>
+                            <th>no</th>
                             <th>Pilih</th>
                             <th>Bidang Keahlian</th>
                             <th class="text-center">Aksi</th>
@@ -28,8 +29,11 @@
                         <EmptyData />
                     </tbody>
                     <template v-else>
-                        <tbody v-for="data in keahlianDokter" :key="index">
+                        <tbody v-for="(data, index) in keahlianDokter" :key="index">
                             <tr>
+                                <td>
+                                    {{ index + 1 }}
+                                </td>
                                 <td>
                                     <input type="checkbox" v-model="selectedId" :value="data.idKeahlian">
                                 </td>

@@ -8,6 +8,7 @@
                 <table class="table table-bordered" width="100%" cellspacing="0">
                     <thead>
                         <tr>
+                            <th>No</th>
                             <th>Nama</th>
                             <th>Alamat</th>
                             <th>Email</th>
@@ -22,8 +23,11 @@
                         <EmptyData/>
                     </tbody>
                     <template v-else>
-                        <tbody v-for="data in ownerApotek">
+                        <tbody v-for="(data, index) in ownerApotek" :key="index">
                             <tr>
+                                <td>
+                                    {{ index + 1 }}
+                                </td>
                                 <td>
                                     {{ data.getUser.nama }}
                                 </td>

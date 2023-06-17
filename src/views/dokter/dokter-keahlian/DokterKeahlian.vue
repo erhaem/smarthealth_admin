@@ -15,9 +15,9 @@
                 <table class="table table-bordered" width="100%" cellspacing="0">
                     <thead>
                         <tr>
+                            <th>no</th>
                             <th>Pilih</th>
                             <th>Nama Dokter</th>
-                            <!-- <th>Keahlian</th> -->
                             <th>Bidang Keahlian</th>
                             <th class="text-center">Aksi</th>
                         </tr>
@@ -29,8 +29,11 @@
                         <EmptyData />
                     </tbody>
                     <template v-else>
-                        <tbody v-for="data in dokterKeahlian" :key="index">
+                        <tbody v-for="(data, index) in dokterKeahlian" :key="index">
                             <tr>
+                                <td>
+                                    {{ index + 1 }}
+                                </td>
                                 <td>
                                     <input type="checkbox" :value="data.idDokterKeahlian" v-model="selected">
                                 </td>
@@ -46,9 +49,6 @@
                                 <td v-else>
                                     data tidak ada
                                 </td>
-                                <!-- <td>
-                                    gada
-                                </td> -->
                                 <td>
                                     <div class="d-flex justify-content-center">
                                         <router-link :to="'dokter_keahlian/' + data.idDokterKeahlian + '/edit'">
@@ -86,16 +86,6 @@
                         </template>
                     </SelectOption>
                 </div>
-                <!-- <div class="mb-3">
-                    <SelectOption v-model="form.keahlian_id" Width="w-100" Label="Nama Spesialis">
-                        <template #option>
-                            <option value="">pilih spesialis</option>
-                            <option :value="data.idSpesialis" v-for="data in spesialis" :key="index">{{
-                                data.namaSpesialis }}
-                            </option>
-                        </template>
-                    </SelectOption>
-                </div> -->
                 <div>
                     <ButtonComponent />
                 </div>
@@ -151,7 +141,7 @@ export default {
         getDokter() {
             let type = "getData";
             let url = [
-                "akun/dokter",
+                "akun/dokter/data",
                 {}
             ];
             this.$store.dispatch(type, url).then((result) => {

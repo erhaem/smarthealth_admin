@@ -20,6 +20,7 @@
                 <table class="table table-bordered" width="100%" cellspacing="0">
                     <thead>
                         <tr>
+                            <th>no</th>
                             <th v-if="$can('create', 'Rumah Sakit')">Pilih</th>
                             <th>Nama</th>
                             <th>Alamat</th>
@@ -34,8 +35,11 @@
                         <EmptyData />
                     </tbody>
                     <template v-else>
-                        <tbody v-for="data in rumahSakit" :key="index">
+                        <tbody v-for="(data, index) in rumahSakit" :key="index">
                             <tr>
+                                <td>
+                                    {{ index + 1 }}
+                                </td>
                                 <td v-if="$can('create', 'Rumah Sakit')">
                                     <input type="checkbox" v-model="selectedId" :value="data.idRumahSakit">
                                 </td>

@@ -15,6 +15,7 @@
                 <table class="table table-bordered" id="" width="100%" cellspacing="0">
                     <thead>
                         <tr>
+                            <th>No</th>
                             <th v-if="$can('action', 'Owner')">Pilih</th>
                             <th>Kategori Produk</th>
                             <th>Nama Produk</th>
@@ -28,8 +29,11 @@
                         <EmptyData />
                     </tbody>
                     <template v-else-if="groupingProduk.length">
-                        <tbody v-for="data in groupingProduk">
+                        <tbody v-for="(data, index) in groupingProduk" :key="index">
                             <tr>
+                                <td>
+                                    {{ index + 1 }}
+                                </td>
                                 <td v-if="$can('action', 'Owner')">
                                     <input type="checkbox" :value="data.idProdukKategori" v-model="selected">
                                 </td>

@@ -11,6 +11,7 @@
                 <table class="table table-bordered" width="100%" cellspacing="0">
                     <thead>
                         <tr>
+                            <th>no</th>
                             <th>Id Fasilitas</th>
                             <th>Fasilitas</th>
                             <th v-if="$can('create', 'Fasilitas')">Aksi</th>
@@ -23,8 +24,11 @@
                         <EmptyData/>
                     </tbody>
                     <template v-else-if="fasilitasRs.length">
-                        <tbody v-for="data in fasilitasRs" :key="index">
+                        <tbody v-for="(data, index) in fasilitasRs" :key="index">
                             <tr>
+                                <td>
+                                    {{ index + 1 }}
+                                </td>
                                 <td>
                                     {{ data.idFasilitas }}
                                 </td>
