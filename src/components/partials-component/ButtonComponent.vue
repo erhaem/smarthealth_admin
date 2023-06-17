@@ -1,16 +1,16 @@
 <template>
-    <button type="submit" :class="[styLe] + Color">
-        {{Message}} 
+    <button type="submit" :class="'btn btn-sm btn-icon-split me-2 rounded ' + Color">
+        <span class="icon text-white-50">
+            <i :class="'fas ' + Icon"></i>
+        </span>
+        <span class="text">
+            {{ Message }}
+        </span>
     </button>
 </template>
 
 <script>
 export default{
-    data(){
-        return{
-            styLe: ['btn btn-sm rounded mr-2 ']
-        }
-    },
     props: {
         Message: {
             type: String,

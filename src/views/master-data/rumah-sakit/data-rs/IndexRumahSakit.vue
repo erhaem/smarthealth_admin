@@ -6,12 +6,12 @@
                 <div class="d-flex justify-content-start">
                     <div v-if="$can('action', 'Rumah Sakit')">
                         <router-link to="/master/rumah_sakit/create">
-                            <ButtonComponent Message="Tambah Data +" />
+                            <ButtonComponent Message="Tambah Data" Icon="fa-plus" />
                         </router-link>
                         <div v-if="selectedId.length === 0"></div>
-                        <ButtonComponent v-else-if="selectedId" Color="btn-danger" Message="hapus" @click="deleteRumahSakit" />
+                        <ButtonComponent v-else-if="selectedId" Icon="fa-trash" Color="btn-danger" Message="hapus" @click="deleteRumahSakit" />
                     </div>
-                    <ButtonComponent Message="Download Rekap RS"/>
+                    <ButtonComponent Message="Download Rekap RS" Icon="fa-download"/>
                 </div>
             </div>
         </div>
@@ -52,10 +52,10 @@
                                             <ButtonComponent Message="edit rs" Color="btn-warning" />
                                         </router-link>
                                         <router-link :to="'fasilitas_rs/' + data.idRumahSakit + '/show'">
-                                            <ButtonComponent Color="btn-secondary" Message="fasilitas" />
+                                            <ButtonComponent Color="btn-secondary" Message="fasilitas" Icon="fa-eye" />
                                         </router-link>
                                         <router-link :to="'rumah_sakit/' + 'spesialis/' + data.idRumahSakit">
-                                        <ButtonComponent Color="btn-success" Message="spesialis"/> 
+                                        <ButtonComponent Color="btn-success" Message="spesialis" Icon="fa-eye"/> 
                                         </router-link>
                                     </div>
                                 </td>

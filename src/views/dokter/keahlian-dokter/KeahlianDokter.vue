@@ -4,9 +4,9 @@
             <div class="d-flex justify-content-between">
                 <h6 class="m-0 font-weight-bold text-primary">Data {{ $route.name }}</h6>
                 <div class="d-flex justify-content-start">
-                    <ButtonComponent Message="Tambah Data +" data-bs-toggle="modal" data-bs-target="#tambahData" />
+                    <ButtonComponent Message="Tambah Data" Icon="fa-plus" data-bs-toggle="modal" data-bs-target="#tambahData" />
                     <div v-if="selectedId.length === 0"></div>
-                    <ButtonComponent v-else-if="selectedId"  Message="Hapus" @click="deleteKeahlian" Color="btn-danger" />
+                    <ButtonComponent v-else-if="selectedId"  Message="Hapus" Icon="fa-trash" @click="deleteKeahlian" Color="btn-danger" />
                 </div>
                 
             </div>

@@ -23,6 +23,7 @@ import EditSpesialisPenyakit from '@/views/master-data/spesialis-penyakit/EditSp
 
 import IndexRs from '../../views/master-data/owner-rs/IndexOwnerRs.vue'
 import EditOwnerRs from '@/views/master-data/owner-rs/EditOwnerRs.vue'
+import UpdateOwnerRs from '@/views/master-data/owner-rs/UpdateOwnerRs.vue'
 import { checkRoles, roles } from '../../middleware/redirect';
 
 export default [{
@@ -163,6 +164,14 @@ export default [{
             path: 'owner_rs',
             name: 'Owner Rumah Sakit',
             component: IndexRs,
+            meta: {
+                middleware: checkRoles(roles.admin)
+            }
+        },
+        {
+            path: 'owner_rs/:id',
+            name: 'Update Owner Rumah Sakit',
+            component: UpdateOwnerRs,
             meta: {
                 middleware: checkRoles(roles.admin)
             }

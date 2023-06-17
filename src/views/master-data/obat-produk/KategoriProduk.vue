@@ -4,9 +4,9 @@
             <div class="d-flex justify-content-between">
                 <h6 class="m-0 font-weight-bold text-primary">Data {{ $route.name }}</h6>
                 <div class="d-flex">
-                <ButtonComponent v-if="$can('action', 'Kategori Produk')" Message="Tambah Data +" data-bs-toggle="modal" data-bs-target="#tambahData" />
+                <ButtonComponent v-if="$can('action', 'Kategori Produk')" Message="Tambah Data +" data-bs-toggle="modal" Icon="fa-plus" data-bs-target="#tambahData" />
                 <div v-if="selectedId.length == 0"></div>
-                <ButtonComponent v-else-if="selectedId" @click="deleteKategori()" Color="btn-danger" Message="Hapus" />
+                <ButtonComponent v-else-if="selectedId" @click="deleteKategori()" Icon="fa-trash" Color="btn-danger" Message="Hapus" />
                 </div>
             </div>
         </div>
@@ -65,12 +65,12 @@
 
 <script>
 import ButtonComponent from '@/components/partials-component/ButtonComponent.vue'
-import InputField from '../../../components/partials-component/InputField.vue'
+import InputField from '@/components/partials-component/InputField.vue'
 import iziToast from 'izitoast'
-import ModalComponent from '../../../components/partials-component/ModalComponent.vue';
-import LoadingIndicator from '../../../components/partials-component/LoadingIndicator.vue';
-import EmptyLoading from '../../../components/empty-table/EmptyLoading.vue';
-import EmptyData from '../../../components/empty-table/EmptyData.vue';
+import ModalComponent from '@/components/partials-component/ModalComponent.vue';
+import LoadingIndicator from '@/components/partials-component/LoadingIndicator.vue';
+import EmptyLoading from '@/components/empty-table/EmptyLoading.vue';
+import EmptyData from '@/components/empty-table/EmptyData.vue';
 import { Form } from 'vee-validate'
 import * as valid from 'yup'
 export default {

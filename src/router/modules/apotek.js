@@ -1,4 +1,5 @@
 import OwnerApotek from '../../views/apotek/owner-apotek/OwnerApotek.vue'
+import UpdateOwnerApotek from '../../views/apotek/owner-apotek/UpdateOwnerApotek.vue'
 import DataApotek from '../../views/apotek/data-apotek/IndexApotek.vue'
 import GroupingProduk from '../../views/apotek/grouping-produk/GroupingProduk.vue'
 import EditGroupingProduk from '../../views/apotek/grouping-produk/EditGroupingProduk.vue'
@@ -10,6 +11,14 @@ export default[{
     path: '/owner_apotek',
     name: 'Owner Apotek',
     component: OwnerApotek,
+    meta: {
+        middleware: checkRoles(roles.admin)
+    }
+},
+{
+    path: '/owner_apotek/:id',
+    name: 'UpdateOwnerApotek',
+    component: UpdateOwnerApotek,
     meta: {
         middleware: checkRoles(roles.admin)
     }
@@ -65,7 +74,7 @@ export default[{
             meta: {
                 middleware: checkRoles(roles.ownerApotek)
             }
-        }
+        },
     ]
 },
 ]

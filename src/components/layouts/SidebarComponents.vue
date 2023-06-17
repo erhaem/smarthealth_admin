@@ -37,7 +37,7 @@
                     <div v-if="$can('show', 'Rumah Sakit')">
                         <h6 class="collapse-header">Rumah Sakit</h6>
                         <router-link class="collapse-item" to="/master/rumah_sakit">Data Rumah Sakit</router-link>
-                        <router-link class="collapse-item" v-if="$can('show', 'Owner Rumah Sakit')" to="/master/owner_rs">Owner Rumah Sakit</router-link>
+                        <router-link class="collapse-item" to="/master/owner_rs">Owner Rumah Sakit</router-link>
                     </div>
                     <div v-if="$can('show', 'Rumah Sakit')">
                         <h6 class="collapse-header">Spesialis Penyakit</h6>

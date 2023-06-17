@@ -13,14 +13,14 @@
                             <th>Alamat</th>
                             <th>Email</th>
                             <th>Nomor Hp</th>
-                            <th>Status</th>
+                            <th>Aksi</th>
                         </tr>
                     </thead>
                     <tbody v-if="isLoading">
-                        <EmptyLoading/>
+                        <EmptyLoading />
                     </tbody>
-                    <tbody v-else-if="ownerApotek.length === 0 ">
-                        <EmptyData/>
+                    <tbody v-else-if="ownerApotek.length === 0">
+                        <EmptyData />
                     </tbody>
                     <template v-else>
                         <tbody v-for="(data, index) in ownerApotek" :key="index">
@@ -41,11 +41,20 @@
                                     {{ data.getUser.nomorHp }}
                                 </td>
                                 <td>
-                                    <ActiveSlider :checked="data.getUser.status == 1">
-                                        <template #span>
-                                            <SpanSlider @click="updateStatus(data.getUser.idOwnerApotek, data.getUser.status)"/>
-                                        </template>
-                                    </ActiveSlider>
+                                    <div class="d-flex justify-content-start">
+                                        <router-link :to="'owner_apotek/' + data.getUser.id
+                                            ">
+                                            <ButtonComponent Message="Aktifkan akun" Color="btn-warning" />
+                                        </router-link>
+                                        <a href="" class="btn btn-sm btn-icon-split me-2 rounded btn-info" target="_blank">
+                                            <span class="icon text-white-50">
+                                                <i class="fas fa-eye"></i>
+                                            </span>
+                                            <span class="text">
+                                                dokumen
+                                            </span>
+                                        </a>
+                                    </div>
                                 </td>
                             </tr>
                         </tbody>
@@ -88,26 +97,26 @@ export default {
                 console.log(err);
             })
         },
-        updateStatus(id_user, status){
-            if(status == 1){
+        updateStatus(id_user, status) {
+            if (status == 1) {
                 status == 0
             } else {
                 status == 1
             }
             let type = "updateData"
             let url = [
-                "akun/active_account", 
+                "akun/active_account",
                 id_user,
                 {
                     status: status,
                 }
             ]
-            this.$store.dispatch(type, url).then((result)=>{
+            this.$store.dispatch(type, url).then((result) => {
                 console.log(result);
-            }).catch((err)=>{
+            }).catch((err) => {
                 console.log(err);
             })
-        }, 
+        },
 
     },
     components: {

@@ -6,8 +6,10 @@
                 <div class="d-flex justify-content-start" v-if="$can('action', 'Rumah Sakit')">
                     <div>
                         <ButtonComponent data-bs-toggle="modal" data-bs-target="#tambahData" Message="Tambah Data +" />
-                        <!-- <div v-if="selected.length === 0"></div>
-                            <ButtonComponent v-else-if="selected" Color="btn-danger" Message="hapus" @click="deleteData" /> -->
+                        <div v-if="selected.length == 0">
+                        </div>
+                        <ButtonComponent Color="btn-danger" Icon="fa-trash" v-else-if="selected" Message="hapus"
+                            @click="deleteData" />
                     </div>
                 </div>
             </div>
@@ -17,7 +19,7 @@
                 <table class="table table-bordered" cellspacing="0">
                     <thead>
                         <th>no</th>
-                        <th>Pilih</th>
+                        <th v-if="$can('action', 'Rumah Sakit')">Pilih</th>
                         <th>Nama</th>
                         <th>Aksi</th>
                     </thead>
@@ -37,22 +39,22 @@
                                 <td>
                                     {{ index + 1 }}
                                 </td>
-                                <td>{{ data.idSpesialis }}</td>
+                                <td v-if="$can('action', 'Rumah Sakit')">
+                                    <input type="checkbox" v-model="selected" :value="data.idSpesialis">
+                                </td>
                                 <td>{{ data.penyakit ? data.penyakit.namaSpesialis : 'Data tidak ada' }}</td>
                                 <td>
                                     <div class="d-flex">
                                         <template v-if="$can('action', 'Rumah Sakit')">
                                             <router-link
-                                            :to="'/master/rumah_sakit/spesialis/' + idFromParams + '/' + data.idSpesialis">
-                                            <ButtonComponent Message="edit" Color="btn-warning" />
-                                        </router-link>
-                                        <ButtonComponent Color="btn-danger" Message="hapus"
-                                            @click="deleteData(data.idSpesialis)" />
+                                                :to="'/master/rumah_sakit/spesialis/' + idFromParams + '/' + data.idSpesialis">
+                                                <ButtonComponent Message="edit" Color="btn-warning" />
+                                            </router-link>
                                         </template>
                                         <div v-if="data.penyakit">
                                             <router-link
-                                                :to="'/master/rumah_sakit/dokter/' + data.penyakit.idPenyakit + '/' + idFromParams">
-                                                <ButtonComponent Color="btn-success" Message="lihat dokter" />
+                                                :to="'/master/rumah_sakit/dokter/' + data.idSpesialis + '/' + idFromParams">
+                                                <ButtonComponent Color="btn-success" Icon="fa-eye" Message="lihat dokter" />
                                             </router-link>
                                         </div>
                                         <div v-else>
@@ -158,16 +160,33 @@ export default {
                 console.log(err);
             })
         },
-        deleteData(idSpesialis) {
-            let type = "deleteData"
-            let url = [
-                "master/rumah_sakit/spesialis", idSpesialis
-            ]
-            this.$store.dispatch(type, url).then((result) => {
-                this.getSpesialis()
-            }).catch((err) => {
-                console.log(err);
+        deleteData() {
+            if (this.selected.length === 0) {
+                return;
+            }
+            let type = "deleteData";
+            let urls = this.selected.map((idSpesialis) => ["master/rumah_sakit/spesialis", idSpesialis]);
+            this.$swal({
+                icon: 'question',
+                title: "Apakah kamu ingin menyimpan perubahan",
+                showDenyButton: true,
+                showCancelButton: false,
+                confirmButtonText: "Ya, Hapus",
+                denyButtonText: "Jangan Hapus"
+            }).then((results) => {
+                if (results.isConfirmed) {
+                    Promise.all(urls.map((url) => this.$store.dispatch(type, url)))
+                    this.$swal({
+                        icon: 'success',
+                        text: 'data berhasil dihapus'
+                    })
+                    this.getSpesialis();
+                }
             })
+                .catch((err) => {
+                    console.log(err);
+                });
+            this.selected = [];
         }
     },
     components: {

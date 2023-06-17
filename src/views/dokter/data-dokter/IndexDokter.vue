@@ -1,7 +1,7 @@
 <template>
     <div class="card shadow mb-4">
         <div class="card-header py-3">
-            <h6 class="m-0 font-weight-bold text-primary">Data {{$route.name}}</h6>
+            <h6 class="m-0 font-weight-bold text-primary">Data {{ $route.name }}</h6>
         </div>
         <div class="card-body">
             <div class="table-responsive">
@@ -12,18 +12,20 @@
                             <th>Nama</th>
                             <th>Alamat</th>
                             <th>Email</th>
+                            <th>Nomor Hp</th>
+                            <th>Nomor STR</th>
                             <th>Aksi</th>
                         </tr>
                     </thead>
                     <tbody v-if="isLoading">
                         <tr>
                             <td colspan="12" class="text-center">
-                                <LoadingIndicator/>
+                                <LoadingIndicator />
                             </td>
                         </tr>
                     </tbody>
                     <tbody v-else-if="dokter.length == 0">
-                        <EmptyData/>
+                        <EmptyData />
                     </tbody>
                     <template v-else>
                         <tbody v-for="(data, index) in dokter" :key="index">
@@ -31,16 +33,26 @@
                                 <td>
                                     {{ index + 1 }}
                                 </td>
-                                <td>{{data.userId.nama}}</td>
-                                <td>{{data.userId.alamat}}</td>
-                                <td>{{data.userId.email}}</td>
+                                <td>{{ data.userId.nama }}</td>
+                                <td>{{ data.userId.alamat }}</td>
+                                <td>{{ data.userId.email }}</td>
+                                <td>{{ data.userId.nomorHp }}</td>
+                                <td>{{ data.nomorStr }}</td>
                                 <td>
-                                    <router-link :to="'dokter/' + data.userId.id">
-                                        <ButtonComponent Message="Aktifkan akun" Color="btn-warning"/>
-                                    </router-link>
-                                    <a :href="data.fileDokumen" class="btn btn-sm btn-info" target="_blank">
-                                        lihat dokumen pendukung
-                                    </a>
+                                    <div class="d-flex justify-content-center">
+                                        <router-link :to="'dokter/' + data.userId.id">
+                                            <ButtonComponent Message="Aktifkan akun" Color="btn-warning" />
+                                        </router-link>
+                                        <a :href="data.fileDokumen" class="btn btn-sm btn-icon-split me-2 rounded btn-info"
+                                            target="_blank">
+                                            <span class="icon text-white-50">
+                                                <i class="fas fa-eye"></i>
+                                            </span>
+                                            <span class="text">
+                                                dokumen
+                                            </span>
+                                        </a>
+                                    </div>
                                 </td>
                             </tr>
                         </tbody>
@@ -84,7 +96,7 @@ export default {
             });
         },
         updateStatus(id_user, status) {
-            if (status == 1){
+            if (status == 1) {
                 status = 0;
             } else {
                 status = 1;

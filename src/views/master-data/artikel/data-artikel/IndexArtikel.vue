@@ -4,11 +4,11 @@
             <div class="d-flex justify-content-between">
                 <h6 class="m-0 font-weight-bold text-primary">Data {{ $route.name }}</h6>
                 <div class="d-flex justify-content-start">
-                    <ButtonComponent v-if="$can('action', 'Artikel')" Color="btn-dark" Message="Tambah Data +"
+                    <ButtonComponent v-if="$can('action', 'Artikel')" Color="btn-primary" Icon="fa-plus" Message="Tambah Data"
                         data-bs-toggle="modal" data-bs-target="#tambahData" />
                     <div v-if="selectedArtikelIds.length == 0">
                     </div>
-                    <ButtonComponent Color="btn-danger" v-else-if="selectedArtikelIds" Message="hapus"
+                    <ButtonComponent Color="btn-danger" Icon="fa-trash" v-else-if="selectedArtikelIds" Message="hapus"
                         @click="deleteSelectedArtikels" />
                 </div>
             </div>
@@ -49,7 +49,7 @@
                                         <router-link :to="'artikel/' + data.idArtikel + '/edit'">
                                             <ButtonComponent Message="edit" Color="btn-warning" />
                                         </router-link>
-                                        <ButtonComponent data-bs-target="#lihatFoto" Color="btn-success"
+                                        <ButtonComponent data-bs-target="#lihatFoto" Icon="fa-eye" Color="btn-success"
                                             Message="lihat foto" data-bs-toggle="modal" />
                                         <ModalComponent id="lihatFoto">
                                             <template #modal>

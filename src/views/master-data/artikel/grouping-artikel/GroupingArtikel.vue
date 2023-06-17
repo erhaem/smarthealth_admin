@@ -4,10 +4,10 @@
             <div class="d-flex justify-content-between">
                 <h6 class="m-0 font-weight-bold text-primary">Data {{ $route.name }}</h6>
                 <div class="d-flex justify-content-start">
-                    <ButtonComponent Color="btn-dark" Message="Tambah Data +" data-bs-toggle="modal"
+                    <ButtonComponent Color="btn-primary" Icon="fa-plus" Message="Tambah Data" data-bs-toggle="modal"
                     data-bs-target="#tambahData" />
                     <div v-if="selectedId.length === 0"></div>
-                    <ButtonComponent v-else-if="selectedId" Color="btn-danger" @click="deleteGroup()" Message="hapus"/>
+                    <ButtonComponent v-else-if="selectedId" Icon="fa-trash" Color="btn-danger" @click="deleteGroup()" Message="hapus"/>
                 </div>
             </div>
         </div>

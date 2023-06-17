@@ -11,6 +11,8 @@
                             <th>No</th>
                             <th>Nama</th>
                             <th>Alamat</th>
+                            <th>Email</th>
+                            <th>Nomor Hp</th>
                             <th>Nomor STRP</th>
                             <th>aksi</th>
                         </tr>
@@ -29,13 +31,15 @@
                                 </td>
                                 <td>{{data.user.nama}}</td>
                                 <td>{{data.user.alamat}}</td>
+                                <td>{{data.user.email}}</td>
+                                <td>{{data.user.nomorHp}}</td>
                                 <td>{{data.nomorStrp}}</td>
                                 <td>
                                     <router-link :to="'perawat/' + data.user.id">
                                         <ButtonComponent Message="Aktifkan akun" Color="btn-warning"/>
                                     </router-link>
                                     <a :href="data.fileDokumen" class="btn btn-sm btn-info" target="_blank">
-                                        lihat dokumen pendukung
+                                        dokumen
                                     </a>
                                 </td>
                             </tr>

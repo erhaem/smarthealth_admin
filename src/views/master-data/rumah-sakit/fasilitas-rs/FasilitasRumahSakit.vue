@@ -3,7 +3,14 @@
         <div class="card-header py-3">
             <div class="d-flex justify-content-between">
                 <h6 class="m-0 font-weight-bold text-primary">Data {{ $route.name }}</h6>
-                <ButtonComponent v-if="$can('show', 'Fasilitas')" Message="Tambah Data +" data-bs-toggle="modal" data-bs-target="#tambahData" />
+                <div class="d-flex justify-content-end">
+                    <ButtonComponent v-if="$can('show', 'Fasilitas')" Message="Tambah Data" Icon="fa-plus"
+                        data-bs-toggle="modal" data-bs-target="#tambahData" />
+                    <div v-if="selected.length == 0">
+                    </div>
+                    <ButtonComponent Color="btn-danger" Icon="fa-trash" v-else-if="selected" Message="hapus"
+                        @click="deleteData" />
+                </div>
             </div>
         </div>
         <div class="card-body">
@@ -12,16 +19,16 @@
                     <thead>
                         <tr>
                             <th>no</th>
-                            <th>Id Fasilitas</th>
+                            <th>pilih</th>
                             <th>Fasilitas</th>
                             <th v-if="$can('create', 'Fasilitas')">Aksi</th>
                         </tr>
                     </thead>
                     <tbody v-if="isLoading">
-                        <EmptyLoading/>
+                        <EmptyLoading />
                     </tbody>
                     <tbody v-else-if="fasilitasRs.length == 0">
-                        <EmptyData/>
+                        <EmptyData />
                     </tbody>
                     <template v-else-if="fasilitasRs.length">
                         <tbody v-for="(data, index) in fasilitasRs" :key="index">
@@ -30,30 +37,23 @@
                                     {{ index + 1 }}
                                 </td>
                                 <td>
-                                    {{ data.idFasilitas }}
+                                    <input type="checkbox" v-model="selected" :value="data.idFasilitas">
                                 </td>
                                 <td>
                                     {{ data.namaFasilitas }}
                                 </td>
                                 <td v-if="$can('create', 'Fasilitas')">
                                     <div class="d-flex justify-content-start">
-                                        <router-link :to="{ name: 'Edit Fasilitas Rumah Sakit', params: { id: data.idFasilitas } }">
+                                        <router-link
+                                            :to="{ name: 'Edit Fasilitas Rumah Sakit', params: { id: data.idFasilitas } }">
                                             <ButtonComponent Color="btn-warning" Message="edit" />
-                                          </router-link>
-                                        <ButtonComponent Color="btn-danger" Message="hapus"
-                                            @click="deleteFasilitas(data.idFasilitas)" />
+                                        </router-link>
                                     </div>
                                 </td>
                             </tr>
                         </tbody>
                     </template>
-                    <template>
-                        <div class="vr">
-                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Temporibus voluptatem possimus repellat sunt numquam excepturi ullam illum quae recusandae asperiores id repellendus, non fugiat, iure odio ipsam quam beatae eos.
-                        </div>
-                    </template>
                 </table>
-                <PaginationComponent />
             </div>
         </div>
     </div>
@@ -65,7 +65,8 @@
                 <SelectOption v-model="form.id_rumah_sakit" Width="w-100" Label="Rumah Sakit">
                     <template #option>
                         <option value="">Pilih nama rumah sakit</option>
-                        <option :value="data.rumahSakit.idRumahSakit" v-for="data in fasilitasRs" :key="index">{{ data.rumahSakit.namaRs }}
+                        <option :value="data.rumahSakit.idRumahSakit" v-for="data in fasilitasRs" :key="index">{{
+                            data.rumahSakit.namaRs }}
                         </option>
                     </template>
                 </SelectOption>
@@ -94,16 +95,17 @@ export default {
                 nama_fasilitas: '',
                 id_rumah_sakit: ''
             },
+            selected: [],
             isLoading: false,
             limit: 1
         }
     },
     computed: {
-        idFromParams(){
+        idFromParams() {
             return this.$route.params.id
         },
-        limitData(){
-            
+        limitData() {
+
         }
     },
     created() {
@@ -140,22 +142,33 @@ export default {
                 console.log(err);
             })
         },
-        deleteFasilitas(idFasilitas) {
-            let type = "deleteData"
-            let url = [
-                "master/rumah_sakit/fasilitas_rs", idFasilitas
-            ]
-            this.$store.dispatch(type, url).then((result) => {
-                iziToast.success({
-                    title: 'success',
-                    message: 'Data Berhasil Dihapus',
-                    position: 'topRight',
-                    timeout: 1000
-                })
-                this.getFasilitas()
-            }).catch((err) => {
-                console.log(err);
+        deleteData() {
+            if (this.selected.length === 0) {
+                return;
+            }
+            let type = "deleteData";
+            let urls = this.selected.map((idFasilitas) => ["master/rumah_sakit/fasilitas_rs", idFasilitas]);
+            this.$swal({
+                icon: 'question',
+                title: "Apakah kamu ingin menyimpan perubahan",
+                showDenyButton: true,
+                showCancelButton: false,
+                confirmButtonText: "Ya, Hapus",
+                denyButtonText: "Jangan Hapus"
+            }).then((results) => {
+                if (results.isConfirmed) {
+                    Promise.all(urls.map((url) => this.$store.dispatch(type, url)))
+                    this.$swal({
+                        icon: 'success',
+                        text: 'data berhasil dihapus'
+                    })
+                    this.getFasilitas();
+                }
             })
+                .catch((err) => {
+                    console.log(err);
+                });
+            this.selected = [];
         }
     },
     components: {
