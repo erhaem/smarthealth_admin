@@ -18,7 +18,7 @@
                             <th>No</th>
                             <th v-if="$can('action', 'Admin')">Pilih</th>
                             <th>Nama</th>
-                            <th>Slug</th>
+                            <th>Icon</th>
                             <th v-if="$can('action', 'Admin')">Aksi</th>
                         </tr>
                     </thead>
@@ -36,7 +36,7 @@
                                 </td>
                                 <td v-if="$can('action', 'Admin')"><input type="checkbox" :value="data.idPenyakit" v-model="selectedId"></td>
                                 <td>{{ data.namaSpesialis }}</td>
-                                <td>{{ data.slugSpesialis }}</td>
+                                <td>{{ data.icon }}</td>
                                 <td v-if="$can('action', 'Admin')">
                                     <router-link :to="'spesialis_penyakit/' + data.idPenyakit + '/edit'">
                                         <ButtonComponent Message="Edit" Color="btn-warning" />
@@ -56,6 +56,9 @@
                     <Label>Jenis Spesialis</Label>
                     <InputField Name="namaSpesialis" v-model="form.nama_spesialis" />
                     <span class="text-danger">{{ errors.namaSpesialis }}</span>
+                    <Label>Icon Spesialis</Label>
+                    <InputField Name="namaSpesialis" v-model="form.icon" />
+                    <span class="text-danger">{{ errors.icon }}</span>
                 </div>
                 <ButtonComponent />
             </Form>
@@ -77,7 +80,8 @@ export default {
         return {
             spesialis: [],
             form: {
-                nama_spesialis: ''
+                nama_spesialis: '',
+                icon: ''
             },
             isLoading: false,
             selectedId: []

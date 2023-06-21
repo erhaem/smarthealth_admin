@@ -9,6 +9,9 @@
                     <label for="">Nama Spesialis</label>
                     <InputField Name="namaSpesialis" v-model="form.namaSpesialis" />
                     <span class="text-danger">{{errors.namaSpesialis}}</span>
+                    <Label>Icon Spesialis</Label>
+                    <InputField Name="namaSpesialis" v-model="form.icon" />
+                    <span class="text-danger">{{ errors.icon }}</span>
                 </div>
                 <ButtonComponent />
             </Form>
@@ -25,7 +28,8 @@ export default {
     data() {
         return {
             form: {
-                namaSpesialis: ''
+                namaSpesialis: '',
+                icon: ''
             }
         }
     },
