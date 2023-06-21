@@ -38,7 +38,7 @@
                                 <td>{{ data.namaSpesialis }}</td>
                                 <td>{{ data.icon }}</td>
                                 <td v-if="$can('action', 'Admin')">
-                                    <router-link :to="'spesialis_penyakit/' + data.idPenyakit + '/edit'">
+                                    <router-link :to="'spesialis_penyakit/' + data.idSpesialisPenyakit + '/edit'">
                                         <ButtonComponent Message="Edit" Color="btn-warning" />
                                     </router-link>
                                 </td>
