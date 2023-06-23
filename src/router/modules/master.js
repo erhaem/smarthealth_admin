@@ -20,6 +20,9 @@ import DokterSpesialisRumahSakit from '@/views/master-data/rumah-sakit/dokter-sp
 
 import IndexSpesialis from '@/views/master-data/spesialis-penyakit/IndexSpesialis.vue'
 import EditSpesialisPenyakit from '@/views/master-data/spesialis-penyakit/EditSpesialisPenyakit.vue'
+import IndexDokterSpesialis from '@/views/master-data/dokter-spesialis/index.vue'
+import IndexPraktek from '@/views/master-data/rumah-sakit/praktek-dokter/index.vue'
+import DetailPraktek from '@/views/master-data/rumah-sakit/praktek-dokter/JadwalPraktek.vue'
 
 import IndexRs from '../../views/master-data/owner-rs/IndexOwnerRs.vue'
 import EditOwnerRs from '@/views/master-data/owner-rs/EditOwnerRs.vue'
@@ -159,6 +162,27 @@ export default [{
                 middleware: checkRoles(roles.adminRs)
             }
         },
+        {
+            path: '/praktek',
+            children: [
+                {
+                    path: ':idRs/dokter',
+                    name: 'Daftar Dokter',
+                    component: IndexPraktek,
+                    meta: {
+                        middleware: checkRoles(roles.adminRsadminWeb)
+                    }
+                },
+                {
+                    path: ':idPraktek',
+                    name: 'Detail Jadwal Praktek',
+                    component: DetailPraktek, 
+                    meta: {
+                        middleware: checkRoles(roles.adminRsadminWeb)
+                    }
+                }
+            ]
+        },
         // Owner Rumah Sakit
         {
             path: 'owner_rs',
@@ -200,7 +224,20 @@ export default [{
             meta: {
                 middleware: checkRoles(roles.admin)
             }
-        }
+        },
+        {
+            path: 'spesialis_penyakit/',
+            children: [
+                {
+                    path: ':idSpesialis/dokter',
+                    name: 'Dokter Spesialis',
+                    component: IndexDokterSpesialis,
+                    meta: {
+                        middleware: checkRoles(roles.admin)
+                    }
+                }
+            ]
+        },
     ]
 }
 ]

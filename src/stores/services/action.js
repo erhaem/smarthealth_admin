@@ -49,6 +49,7 @@ const process = {
                 Api.init();
                 Api.postFormData(param[0], param[1]).then(
                     (response) => {
+                        console.log(response);
                         resolve(response.data);
                     },
                     (error) => {
@@ -56,9 +57,6 @@ const process = {
                     }
                 );
             });
-        },
-        postDataUploadDewek(context, param) {
-            console.log(param);
         },
         updateData(state, param) {
             return new Promise((resolve) => {

@@ -41,6 +41,9 @@
                                     <router-link :to="'spesialis_penyakit/' + data.idSpesialisPenyakit + '/edit'">
                                         <ButtonComponent Message="Edit" Color="btn-warning" />
                                     </router-link>
+                                    <router-link :to="'spesialis_penyakit/' + data.idSpesialisPenyakit + '/dokter'">
+                                        <ButtonComponent Icon="fa-eye" Message="Lihat dokter" Color="btn-info" />
+                                    </router-link>
                                 </td>
                             </tr>
                         </tbody>

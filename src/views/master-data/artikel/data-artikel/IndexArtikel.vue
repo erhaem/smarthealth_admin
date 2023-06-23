@@ -4,8 +4,8 @@
             <div class="d-flex justify-content-between">
                 <h6 class="m-0 font-weight-bold text-primary">Data {{ $route.name }}</h6>
                 <div class="d-flex justify-content-start">
-                    <ButtonComponent v-if="$can('action', 'Artikel')" Color="btn-primary" Icon="fa-plus" Message="Tambah Data"
-                        data-bs-toggle="modal" data-bs-target="#tambahData" />
+                    <ButtonComponent v-if="$can('action', 'Artikel')" Color="btn-primary" Icon="fa-plus"
+                        Message="Tambah Data" data-bs-toggle="modal" data-bs-target="#tambahData" />
                     <div v-if="selectedArtikelIds.length == 0">
                     </div>
                     <ButtonComponent Color="btn-danger" Icon="fa-trash" v-else-if="selectedArtikelIds" Message="hapus"
@@ -84,7 +84,7 @@
                     <textarea name="deskripsi" class="form-control border-primary" v-model="artikels.deskripsi"></textarea>
                 </div>
                 <div>
-                    <ButtonComponent @click="handleKontol()" />
+                    <ButtonComponent @click="postArtikel" />
                 </div>
             </Form>
         </template>
@@ -92,6 +92,7 @@
 </template>
 
 <script>
+import axios from 'axios'
 import Cookies from 'js-cookie'
 import InputField from '@/components/partials-component/InputField.vue';
 import { Form } from 'vee-validate'
@@ -200,9 +201,8 @@ export default {
 
             if (file && allowedFormats.includes(file.type)) {
                 if (file.size <= maxSizeInBytes) {
-                    let type = "postDataUpload";
                     this.$store
-                        .dispatch("postDataUploadDewek", ['master/artikel', this.formData])
+                        .dispatch("postDataUpload", ['master/artikel', this.formData])
                         .then((result) => {
                             iziToast.success({
                                 title: 'Success',
@@ -229,6 +229,21 @@ export default {
                     position: 'topRight'
                 });
             }
+        },
+        postArtikel() {
+            const url = 'https://berobatplus.shop/api/master/artikel';
+            const config = {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            };
+            axios.post(url, this.formData, config)
+                .then(response => {
+                    console.log(response.data);
+                })
+                .catch(error => {
+                    console.error(error);
+                });
         },
         chooseFoto(event) {
             this.artikels.foto = event.target.files[0];

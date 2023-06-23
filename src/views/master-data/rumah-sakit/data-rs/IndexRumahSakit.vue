@@ -11,7 +11,7 @@
                         <div v-if="selectedId.length === 0"></div>
                         <ButtonComponent v-else-if="selectedId" Icon="fa-trash" Color="btn-danger" Message="hapus" @click="deleteRumahSakit" />
                     </div>
-                    <ButtonComponent Message="Download Rekap RS" Icon="fa-download"/>
+                    <!-- <ButtonComponent Message="Download Rekap RS" Icon="fa-download"/> -->
                 </div>
             </div>
         </div>
@@ -25,6 +25,7 @@
                             <th>Nama</th>
                             <th>Alamat</th>
                             <th>Pemilik</th>
+                            <th>Praktek</th>
                             <th v-if="$can('show', 'Rumah Sakit')">Aksi</th>
                         </tr>
                     </thead>
@@ -46,6 +47,11 @@
                                 <td>{{ data.namaRs }}</td>
                                 <td>{{ data.alamatRs }}</td>
                                 <td>{{ data.pemilik }}</td>
+                                <td>
+                                    <router-link :to="{ name: 'Daftar Dokter', params: { idRs: data.idRumahSakit } }">
+                                        <ButtonComponent Color="btn-info" Message="jadwal" Icon="fa-eye"/>
+                                      </router-link>                                      
+                                </td>
                                 <td v-if="$can('show', 'Rumah Sakit')">
                                     <div class="d-flex">
                                         <router-link v-if="$can('action', 'Rumah Sakit')" :to="{ name: 'Edit Rumah Sakit', params: { id: data.idRumahSakit } }">

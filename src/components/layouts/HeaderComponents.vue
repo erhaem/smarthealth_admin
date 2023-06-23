@@ -172,9 +172,25 @@
                     </a>
                     <!-- Dropdown - User Information -->
                     <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
-                        <router-link to="/profile" class="dropdown-item">
+                        <router-link :to="{ name: 'Update Profile Admin' }" class="dropdown-item" v-if="$can('action', 'Admin')">
                             <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
-                            Profile
+                            Profile Admin
+                        </router-link>
+                        <router-link :to="{ name: 'Update Profile Apotek' }" class="dropdown-item" v-if="$can('action', 'Owner')">
+                            <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+                            Profile Owner Apt
+                        </router-link>
+                        <router-link :to="{ name: 'Update Profile Owner Rs' }" class="dropdown-item" v-if="$can('action', 'Rumah Sakit')">
+                            <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+                            Profile Owner Rs
+                        </router-link>
+                        <router-link :to="{ name: 'Update Profile Dokter' }" class="dropdown-item" v-if="$can('action', 'Dokter')">
+                            <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+                            Profile Dokter
+                        </router-link>
+                        <router-link :to="{ name: 'Update Profile Perawat' }" class="dropdown-item" v-if="$can('action', 'Perawat')">
+                            <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+                            Profile Perawat
                         </router-link>
                         <router-link to="/change_password" class="dropdown-item">
                             <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>

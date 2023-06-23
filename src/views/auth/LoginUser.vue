@@ -62,18 +62,9 @@ export default {
                         timeout: 2000,
                         position: 'topRight'
                     })
-                }
+                } 
             }).catch((err) => {
-                if (err.result && err.result.data && err.result.data.message === 'Incorrect password') {
-                    iziToast.error({
-                        title: 'error',
-                        message: 'nomor hp dan password tidak sesuai',
-                        position: 'topRight',
-                        timeout: 2000
-                    });
-                } else {
-                    console.log(err);
-                }
+                console.log(err);
             })
         }
     },

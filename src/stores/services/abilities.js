@@ -17,10 +17,10 @@ const permisionsByRole = {
         'show_Spesialis'
     ],
     "RO-2003062": [
-        'show_Artikel',
+        'show_Artikel', 'action_Dokter'
     ],
     "RO-2003063": [
-         'show_Perawat'
+         'show_Perawat', 'action_Perawat'
     ],
     "RO-2003065": [
         'show_Apotek','action_Owner', 'show_Kategori Produk'
