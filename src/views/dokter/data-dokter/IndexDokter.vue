@@ -35,9 +35,13 @@
                                 </td>
                                 <td>{{ data.userId.nama }}</td>
                                 <td>{{ data.userId.alamat }}</td>
-                                <td>{{ data.userId.email }}</td>
                                 <td>{{ data.userId.nomorHp }}</td>
                                 <td>{{ data.nomorStr }}</td>
+                                <td>
+                                    <router-link :to="'dokter/' + data.userId.id">
+                                        <ButtonComponent Message="keahlian" Icon="fa-plus" Color="btn-primary" />
+                                    </router-link>
+                                </td>
                                 <td>
                                     <div class="d-flex justify-content-center">
                                         <router-link :to="'dokter/' + data.userId.id">
@@ -61,9 +65,26 @@
             </div>
         </div>
     </div>
+    <div class="form-group">
+        <select class="select-2 w-50 form-select" v-model="form.idUser" data-placeholder="-- Pilih Dokter --"
+            @change="handleChange">
+            <option value=""></option>
+            <option :value="data.userId.id" v-for="data in dokter">{{ data.userId.nama }}</option>
+        </select>
+        <br>
+        <br>
+        <select class="select-2 w-50 form-select" v-model="form.idKeahlian" data-placeholder="-- Pilih Keahlian --">
+            <option value=""></option>
+            <option :value="data.idKeahlian" v-for="data in keahlian">{{ data.namaKeahlian }}</option>
+        </select>
+        <br>
+        <br>
+        <ButtonComponent @click="postKeahlianDokter" />
+    </div>
 </template>
 
 <script>
+import ModalComponent from '@/components/partials-component/ModalComponent.vue'
 import ActiveSlider from '@/components/partials-component/ActiveSlider.vue'
 import LoadingIndicator from '@/components/partials-component/LoadingIndicator.vue';
 import SpanSlider from '@/components/partials-component/SpanSlider.vue'
@@ -74,11 +95,23 @@ export default {
         return {
             dokter: [],
             status: 0,
-            isLoading: true
+            keahlian: [],
+            form: {
+                idUser: '',
+                idKeahlian: ''
+            },
+            isLoading: false
         };
     },
     created() {
-        this.getDokter();
+        this.getDokter(),
+            this.getKeahlian()
+    },
+    mounted() {
+        $('.select-2').select2();
+
+        // Listen to changes in Select2
+        $('.select-2').on('change', this.handleChange);
     },
     methods: {
         getDokter() {
@@ -94,6 +127,23 @@ export default {
             }).catch((err) => {
                 console.log(err);
             });
+        },
+        getKeahlian() {
+            let type = "getData";
+            let url = [
+                "master/keahlian",
+                {}
+            ];
+            this.isLoading = true
+            this.$store.dispatch(type, url).then((result) => {
+                this.keahlian = result.data;
+                this.isLoading = false
+            }).catch((err) => {
+                console.log(err);
+            });
+        },
+        handleChange() {
+            
         },
         updateStatus(id_user, status) {
             if (status == 1) {
@@ -115,7 +165,21 @@ export default {
                 console.log(err);
             });
         },
+        postKeahlianDokter() {
+            let type = "postData"
+            let url = [
+                "master/ahli/keahlian/master", {
+                    user_ahli_id: this.form.idUser,
+                    keahlian_id: this.form.idKeahlian
+                }, {}
+            ]
+            this.$store.dispatch(type, url).then((result) => {
+                console.log(result);
+            }).catch((err) => {
+                console.log(err);
+            })
+        }
     },
-    components: { ActiveSlider, SpanSlider, LoadingIndicator, EmptyData, ButtonComponent }
+    components: { ActiveSlider, SpanSlider, LoadingIndicator, EmptyData, ButtonComponent, ModalComponent },
 }
 </script>
