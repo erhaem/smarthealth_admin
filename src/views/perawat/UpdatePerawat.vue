@@ -1,6 +1,7 @@
 <template>
-    <InputField v-model="form.nomorStrp"/>
-    <button @click="updateData">submit</button>
+    <label for="">Update Nomor STRP</label>
+    <InputField v-model="form.nomorStrp" class="w-50"/>
+    <button @click="updateData" class="btn btn-sm btn-primary">submit</button>
 </template>
 <script>
 import InputField from '@/components/partials-component/InputField.vue'

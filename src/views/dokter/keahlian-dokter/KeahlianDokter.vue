@@ -4,11 +4,13 @@
             <div class="d-flex justify-content-between">
                 <h6 class="m-0 font-weight-bold text-primary">Data {{ $route.name }}</h6>
                 <div class="d-flex justify-content-start">
-                    <ButtonComponent Message="Tambah Data" Icon="fa-plus" data-bs-toggle="modal" data-bs-target="#tambahData" />
+                    <ButtonComponent Message="Tambah Data" Icon="fa-plus" data-bs-toggle="modal"
+                        data-bs-target="#tambahData" />
                     <div v-if="selectedId.length === 0"></div>
-                    <ButtonComponent v-else-if="selectedId"  Message="Hapus" Icon="fa-trash" @click="deleteKeahlian" Color="btn-danger" />
+                    <ButtonComponent v-else-if="selectedId" Message="Hapus" Icon="fa-trash" @click="deleteKeahlian"
+                        Color="btn-danger" />
                 </div>
-                
+
             </div>
         </div>
         <div class="card-body">
@@ -32,7 +34,7 @@
                         <tbody v-for="(data, index) in keahlianDokter" :key="index">
                             <tr>
                                 <td>
-                                    {{ index + 1 }}
+                                    {{ (iteration(index)) }}
                                 </td>
                                 <td>
                                     <input type="checkbox" v-model="selectedId" :value="data.idKeahlian">
@@ -49,6 +51,10 @@
                         </tbody>
                     </template>
                 </table>
+                <div class="d-flex justify-content-end">
+                    <Pagination :currentPage="pagination.currentPage" :rowsTotal="pagination.total"
+                    :lastPage="pagination.lastPage" @onPageChange="onPageChange($event)" />
+                </div>
             </div>
         </div>
     </div>
@@ -68,6 +74,7 @@
 </template>
 
 <script>
+import Pagination from '@/components/partials-component/PaginationComponent.vue'
 import ButtonComponent from '@/components/partials-component/ButtonComponent.vue'
 import iziToast from 'izitoast'
 import { Form } from 'vee-validate'
@@ -85,10 +92,17 @@ export default {
                 logo: null
             },
             isLoading: false,
+            pagination: {
+                total: 0,
+                perPage: 5,
+                currentPage: 1,
+                lastPage: 0,
+                page: 0,
+            },
             selectedId: []
         }
     },
-    created() {
+    mounted() {
         this.getKeahlian()
     },
     computed: {
@@ -108,24 +122,29 @@ export default {
     },
     methods: {
         getKeahlian() {
-            let type = "getData"
-            let url = [
-                "master/keahlian", {}
-            ]
-            this.isLoading = true
-            this.$store.dispatch(type, url).then((result) => {
-                this.isLoading = false
-                this.keahlianDokter = result.data
-            }).catch((err) => {
-                console.log(err);
-            })
+            this.isLoading = true;
+            const params = [
+                `page=${this.pagination.page}`,
+                `per_page=${this.pagination.perPage}`,
+            ].join("&");
+            this.$store.dispatch("getData", ["master/keahlian", params]).then((result) => {
+                this.keahlianDokter = result.data;
+                this.pagination.total = result.meta.total;
+                this.pagination.currentPage = result.meta.currentPage;
+                this.pagination.lastPage = result.meta.lastPage;
+                this.isLoading = false;
+            });
+        },
+        onPageChange(page) {
+            this.pagination.page = page;
+            this.getKeahlian();
         },
         goBack() {
             window.location = '/dokter/keahlian_dokter'
         },
         deleteKeahlian() {
             console.log('ada');
-            if(this.selectedId === 0){
+            if (this.selectedId === 0) {
                 return;
             }
             let type = "deleteData"
@@ -137,8 +156,8 @@ export default {
                 showCancelButton: false,
                 confirmButtonText: "Ya, Hapus",
                 denyButtonText: "Jangan Hapus"
-            }).then((result)=>{
-                if(result.isConfirmed){
+            }).then((result) => {
+                if (result.isConfirmed) {
                     Promise.all(urls.map((url) => this.$store.dispatch(type, url)))
                     this.$swal({
                         icon: 'success',
@@ -146,9 +165,15 @@ export default {
                     })
                     this.getKeahlian()
                 }
-            }).catch((err)=>{
+            }).catch((err) => {
                 console.log(err);
             })
+        },
+        iteration(index){
+            return(
+                (this.pagination.currentPage-1) * this.pagination.perPage + index + 1
+            )
+            
         },
         postKeahlian() {
             const allowedFormats = ['image/jpeg', 'image/png', 'image/jpg'];
@@ -194,7 +219,7 @@ export default {
         }
     },
     components: {
-        ButtonComponent, ModalComponent, InputField, Form, EmptyData, EmptyLoading
+        ButtonComponent, ModalComponent, InputField, Form, EmptyData, EmptyLoading, Pagination
     }
 }
 </script>

@@ -1,6 +1,7 @@
 <template>
-    <InputField v-model="form.nomorStr"/>
-    <button @click="updateData">submit</button>
+    <label for="">Update Nomor STR</label>
+    <InputField v-model="form.nomorStr" class="w-50"/>
+    <button @click="updateData" class="btn btn-sm btn-primary">submit</button>
 </template>
 <script>
 import InputField from '@/components/partials-component/InputField.vue'
@@ -27,7 +28,8 @@ export default {
             this.$store.dispatch(type, [`akun/active_account/${idDokter}/account` ,[], {
                 nomor_str:this.form.nomorStr
             }]).then((result)=>{
-                this.$router.back()
+                console.log(result);
+                // this.$router.back()
             }).catch((err)=>{
                 console.log(err);
             })

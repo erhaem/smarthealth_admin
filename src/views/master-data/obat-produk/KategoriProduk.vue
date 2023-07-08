@@ -30,7 +30,7 @@
                     <template v-else>
                         <tbody v-for="(data, index) in kategoriProduk" :key="index">
                             <tr>
-                                <td>{{ index + 1 }}</td>
+                                <td>{{ (iteration(index)) }}</td>
                                 <td v-if="$can('action', 'Kategori Produk')">
                                     <input type="checkbox" :value="data.idKategoriProduk" v-model="selectedId">
                                 </td>
@@ -46,6 +46,10 @@
                         </tbody>
                     </template>
                 </table>
+                <div class="d-flex justify-content-end">
+                    <Pagination :currentPage="pagination.currentPage" :rowsTotal="pagination.total"
+                    :lastPage="pagination.lastPage" @onPageChange="onPageChange($event)" />
+                </div>
             </div>
         </div>
     </div>
@@ -64,6 +68,7 @@
 </template>
 
 <script>
+import Pagination from '@/components/partials-component/PaginationComponent.vue'
 import ButtonComponent from '@/components/partials-component/ButtonComponent.vue'
 import InputField from '@/components/partials-component/InputField.vue'
 import iziToast from 'izitoast'
@@ -81,6 +86,13 @@ export default {
                 nama_kategori_produk: ''
             },
             isLoading: false,
+            pagination: {
+                total: 0,
+                perPage: 5,
+                currentPage: 1,
+                lastPage: 0,
+                page: 0,
+            },
             selectedId: []
         }
     },
@@ -96,17 +108,29 @@ export default {
     },
     methods: {
         getKategoriProduk() {
-            let type = "getData"
-            let url = [
-                "master/produk/kategori_produk", {}
-            ]
+            const params = [
+                `page=${this.pagination.page}`,
+                `per_page=${this.pagination.perPage}`,
+            ].join("&");
             this.isLoading = true
-            this.$store.dispatch(type, url).then((result) => {
+            this.$store.dispatch("getData", ["master/produk/kategori_produk", params]).then((result) => {
                 this.kategoriProduk = result.data
-                this.isLoading = false
+                this.pagination.total = result.meta.total;
+                this.pagination.currentPage = result.meta.currentPage;
+                this.pagination.lastPage = result.meta.lastPage;
+                this.isLoading = false;
             }).catch((err) => {
                 console.log(err);
             })
+        },
+        iteration(index){
+            return(
+                (this.pagination.currentPage -1) * this.pagination.perPage + index + 1
+            )
+        },
+        onPageChange(page) {
+            this.pagination.page = page;
+            this.getKategoriProduk();
         },
         postKategoriProduk(){
             let type = "postData"
@@ -160,7 +184,8 @@ export default {
         ModalComponent,
         LoadingIndicator,
         EmptyLoading,
-        EmptyData
+        EmptyData,
+        Pagination
     }
 }
 </script>
