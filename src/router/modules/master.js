@@ -23,6 +23,7 @@ import EditSpesialisPenyakit from '@/views/master-data/spesialis-penyakit/EditSp
 import IndexDokterSpesialis from '@/views/master-data/dokter-spesialis/index.vue'
 import IndexPraktek from '@/views/master-data/rumah-sakit/praktek-dokter/index.vue'
 import DetailPraktek from '@/views/master-data/rumah-sakit/praktek-dokter/JadwalPraktek.vue'
+import EditJadwalPraktek from '@/views/master-data/rumah-sakit/praktek-dokter/EditJadwalPraktek.vue'
 
 import IndexRs from '../../views/master-data/owner-rs/IndexOwnerRs.vue'
 import EditOwnerRs from '@/views/master-data/owner-rs/EditOwnerRs.vue'
@@ -174,9 +175,17 @@ export default [{
                     }
                 },
                 {
-                    path: ':idPraktek',
+                    path: ':idAhli/:idPraktek/:idRs/',
                     name: 'Detail Jadwal Praktek',
                     component: DetailPraktek, 
+                    meta: {
+                        middleware: checkRoles(roles.adminRsadminWeb)
+                    }
+                },
+                {
+                    path: 'edit/:idJadwalPraktek',
+                    name: 'Edit Jadwal Praktek',
+                    component: EditJadwalPraktek,
                     meta: {
                         middleware: checkRoles(roles.adminRsadminWeb)
                     }

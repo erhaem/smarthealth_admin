@@ -128,7 +128,7 @@ export default {
         getKeahlianDokter() {
             let type = "getData"
             let url = [
-                "master/dokter_keahlian", {}
+                "master/ahli/keahlian/master", {}
             ]
             this.isLoading = true
             this.$store.dispatch(type, url).then((result) => {

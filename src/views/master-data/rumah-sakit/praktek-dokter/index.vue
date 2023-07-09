@@ -47,7 +47,7 @@
                                 <td>{{ data.ahli.nomorHp }}</td>
                                 <td>{{ data.biayaPraktek }}</td>
                                 <td v-if="$can('show', 'Rumah Sakit')">
-                                    <router-link :to="{ name:'Detail Jadwal Praktek', params: {idPraktek: data.idDetailPraktek} }">
+                                    <router-link :to="{ name:'Detail Jadwal Praktek', params: {idRs: this.$route.params.idRs, idAhli: data.ahli.id, idPraktek: data.idDetailPraktek } }">
                                         <ButtonComponent Icon="fa-calendar" Color="btn-info" Message="lihat jadwal praktek"/>
                                     </router-link>
                                 </td>
@@ -79,9 +79,10 @@ export default {
     },
     methods: {
         getPraktek() {
+            const rsId = this.$route.params.idRs
             let type =  "getData"
             let url = [
-                "master/ahli/detail_praktek/" + this.$route.params.idRs, {}
+                `master/ahli/detail_praktek/${rsId}`, {}
             ]
             this.isLoading = true
             this.$store.dispatch(type, url).then((result)=>{

@@ -88,10 +88,11 @@ export default {
             })
         },
         submitEdit() {
-            let type = "updateData"
+            const params = this.$route.params.id
+            let type = "postDataUpload"
             const formData = this.formData
             let url = [
-                "master/artikel", this.idFromParams, formData
+                `master/artikel/${params}?_method=put`, formData
             ]
             this.$store.dispatch(type, url).then((result) => {
                 iziToast.success({
@@ -107,8 +108,6 @@ export default {
         },
         chooseFoto(event) {
             this.form.foto = event.target.files[0]
-            console.log(event);
-            console.log(this.form.foto);
         }
     },
 }

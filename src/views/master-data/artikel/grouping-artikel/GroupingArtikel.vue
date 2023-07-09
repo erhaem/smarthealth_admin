@@ -41,7 +41,7 @@
                                 <td>
                                     {{ data.judulArtikel }}
                                 </td>
-                                <td v-if="data.namaKategori === null">
+                                <td v-if="data.namaKategori">
                                     {{ data.namaKategori }}
                                 </td>
                                 <td v-else>
@@ -126,6 +126,7 @@ export default {
             this.$store.dispatch(type, url).then((result) => {
                 this.grupArtikel = result.data;
                 this.isLoading = false
+                console.log(result);
             }).catch((err) => {
                 console.log(err);
             });

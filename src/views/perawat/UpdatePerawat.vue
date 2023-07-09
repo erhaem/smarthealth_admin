@@ -28,7 +28,7 @@ export default {
             this.$store.dispatch(type, [`akun/active_account/${idPerawat}/account` ,[], {
                 nomor_strp:this.form.nomorStrp
             }]).then((result)=>{
-                this.$router.back()
+                console.log(this.form);
             }).catch((err)=>{
                 console.log(err);
             })

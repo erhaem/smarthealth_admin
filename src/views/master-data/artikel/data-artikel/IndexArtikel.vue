@@ -42,20 +42,18 @@
                                     <input type="checkbox" :value="data.idArtikel" v-model="selectedArtikelIds">
                                 </td>
                                 <td>{{ data.judulArtikel }}</td>
-                                <td>{{ data.deskripsi }}</td>
+                                <td>
+                                    {{ data.deskripsi }}
+                                </td>
                                 <td>{{ data.getUser.nama }}</td>
                                 <td v-if="$can('show', 'Artikel')">
                                     <div class="d-flex justify-content-start">
                                         <router-link :to="'artikel/' + data.idArtikel + '/edit'">
                                             <ButtonComponent Message="edit" Color="btn-warning" />
                                         </router-link>
-                                        <ButtonComponent data-bs-target="#lihatFoto" Icon="fa-eye" Color="btn-success"
-                                            Message="lihat foto" data-bs-toggle="modal" />
-                                        <ModalComponent id="lihatFoto">
-                                            <template #modal>
-                                                <img class="img-fluid" :src="data.foto" alt="">
-                                            </template>
-                                        </ModalComponent>
+                                        <a :href="data.foto" class="btn btn-primary btn-sm" target="_blank">
+                                            lihat foto
+                                        </a>
                                     </div>
                                 </td>
                             </tr>
@@ -67,7 +65,7 @@
     </div>
     <ModalComponent id="tambahData" labelBy="exampleModalLabel" :modalTitle="'Tambah ' + $route.name">
         <template #modal>
-            <Form :validation-schema="schema" v-slot="{ errors }" @submit="handleKontol">
+            <Form :validation-schema="schema" v-slot="{ errors }" @submit="handleSubmit">
                 <input type="text" hidden v-model="artikels.id_artikel">
                 <div>
                     <Label for="foto">Foto Artikel</Label>
@@ -83,8 +81,8 @@
                     <Label>Deskripsi</Label>
                     <textarea name="deskripsi" class="form-control border-primary" v-model="artikels.deskripsi"></textarea>
                 </div>
-                <div>
-                    <ButtonComponent @click="postArtikel" />
+                <div class="mt-2">
+                    <ButtonComponent @click="handleSubmit" />
                 </div>
             </Form>
         </template>
@@ -102,6 +100,7 @@ import ModalComponent from '@/components/partials-component/ModalComponent.vue';
 import EmptyData from '@/components/empty-table/EmptyData.vue';
 import EmptyLoading from '@/components/empty-table/EmptyLoading.vue';
 import * as valid from 'yup'
+
 export default {
     data() {
         return {
@@ -113,7 +112,11 @@ export default {
             },
             isLoading: false,
             error: 'text-danger',
-            selectedArtikelIds: []
+            selectedArtikelIds: [],
+            editorData: "",
+            editorConfig: {
+                // The configuration of the editor.
+            },
         };
     },
     computed: {
@@ -194,7 +197,7 @@ export default {
                 });
             this.selectedArtikelIds = [];
         },
-        handleKontol() {
+        handleSubmit() {
             const allowedFormats = ['image/jpeg', 'image/png', 'image/jpg'];
             const file = this.artikels.foto;
             const maxSizeInBytes = 5 * 1024 * 1024;
@@ -210,7 +213,7 @@ export default {
                                 message: 'Data Artikel Berhasil Ditambahkan',
                                 timeout: 1000
                             });
-                            // this.goBack();
+                            this.goBack();
                         })
                         .catch((err) => {
                             console.log(err);
