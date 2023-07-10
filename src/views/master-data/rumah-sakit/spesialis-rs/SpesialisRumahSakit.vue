@@ -47,7 +47,7 @@
                                     <div class="d-flex">
                                         <template v-if="$can('action', 'Rumah Sakit')">
                                             <router-link
-                                                :to="'/master/rumah_sakit/spesialis/' + idFromParams + '/' + data.idSpesialis">
+                                                :to="{name: 'Edit Spesialis Rumah Sakit', params: { idSpesialis: data.idSpesialis } }">
                                                 <ButtonComponent Message="edit" Color="btn-warning" />
                                             </router-link>
                                         </template>
@@ -75,7 +75,7 @@
                 <SelectOption Label="Spesialis" Width="w-100" v-model="form.id_penyakit">
                     <template #option>
                         <option value="">pilih spesialis</option>
-                        <option :value="data.idPenyakit" v-for="data in spesialisPenyakit">{{ data.namaSpesialis }}</option>
+                        <option :value="data.idSpesialisPenyakit" v-for="data in spesialisPenyakit">{{ data.namaSpesialis }}</option>
                     </template>
                 </SelectOption>
                 <ButtonComponent />
@@ -84,6 +84,7 @@
     </ModalComponent>
 </template>
 <script>
+import iziToast from 'izitoast'
 import SelectOption from '@/components/partials-component/SelectOption.vue'
 import { Form } from 'vee-validate'
 import ModalComponent from '@/components/partials-component/ModalComponent.vue'
@@ -105,7 +106,7 @@ export default {
     },
     computed: {
         idFromParams() {
-            return this.$route.params.id
+            return this.$route.params.idRumahSakit
         }
     },
     created() {
@@ -138,14 +139,16 @@ export default {
                     id_penyakit: this.form.id_penyakit
                 }
             ];
-            this.$store
-                .dispatch(type, url)
-                .then((result) => {
-                    console.log(result);
+            this.$store.dispatch(type, url).then((result) => {
+                iziToast.success({
+                    title: 'success',
+                    message: 'berhasil tambah data',
+                    position: 'topRight'
                 })
-                .catch((err) => {
-                    console.log(err);
-                });
+                this.getSpesialis()
+            }).catch((err) => {
+                console.log(err);
+            });
         },
         getSpesialisPenyakit() {
             let type = "getData"

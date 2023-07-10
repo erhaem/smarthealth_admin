@@ -29,6 +29,8 @@ import IndexRs from '../../views/master-data/owner-rs/IndexOwnerRs.vue'
 import EditOwnerRs from '@/views/master-data/owner-rs/EditOwnerRs.vue'
 import UpdateOwnerRs from '@/views/master-data/owner-rs/UpdateOwnerRs.vue'
 import { checkRoles, roles } from '../../middleware/redirect';
+import JadwalAntrian from '../../views/master-data/rumah-sakit/jadwal-antrian/IndexJadwalAntrian.vue'
+
 
 export default [{
     path: '/master',
@@ -127,7 +129,7 @@ export default [{
             }
         },
         {
-            path: 'rumah_sakit/spesialis/:id',
+            path: 'rumah_sakit/spesialis/:idRumahSakit',
             name: 'Spesialis Rumah Sakit',
             component: SpesialisRumahSakit,
             meta: {
@@ -135,7 +137,7 @@ export default [{
             }
         },
         {
-            path: 'rumah_sakit/spesialis/:id/:idSpesialis',
+            path: 'rumah_sakit/spesialis/:idSpesialis',
             name: 'Edit Spesialis Rumah Sakit',
             component: EditSpesialisRumahSakit,
             meta: {
@@ -191,6 +193,11 @@ export default [{
                     }
                 }
             ]
+        },
+        {
+            path: 'jadwal-antrian',
+            name: 'list jadwal antrian',
+            component: JadwalAntrian
         },
         // Owner Rumah Sakit
         {

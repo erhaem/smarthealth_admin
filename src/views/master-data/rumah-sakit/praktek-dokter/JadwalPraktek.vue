@@ -19,10 +19,8 @@
                     <thead>
                         <tr>
                             <th>no</th>
-                            <th>Pilih</th>
                             <th>Tanggal</th>
                             <th>Jam</th>
-                            <th>Aksi</th>
                         </tr>
                     </thead>
                     <tbody v-if="isLoading">
@@ -37,16 +35,8 @@
                                 <td>
                                     {{ (iteration(index)) }}
                                 </td>
-                                <td>
-                                    <input type="checkbox" v-model="selectedId" :value="data.idJadwalPraktek">
-                                </td>
                                 <td>{{ data.tanggal }}</td>
                                 <td>{{ data.mulaiJam }} s/d {{ data.selesaiJam }}</td>
-                                <td>
-                                    <router-link :to="{name: 'Edit Jadwal Praktek', params: { idJadwalPraktek: data.idJadwalPraktek } }">
-                                        <ButtonComponent Message="Edit" Color="btn-warning" />
-                                    </router-link>
-                                </td>
                             </tr>
                         </tbody>
                     </template>

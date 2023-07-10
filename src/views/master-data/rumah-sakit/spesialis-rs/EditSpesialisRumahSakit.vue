@@ -1,15 +1,17 @@
 <template>
     <Form @submit="postSpesialisRS">
-        <SelectOption v-model="form.penyakit.idPenyakit">
+        <SelectOption v-model="form.idSpesialis">
             <template #option>
                 <option value="">pilih nama spesialis</option>
-                <option :value="data.idPenyakit" v-for="data in spesialisPenyakit">{{ data.namaSpesialis }}</option>
+                <option :value="data.idSpesialisPenyakit" v-for="data in spesialisPenyakit">{{ data.namaSpesialis }}</option>
             </template>
         </SelectOption>
         <ButtonComponent />
     </Form>
+    {{ idFromSpesialis }}
 </template>
 <script>
+import iziToast from 'izitoast'
 import { Form } from 'vee-validate'
 import SelectOption from '@/components/partials-component/SelectOption.vue'
 import ButtonComponent from '@/components/partials-component/ButtonComponent.vue'
@@ -19,9 +21,7 @@ export default {
             editSPRS: [],
             spesialisPenyakit: [],
             form: {
-                penyakit: {
-                    idPenyakit: ''
-                }
+                idSpesialis: ''
             }
         }
     },
@@ -39,9 +39,10 @@ export default {
     },
     methods: {
         getData() {
+            const idSpesialis = this.$route.params.idSpesialis
             let type = "getData"
             let url = [
-                "master/rumah_sakit/spesialis" + '/' + this.idFromParams + '/' + this.idFromSpesialis, {}
+                `master/rumah_sakit/spesialis/${idSpesialis}/edit`, {}
             ]
             this.$store.dispatch(type, url).then((result) => {
                 console.log(result.data);
@@ -64,15 +65,21 @@ export default {
             })
         },
         postSpesialisRS() {
+            const id = this.$route.params.idSpesialis
+            console.log(id);
             let type = "updateData"
             let url = [
-                `master/rumah_sakit/spesialis`, this.idFromSpesialis, {
-                    id_penyakit: this.form.penyakit.idPenyakit
+                `master/rumah_sakit/spesialis/${id}`, {
+                    id_penyakit: this.form.idSpesialis
                 }, {}
             ]
             this.isLoading = true
             this.$store.dispatch(type, url).then((result) => {
-                console.log(result.data);
+                iziToast.success({
+                    title: 'success',
+                    message: 'berhasil ubah data',
+                    position: 'topRight'
+                })
             }).catch((err) => {
                 console.log(err);
             })

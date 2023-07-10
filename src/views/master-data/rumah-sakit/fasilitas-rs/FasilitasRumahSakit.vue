@@ -65,8 +65,8 @@
                 <SelectOption v-model="form.id_rumah_sakit" Width="w-100" Label="Rumah Sakit">
                     <template #option>
                         <option value="">Pilih nama rumah sakit</option>
-                        <option :value="data.rumahSakit.idRumahSakit" v-for="data in fasilitasRs" :key="index">{{
-                            data.rumahSakit.namaRs }}
+                        <option :value="rumahSakit.idRumahSakit">{{
+                            rumahSakit.namaRs }}
                         </option>
                     </template>
                 </SelectOption>
@@ -97,19 +97,18 @@ export default {
             },
             selected: [],
             isLoading: false,
-            limit: 1
+            limit: 1,
+            rumahSakit: {}
         }
     },
     computed: {
         idFromParams() {
             return this.$route.params.id
         },
-        limitData() {
-
-        }
     },
     created() {
-        this.getFasilitas()
+        this.getFasilitas(),
+        this.getRumahSakit()
     },
     methods: {
         getFasilitas() {
@@ -122,6 +121,18 @@ export default {
                 this.isLoading = false
                 this.fasilitasRs = result.data
             }).catch((err) => {
+                console.log(err);
+            })
+        },
+        getRumahSakit(){
+            const idRs = this.$route.params.id
+            let type = "getData"
+            let url = [
+                `master/rumah_sakit/data/${idRs}/edit`, {}
+            ]
+            this.$store.dispatch(type, url).then((result)=>{
+                this.rumahSakit = result.data
+            }).catch((err)=>{
                 console.log(err);
             })
         },
