@@ -65,7 +65,7 @@
             </div>
         </div>
     </div>
-    <div class="form-group">
+    <!-- <div class="form-group">
         <select class="select-2 w-50 form-select" v-model="form.idUser" data-placeholder="-- Pilih Dokter --"
             @change="handleChange">
             <option value=""></option>
@@ -80,7 +80,7 @@
         <br>
         <br>
         <ButtonComponent @click="postKeahlianDokter" />
-    </div>
+    </div> -->
 </template>
 
 <script>
@@ -108,10 +108,10 @@ export default {
             this.getKeahlian()
     },
     mounted() {
-        $('.select-2').select2();
+        // $('.select-2').select2();
 
         // Listen to changes in Select2
-        $('.select-2').on('change', this.handleChange);
+        // $('.select-2').on('change', this.handleChange);
     },
     methods: {
         getDokter() {
