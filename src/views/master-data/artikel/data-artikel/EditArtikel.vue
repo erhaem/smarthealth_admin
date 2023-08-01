@@ -6,10 +6,11 @@
         <div class="card-body">
             <Form @submit="submitEdit" :validation-schema="schema" v-slot="{ errors }">
                 <div class="w-25">
+                    <label for="">Pilih Foto</label>
                     <input type="file" class="form-control" @change="chooseFoto">
                     <img :src="form.foto" class="img-fluid mt-3" alt="">
                 </div>
-                <div class="mt-3">
+                <div>
                     <label for="">Judul Artikel</label>
                     <InputField class="w-25" Name="judulArtikel" v-model="form.judulArtikel" />
                     <span>{{ errors.judulArtikel }}</span>

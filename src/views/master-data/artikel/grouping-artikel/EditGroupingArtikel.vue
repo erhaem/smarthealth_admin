@@ -1,12 +1,12 @@
 <template>
-    <div class="col-sm6 col-6">
+    <div class="col-lg-6 col-md-6">
         <div class="card shadow mb-4">
             <div class="card-header">
                 <h6><b class="text-primary">{{ $route.name }}</b></h6>
             </div>
             <div class="card-body">
                 <Form @submit="postGroupArtikel">
-                    <SelectOption Width="w-75" v-model="form.idArtikel" Label="Judul Artikel">
+                    <SelectOption Width="w-100" v-model="form.idArtikel" Label="Judul Artikel">
                         <template #option>
                             <option value="">pilih judul artikel</option>
                             <option :value="data.idArtikel" v-for="data in dataArtikel" :key="index">{{
@@ -15,7 +15,7 @@
                         </template>
                     </SelectOption>
                     <br>
-                    <SelectOption Width="w-75" Label="Kategori Artikel" v-model="form.idKategoriArtikel">
+                    <SelectOption Width="w-100" Label="Kategori Artikel" v-model="form.idKategoriArtikel">
                         <template #option>
                             <option value="">pilih kategori artikel</option>
                             <option :value="data.idKategoriArtikel" v-for="data in dataKategoriArtikel" :key="index">{{
@@ -72,6 +72,7 @@ export default {
             ]
             this.$store.dispatch(type, url).then((result) => {
                 this.dataArtikel = result.data
+                console.log(result);
             }).catch((err) => {
                 console.log(err);
             })

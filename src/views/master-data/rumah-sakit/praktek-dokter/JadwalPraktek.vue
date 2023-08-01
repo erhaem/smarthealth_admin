@@ -74,7 +74,7 @@ import SelectOption from '@/components/partials-component/SelectOption.vue'
 import ModalComponent from '@/components/partials-component/ModalComponent.vue'
 import ButtonComponent from '@/components/partials-component/ButtonComponent.vue'
 import EmptyLoading from '@/components/empty-table/EmptyLoading.vue'
-
+import EmptyData from '@/components/empty-table/EmptyData.vue'
 export default {
     data() {
         return {
@@ -189,7 +189,7 @@ export default {
         }
     },
     components: {
-        EmptyLoading, ButtonComponent, ModalComponent, SelectOption, InputField, pagination
+        EmptyLoading, ButtonComponent, ModalComponent, SelectOption, InputField, pagination, EmptyData
     }
 }
 </script>

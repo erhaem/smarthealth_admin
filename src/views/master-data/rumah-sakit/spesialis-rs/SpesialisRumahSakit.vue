@@ -52,8 +52,7 @@
                                             </router-link>
                                         </template>
                                         <div v-if="data.penyakit">
-                                            <router-link
-                                                :to="'/master/rumah_sakit/dokter/' + data.idSpesialis + '/' + idFromParams">
+                                            <router-link :to="{name: 'Dokter Spesialis Rs', params: {idSpesialis: data.idSpesialis, id: idFromParams}}">
                                                 <ButtonComponent Color="btn-success" Icon="fa-eye" Message="lihat dokter" />
                                             </router-link>
                                         </div>

@@ -24,7 +24,6 @@
                             <th v-if="$can('create', 'Rumah Sakit')">Pilih</th>
                             <th>Nama</th>
                             <th>Alamat</th>
-                            <th>Pemilik</th>
                             <th>Praktek</th>
                             <th v-if="$can('show', 'Rumah Sakit')">Aksi</th>
                         </tr>
@@ -46,7 +45,6 @@
                                 </td>
                                 <td>{{ data.namaRs }}</td>
                                 <td>{{ data.alamatRs }}</td>
-                                <td>{{ data.pemilik }}</td>
                                 <td>
                                     <router-link :to="{ name: 'Daftar Dokter', params: { idRs: data.idRumahSakit } }">
                                         <ButtonComponent Color="btn-info" Message="jadwal" Icon="fa-eye"/>
@@ -91,6 +89,7 @@ export default {
     },
     created() {
         this.getRumahSakit();
+        this.getDokter()
     },
     methods: {
         getRumahSakit() {
@@ -139,6 +138,17 @@ export default {
                     })
                 this.getRumahSakit()
                 }
+            }).catch((err)=>{
+                console.log(err);
+            })
+        },
+        getDokter(){
+            let type = "getData"
+            let url = [
+                "master/ahli/praktek/praktek_rs", {}
+            ]
+            this.$store.dispatch(type, url).then((result)=>{
+                console.log(result);
             }).catch((err)=>{
                 console.log(err);
             })

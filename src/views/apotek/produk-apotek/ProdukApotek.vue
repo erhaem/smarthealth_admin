@@ -61,6 +61,9 @@
             <ButtonComponent @click="postData" />
         </template>
     </ModalComponent>
+    <button @click="postProduk">
+        aak
+    </button>
 </template>
 
 <script>
@@ -80,7 +83,15 @@ export default {
                 id_profil_apotek: ''
             },
             isLoading: false,
-            selected: []
+            selected: [],
+            produk: {
+                kode_produk: 'PRO-2003061',
+                tanggal: '2023-05-05',
+                qty: '10',
+                nama_supplier: 'tegar',
+                asal_supplier: 'pemadang',
+                apotek_id: 'PR-A-12345678910'
+            }
         }
     },
     created() {
@@ -112,7 +123,7 @@ export default {
         getProduk() {
             let type = "getData"
             let url = [
-                "apotek/produk/data_produk", {}
+                `produk/data_produk/by_owner/${this.idFromParams}/get`, {}
             ]
             this.isLoading = true
             this.$store.dispatch(type, url).then((result) => {
@@ -150,6 +161,17 @@ export default {
                 });
             this.selected = [];
         },
+        postProduk(){
+            let type = "postData"
+            let url = [
+                "master/obat/transaksi_obat_masuk", this.produk, {}
+            ]
+            this.$store.dispatch(type, url).then((result)=>{
+                console.log(result);
+            }).catch((err)=>{
+                console.log(err);
+            })
+        }
     },
     components: {
         EmptyData, EmptyLoading, ButtonComponent, InputField, ModalComponent

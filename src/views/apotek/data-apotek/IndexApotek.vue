@@ -72,6 +72,13 @@
             </div>
         </div>
     </div>
+    <div v-for="data in plot">
+        <div class="card shadow-lg">
+            <div class="card-body">
+                {{ data.namaProduk }}
+            </div>
+        </div>
+    </div>
 </template>
 <script>
 import { Form } from 'vee-validate';
@@ -87,6 +94,7 @@ export default {
             dataApotek: [],
             status: 0,
             selected: [],
+            plot: [],
             isLoading: false
         }
     },
@@ -94,9 +102,22 @@ export default {
 
     },
     created() {
-        this.getDataApotek()
+        this.getDataApotek(),
+        this.getPlot()
     },
     methods: {
+        getPlot(){
+            let type = "getData"
+            let url = [
+                "plotting", {}
+            ]
+            this.$store.dispatch(type, url).then((result)=>{
+                console.log(result);
+                this.plot = result
+            }).catch((err)=>{
+                console.log(err);
+            })
+        },
         getDataApotek() {
             let type = "getData"
             let url = [

@@ -37,7 +37,7 @@
                     <div v-if="$can('show', 'Rumah Sakit')">
                         <h6 class="collapse-header">Rumah Sakit</h6>
                         <router-link class="collapse-item" to="/master/rumah_sakit">Data Rumah Sakit</router-link>
-                        <router-link class="collapse-item" to="/master/owner_rs">Owner Rumah Sakit</router-link>
+                        <router-link class="collapse-item" v-if="$can('show', 'Admin')" to="/master/owner_rs">Owner Rumah Sakit</router-link>
                     </div>
                     <div v-if="$can('show', 'Rumah Sakit')">
                         <h6 class="collapse-header">Spesialis Penyakit</h6>
@@ -53,6 +53,15 @@
                             <router-link class="collapse-item" to="/dokter">Data Dokter</router-link>
                             <router-link class="collapse-item" to="/dokter/keahlian_dokter">Keahlian Dokter</router-link>
                             <router-link class="collapse-item" to="/dokter/dokter_keahlian">Dokter Keahlian </router-link>
+                    </template>
+                </CollapseItem>
+            </template>
+        </NavItem>
+        <NavItem v-if="$can('action', 'Admin')" span="Aktivasi Akun" icon="fa-user-doctor" target="#collapseActive">
+            <template #item>
+                <CollapseItem id="collapseActive" title="Dokter & Keahlian">
+                    <template #router>
+                            <router-link class="collapse-item" to="/aktivasi_akun">Data Akun</router-link>
                     </template>
                 </CollapseItem>
             </template>
@@ -87,11 +96,11 @@
                 </CollapseItem>
             </template>
         </NavItem>
-        <NavItem v-if="$can('show', 'Apotek')" span="Rekap Data" icon="fa-users" target="#collapseRekap">
+        <NavItem v-if="$can('show', 'Apotek')" span="Transaksi Produk" icon="fa-users" target="#collapseRekap">
             <template #item>
                 <CollapseItem header="Konsumen & Rekap" id="collapseRekap" title="Rekap Data">
                     <template #router>
-                        
+                        <router-link class="collapse-item" to="/owner_apotek">Data Owner Apotek</router-link>
                     </template>
                 </CollapseItem>
             </template>

@@ -42,10 +42,11 @@
                                 </td>
                                 <td>
                                     <div class="d-flex justify-content-start">
-                                        <router-link :to="'owner_apotek/' + data.getUser.id
-                                            ">
-                                            <ButtonComponent Message="Aktifkan akun" Color="btn-warning" />
-                                        </router-link>
+                                        <!-- <router-link :to="'owner_apotek/' + data.getUser.id
+                                            "> -->
+                                        <ButtonComponent Message="Aktifkan akun" Color="btn-warning"
+                                            @click="aktifkan(data.getUser.id)" />
+                                        <!-- </router-link> -->
                                         <a href="" class="btn btn-sm btn-icon-split me-2 rounded btn-info" target="_blank">
                                             <span class="icon text-white-50">
                                                 <i class="fas fa-eye"></i>
@@ -117,6 +118,26 @@ export default {
                 console.log(err);
             })
         },
+        aktifkan(id) {
+            let type = "putData";
+            let url = [`akun/active_account/${id}/account`, {}];
+            this.$swal({
+                icon: 'question',
+                title: 'Aktifkan akun sekarang?',
+                showDenyButton: true,
+                showCancelButton: false,
+                confirmButtonText: "Ya, aktifkan",
+                denyButtonText: "Jangan"
+            }).then((result) => {
+                if (result.isConfirmed) { // Check if the user clicked the "confirm" button
+                    this.$store.dispatch(type, url).then((result) => {
+                        this.getOwnerApotek()
+                    }).catch((err) => {
+                        console.log(err);
+                    });
+                }
+            });
+        }
 
     },
     components: {

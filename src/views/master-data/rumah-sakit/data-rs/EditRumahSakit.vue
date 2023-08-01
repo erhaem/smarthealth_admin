@@ -1,7 +1,7 @@
 <template>
     <div class="card shadow">
         <div class="card-header">
-            <h6><b class="text-primary">{{$route.name}}</b></h6>
+            <h6><b class="text-primary">{{ $route.name }}</b></h6>
         </div>
         <div class="card-body">
             <Form @submit="postRumahSakit">
@@ -11,18 +11,25 @@
                         <label for="">Foto Rs</label>
                         <img :src="form.foto" class="img-fluid mb-3">
                         <input Name="alamat" class="form-control" type="file" @change="chooseFoto">
+                        <br>
+                        <l-map v-if="form && form.latitude && form.longitude" :zoom="zoom"
+                            :center="[form.latitude, form.longitude]" class="rounded" style="height:350px; width: 100%">
+                            <l-tile-layer :url="tileLayerUrl"></l-tile-layer>
+                            <l-marker v-if="selectedPosition" :lat-lng="[form.latitude, form.longitude]" :draggable="true"
+                                @dragend="handleMarkerDrag"></l-marker>
+                        </l-map>
                     </div>
                     <div class="col-sm-6 col-6">
                         <label for="">Nama Rumah Sakit</label>
                         <InputField Name="namaRs" v-model="form.namaRs" />
                         <label for="">Alamat RS</label>
-                        <InputField Name="alamat" v-model="form.alamatRs" />
-                        <label for="">Deskripsi RS</label>
-                        <InputField Name="deskripsi" v-model="form.deskripsiRs" />
+                        <input type="text" class="form-control mb-3" :value="locationName">
                         <label for="">Latitude RS</label>
-                        <InputField Name="latitude" v-model="form.latitude" />
+                        <input type="text" class="form-control mb-3" :value="latitude">
                         <label for="">Longitude RS</label>
-                        <InputField Name="longitude" v-model="form.longitude" />
+                        <input type="text" class="form-control mb-3" :value="longitude">
+                        <label for="">Deskripsi RS</label>
+                        <textarea class="form-control mb-3" row="4" v-model="form.deskripsiRs"></textarea>
                         <ButtonComponent class="mb-3" />
                     </div>
                 </div>
@@ -31,6 +38,9 @@
     </div>
 </template>
 <script>
+import { LMap, LTileLayer, LMarker } from '@vue-leaflet/vue-leaflet';
+import 'leaflet/dist/leaflet.css';
+import axios from 'axios';
 import iziToast from 'izitoast'
 import InputField from '@/components/partials-component/InputField.vue'
 import ButtonComponent from '@/components/partials-component/ButtonComponent.vue'
@@ -46,12 +56,21 @@ export default {
                 longitude: '',
                 foto: null,
                 gambarLama: ''
-            }
+            },
+            zoom: 15,
+            tileLayerUrl: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+            selectedPosition: null,
+            locationName: null,
+            latitude: null,
+            longitude: null
         }
     },
     computed: {
         idFromParams() {
             return this.$route.params.id
+        },
+        mapCenter() {
+            return this.selectedPosition || [0, 0];
         },
         formData() {
             const formData = new FormData()
@@ -67,20 +86,71 @@ export default {
             return formData;
         }
     },
+    mounted() {
+        this.geolocate()
+    },
     created() {
         this.detailRumahSakit()
     },
     methods: {
+        geolocate(latitude, longitude) {
+            this.fetchLocationDetails(latitude, longitude);
+        },
+
+        handleMarkerDrag(e) {
+            if (e && e.target) {
+                const latitude = e.target._latlng.lat;
+                const longitude = e.target._latlng.lng;
+                this.selectedPosition = [latitude, longitude];
+
+                // Fetch the address based on the dragged marker's latitude and longitude
+                this.fetchLocationDetails(latitude, longitude);
+
+                // Update the form's latitude and longitude based on the dragged marker
+                this.form.latitude = latitude;
+                this.form.longitude = longitude;
+            }
+        },
+        fetchLocationDetails(latitude, longitude) {
+            axios
+                .get('https://nominatim.openstreetmap.org/reverse', {
+                    params: {
+                        lat: latitude,
+                        lon: longitude,
+                        format: 'jsonv2',
+                    },
+                })
+                .then(response => {
+                    this.locationName = response.data.display_name;
+                    this.latitude = response.data.lat
+                    this.longitude = response.data.lon
+                    this.selectedPosition = [response.data.lat, response.data.lon];
+                    this.form.alamatRs = response.data.display_name;
+                    console.log(response);
+                })
+                .catch(error => {
+                    console.error('Error occurred while fetching location details:', error);
+                });
+        },
         detailRumahSakit() {
-            let type = "getData"
-            let url = [
-                'master/rumah_sakit/data/' + this.idFromParams + '/edit', {}
-            ]
-            this.$store.dispatch(type, url).then((result) => {
-                this.form = result.data
-            }).catch((err) => {
-                console.log(err);
-            })
+            let type = "getData";
+            let url = [`master/rumah_sakit/data/${this.idFromParams}/edit`, {}];
+            this.$store
+                .dispatch(type, url)
+                .then((result) => {
+                    this.form = result.data;
+                    this.selectedPosition = [
+                        parseFloat(result.data.latitude),
+                        parseFloat(result.data.longitude),
+                    ];
+                    this.fetchLocationDetails(
+                        parseFloat(result.data.latitude),
+                        parseFloat(result.data.longitude)
+                    );
+                })
+                .catch((err) => {
+                    console.log(err);
+                });
         },
         postRumahSakit() {
             const params = this.$route.params.id
@@ -109,7 +179,8 @@ export default {
     components: {
         InputField,
         ButtonComponent,
-        Form
+        Form,
+        LMap, LTileLayer, LMarker
     }
 }
 </script>

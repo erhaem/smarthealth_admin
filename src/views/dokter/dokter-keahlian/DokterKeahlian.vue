@@ -15,7 +15,7 @@
                 <table class="table table-bordered" width="100%" cellspacing="0">
                     <thead>
                         <tr>
-                            <th>no</th>
+                            <!-- <th>no</th> -->
                             <th>Pilih</th>
                             <th>Nama Dokter</th>
                             <th>Bidang Keahlian</th>
@@ -30,33 +30,35 @@
                     </tbody>
                     <template v-else>
                         <tbody v-for="(data, index) in dokterKeahlian" :key="index">
-                            <tr>
-                                <td>
-                                    {{ index + 1 }}
-                                </td>
-                                <td>
-                                    <input type="checkbox" :value="data.idDokterKeahlian" v-model="selected">
-                                </td>
-                                <td v-if="data.getDokter">
-                                    {{ data.getDokter.nama }}
-                                </td>
-                                <td v-else>
-                                    data ga ada
-                                </td>
-                                <td v-if="data.getKeahlian">
-                                    {{ data.getKeahlian.namaKeahlian }}
-                                </td>
-                                <td v-else>
-                                    data tidak ada
-                                </td>
-                                <td>
-                                    <div class="d-flex justify-content-center">
-                                        <router-link :to="'dokter_keahlian/' + data.idDokterKeahlian + '/edit'">
-                                            <ButtonComponent Message="Edit" Color="btn-warning" />
-                                        </router-link>
-                                    </div>
-                                </td>
-                            </tr>
+                            <template v-if="data.user.idRole == 'RO-2003062'">
+                                <tr>
+                                    <!-- <td>
+                                        {{ index + 1 }}
+                                    </td> -->
+                                    <td>
+                                        <input type="checkbox" :value="data.idDokterKeahlian" v-model="selected">
+                                    </td>
+                                    <td v-if="data.user">
+                                        {{ data.user.nama }}
+                                    </td>
+                                    <td v-else>
+                                        data ga ada
+                                    </td>
+                                    <td v-if="data.keahlianId">
+                                        {{ data.keahlianId.namaKeahlian }}
+                                    </td>
+                                    <td v-else>
+                                        data tidak ada
+                                    </td>
+                                    <td>
+                                        <div class="d-flex justify-content-center">
+                                            <router-link :to="'dokter_keahlian/' + data.idDokterKeahlian + '/edit'">
+                                                <ButtonComponent Message="Edit" Color="btn-warning" />
+                                            </router-link>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </template>
                         </tbody>
                     </template>
                 </table>

@@ -17,6 +17,7 @@ import EditSpesialisRumahSakit from '@/views/master-data/rumah-sakit/spesialis-r
 import FasilitasRumahSakit from '@/views/master-data/rumah-sakit/fasilitas-rs/FasilitasRumahSakit.vue'
 import EditFasilitas from '@/views/master-data/rumah-sakit/fasilitas-rs/EditFasilitas.vue'
 import DokterSpesialisRumahSakit from '@/views/master-data/rumah-sakit/dokter-spesialis-rs/DokterSpesialisRumahSakit.vue'
+import DokterRumahSakit from '@/views/master-data/rumah-sakit/dokter-rs/IndexDokterRs.vue'
 
 import IndexSpesialis from '@/views/master-data/spesialis-penyakit/IndexSpesialis.vue'
 import EditSpesialisPenyakit from '@/views/master-data/spesialis-penyakit/EditSpesialisPenyakit.vue'
@@ -31,11 +32,17 @@ import UpdateOwnerRs from '@/views/master-data/owner-rs/UpdateOwnerRs.vue'
 import { checkRoles, roles } from '../../middleware/redirect';
 import JadwalAntrian from '../../views/master-data/rumah-sakit/jadwal-antrian/IndexJadwalAntrian.vue'
 
+import AktivasiAkun from '@/views/aktivasi-akun/IndexAkun.vue'
 
 export default [{
     path: '/master',
     name: 'Master Data',
     component: MasterData,
+},
+{
+    path: '/aktivasi_akun',
+    name: 'Aktivasi Akun',
+    component: AktivasiAkun
 },
 {
     path: '/master',
@@ -146,8 +153,13 @@ export default [{
         },
         {
             path: 'rumah_sakit/dokter/:idSpesialis/:id',
-            name: 'Dokter Spesialis',
+            name: 'Dokter Spesialis Rs',
             component: DokterSpesialisRumahSakit
+        },
+        {
+            path: 'rumah_sakit/dokter',
+            name: 'Dokter Rumah Sakit',
+            component: DokterRumahSakit
         },
         {
             path: 'fasilitas_rs/:id/show',
