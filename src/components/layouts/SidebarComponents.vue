@@ -106,6 +106,16 @@
                 </CollapseItem>
             </template>
         </NavItem>
+        <NavItem span="KunjunganMu" icon="fa-users" target="#collapseKunjungan">
+            <template #item>
+                <CollapseItem header="" id="collapseKunjungan" title="Rekap dan Sesi Kunjungan">
+                    <template #router>
+                        <router-link class="collapse-item" :to="{name: 'list jadwal antrian'}">Sesi Kunjungan</router-link>
+                        <router-link class="collapse-item" :to="{name: 'Riwayat Kunjungan'}">Riwayat Kunjungan</router-link>
+                    </template>
+                </CollapseItem>
+            </template>
+        </NavItem>
     </ul>
 </template>
 

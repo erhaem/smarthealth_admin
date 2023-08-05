@@ -41,8 +41,9 @@
                                     </template>
                                 </td>
                                 <td>
-                                    <ButtonComponent Message="ubah status"
+                                    <ButtonComponent Message="Selesaikan konsultasi"
                                         @click="ubahStatus(data.idJadwalAntrian)" />
+                                    <ButtonComponent Message="Detail" data-bs-toggle="modal" data-bs-target="#detail" @click="lihat(data.idJadwalAntrian)"/>
                                 </td>
                             </tr>
                         </tbody>
@@ -51,9 +52,15 @@
             </div>
         </div>
     </div>
+    <ModalComponent id="detail">
+        <template #modal>
+            <img :src="convert(qr.qrCode)" alt="">
+        </template>
+    </ModalComponent>
 </template>
 
 <script>
+import ModalComponent from '@/components/partials-component/ModalComponent.vue'
 import EmptyData from '@/components/empty-table/EmptyData.vue'
 import EmptyLoading from '@/components/empty-table/EmptyLoading.vue'
 import ButtonComponent from '@/components/partials-component/ButtonComponent.vue'
@@ -61,11 +68,14 @@ export default {
     data() {
         return {
             antrian: [],
-            isLoading: false
+            riwayat: [],
+            isLoading: false,
+            qr: {}
         }
-    },
+    },  
     created() {
-        this.getAntrian()
+        this.getAntrian(),
+        this.getRiwayat()
     },
     methods: {
         getAntrian() {
@@ -107,11 +117,41 @@ export default {
                         });
                 }
             });
+        },
+        lihat(idJadwalAntrian) {
+            let type = "getData"
+            let url = [
+                `qr/${idJadwalAntrian}`, {}
+            ]
+            this.loadingQr = true
+            this.$store.dispatch(type, url).then((result) => {
+                // this.antrian = result
+                this.loadingQr = false
+                this.qr = result
+            }).catch((err) => {
+                console.log(err);
+            })
+        },
+        convert(svgCode) {
+            return `data:image/svg+xml;base64,${btoa(svgCode)}`
+        },
+        getRiwayat(){
+            let type = "getData"
+            let url = [
+                "ahli/transaksi_buat_janji", {}
+            ]
+            this.isLoading = true
+            this.$store.dispatch(type, url).then((result)=>{
+                this.isLoading = false
+                this.riwayat = result.data
+            }).catch((err)=>{
+                console.log(er);
+            })
         }
 
     },
     components: {
-        EmptyData, EmptyLoading, ButtonComponent
+        EmptyData, EmptyLoading, ButtonComponent, ModalComponent
     }
 }
 </script>

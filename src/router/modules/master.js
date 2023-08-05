@@ -31,6 +31,7 @@ import EditOwnerRs from '@/views/master-data/owner-rs/EditOwnerRs.vue'
 import UpdateOwnerRs from '@/views/master-data/owner-rs/UpdateOwnerRs.vue'
 import { checkRoles, roles } from '../../middleware/redirect';
 import JadwalAntrian from '../../views/master-data/rumah-sakit/jadwal-antrian/IndexJadwalAntrian.vue'
+import RiwayatKunjungan from '../../views/master-data/rumah-sakit/jadwal-antrian/IndexRiwayatKunjungan.vue'
 
 import AktivasiAkun from '@/views/aktivasi-akun/IndexAkun.vue'
 import AktivasiAkunPerawat from '@/views/aktivasi-akun/AktivasiPerawat.vue'
@@ -216,6 +217,11 @@ export default [{
             path: 'jadwal-antrian',
             name: 'list jadwal antrian',
             component: JadwalAntrian
+        },
+        {
+            path: 'riwayat-kunjungan',
+            name: 'Riwayat Kunjungan',
+            component: RiwayatKunjungan
         },
         // Owner Rumah Sakit
         {

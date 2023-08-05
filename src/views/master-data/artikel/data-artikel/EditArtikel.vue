@@ -64,7 +64,7 @@ export default {
             formData.append('gambarLama', this.form.gambarLama)
 
             return formData;
-        }
+        },
     },
     components: {
         InputField,
@@ -90,22 +90,40 @@ export default {
         },
         submitEdit() {
             const params = this.$route.params.id
-            let type = "postDataUpload"
-            const formData = this.formData
-            let url = [
-                `master/artikel/${params}?_method=put`, formData
-            ]
-            this.$store.dispatch(type, url).then((result) => {
-                iziToast.success({
-                    title: 'success',
-                    message: 'data berhasil diubah',
-                    position: 'topRight',
-                    timeout: 1000
-                })
-                this.$router.back()
-            }).catch((err) => {
-                console.log(err);
-            })
+            const allowedFormats = ['image/jpeg', 'image/png', 'image/jpg'];
+            const file = this.form.foto;
+            const maxSizeInBytes = 5 * 1024 * 1024;
+            if (file && allowedFormats.includes(file.type)) {
+                if (file.size <= maxSizeInBytes) {
+                    this.$store
+                        .dispatch("postDataUpload", [`master/artikel/${params}?_method=put`, this.formData])
+                        .then((result) => {
+                            iziToast.success({
+                                title: 'Success',
+                                position: 'topRight',
+                                message: 'Data Artikel Berhasil Ditambahkan',
+                                timeout: 1000
+                            });
+                            this.$router.back()
+                        })
+                        .catch((err) => {
+                            console.log(err);
+                        });
+                } else {
+                    iziToast.error({
+                        title: 'Error',
+                        message: 'Maaf, ukuran file gambar terlalu besar. Maksimum ukuran file adalah 5MB.',
+                        position: 'topRight'
+                    });
+                }
+            } else {
+                iziToast.error({
+                    title: 'Error',
+                    message: 'Maaf, format yang diperbolehkan hanya jpg, png, jpeg',
+                    position: 'topRight'
+                });
+
+            }
         },
         chooseFoto(event) {
             this.form.foto = event.target.files[0]
