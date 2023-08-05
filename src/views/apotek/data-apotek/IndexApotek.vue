@@ -21,11 +21,10 @@
                                 pilih
                             </th>
                             <th>nama</th>
-                            <th>nomor hp</th>
                             <th>alamat</th>
                             <th v-if="$can('action', 'Admin')">pemilik</th>
                             <th v-if="$can('action', 'Owner')">status</th>
-                            <th>aksi</th>
+                            <th v-if="$can('action', 'Owner Admin')">aksi</th>
                         </thead>
                         <tbody v-if="isLoading">
                             <EmptyLoading />
@@ -43,7 +42,6 @@
                                         <input type="checkbox" v-model="selected" :value="data.idProfilApotek">
                                     </td>
                                     <td>{{ data.namaApotek }} </td>
-                                    <td>{{ data.nomorHp }}</td>
                                     <td>{{ data.alamatApotek }}</td>
                                     <td v-if="$can('action', 'Admin')">{{ data.user.nama }}</td>
                                     <td v-if="$can('action', 'Owner')">
@@ -53,29 +51,27 @@
                                             </template>
                                         </ActiveSlider>
                                     </td>
-                                    <td v-if="$can('show', 'Apotek')">
-                                        <div v-if="data.status === 0">
-                                            <ButtonComponent disabled Message="lihat produk" Color="btn-warning"/>
-                                        </div>
-                                        <div v-else>
-                                            <router-link :to="{ name: 'Produk Apotek', params: { id: data.idProfilApotek } }">
-                                                <ButtonComponent
-                                                    Message="lihat produk" Color="btn-warning" />
-                                            </router-link>
-                                        </div>
+                                    <td>
+                                        <template v-if="$can('action', 'Admin Apotek')">
+                                            <div v-if="data.status === 0">
+                                                <ButtonComponent disabled Message="lihat produk" Color="btn-warning" />
+                                            </div>
+                                            <div v-else>
+                                                <router-link
+                                                    :to="{ name: 'Produk Apotek', params: { id: data.idProfilApotek } }">
+                                                    <ButtonComponent Message="lihat produk" Color="btn-warning" />
+                                                </router-link>
+                                            </div>
+                                        </template>
+                                        <router-link v-if="$can('action', 'Owner')" :to="{ name: 'Edit Apotek', params: { id: data.idProfilApotek } }">
+                                            <ButtonComponent Message="edit apotek" Color="btn-warning" />
+                                        </router-link>
                                     </td>
                                 </tr>
                             </tbody>
                         </template>
                     </table>
                 </div>
-            </div>
-        </div>
-    </div>
-    <div v-for="data in plot">
-        <div class="card shadow-lg">
-            <div class="card-body">
-                {{ data.namaProduk }}
             </div>
         </div>
     </div>
@@ -94,30 +90,13 @@ export default {
             dataApotek: [],
             status: 0,
             selected: [],
-            plot: [],
             isLoading: false
         }
     },
-    computed: {
-
-    },
     created() {
-        this.getDataApotek(),
-        this.getPlot()
+        this.getDataApotek()
     },
     methods: {
-        getPlot(){
-            let type = "getData"
-            let url = [
-                "plotting", {}
-            ]
-            this.$store.dispatch(type, url).then((result)=>{
-                console.log(result);
-                this.plot = result
-            }).catch((err)=>{
-                console.log(err);
-            })
-        },
         getDataApotek() {
             let type = "getData"
             let url = [

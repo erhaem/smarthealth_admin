@@ -6,6 +6,7 @@ import EditGroupingProduk from '../../views/apotek/grouping-produk/EditGroupingP
 import ProdukApotek from '../../views/apotek/produk-apotek/ProdukApotek.vue'
 import EditProdukApotek from '../../views/apotek/produk-apotek/EditProdukApotek.vue'
 import TambahApotek from '../../views/apotek/data-apotek/TambahApotek.vue'
+import EditApotek from '../../views/apotek/data-apotek/EditApotek.vue'
 import {roles, checkRoles} from '../../middleware/redirect'
 export default[{
     path: '/owner_apotek',
@@ -29,6 +30,14 @@ export default[{
     component: DataApotek,
     meta: {
         middleware: checkRoles(roles.adminOwnerApt)
+    },
+},
+{
+    path: '/apotek/:id/edit',
+    name: 'Edit Apotek',
+    component: EditApotek,
+    meta: {
+        middleware: checkRoles(roles.ownerApotek)
     }
 },
 

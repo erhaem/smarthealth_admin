@@ -33,6 +33,7 @@ import { checkRoles, roles } from '../../middleware/redirect';
 import JadwalAntrian from '../../views/master-data/rumah-sakit/jadwal-antrian/IndexJadwalAntrian.vue'
 
 import AktivasiAkun from '@/views/aktivasi-akun/IndexAkun.vue'
+import AktivasiAkunPerawat from '@/views/aktivasi-akun/AktivasiPerawat.vue'
 
 export default [{
     path: '/master',
@@ -40,9 +41,14 @@ export default [{
     component: MasterData,
 },
 {
-    path: '/aktivasi_akun',
-    name: 'Aktivasi Akun',
+    path: '/aktivasi_dokter',
+    name: 'Aktivasi Akun Dokter',
     component: AktivasiAkun
+},
+{
+    path: '/aktivasi_perawat',
+    name: 'Aktivasi Akun Perawat',
+    component: AktivasiAkunPerawat
 },
 {
     path: '/master',

@@ -4,14 +4,9 @@
             <h6><b class="text-primary">{{ $route.name }}</b></h6>
         </div>
         <div class="card-body">
-            <Form @submit="postRumahSakit">
                 <div class="container py-2 row">
-                    <h6><b> {{ $route.name }} </b></h6>
+                    <h6><b> Data Apotek </b></h6>
                     <div class="col-sm-6 col-6">
-                        <label for="">Foto Rs</label>
-                        <img :src="form.foto" class="img-fluid mb-3">
-                        <input Name="alamat" class="form-control" type="file" @change="chooseFoto">
-                        <br>
                         <l-map v-if="form && form.latitude && form.longitude" :zoom="zoom"
                             :center="[form.latitude, form.longitude]" class="rounded" style="height:350px; width: 100%">
                             <l-tile-layer :url="tileLayerUrl"></l-tile-layer>
@@ -20,20 +15,36 @@
                         </l-map>
                     </div>
                     <div class="col-sm-6 col-6">
-                        <label for="">Nama Rumah Sakit</label>
-                        <InputField Name="namaRs" v-model="form.namaRs" />
-                        <label for="">Alamat RS</label>
+                        <label for="">Nama Apotek</label>
+                        <InputField Name="namaRs" v-model="form.namaApotek" />
+                        <label for="">Alamat</label>
                         <input type="text" class="form-control mb-3" :value="locationName">
-                        <label for="">Latitude RS</label>
-                        <input type="text" class="form-control mb-3" :value="latitude">
-                        <label for="">Longitude RS</label>
-                        <input type="text" class="form-control mb-3" :value="longitude">
-                        <label for="">Deskripsi RS</label>
-                        <textarea class="form-control mb-3" row="4" v-model="form.deskripsiRs"></textarea>
-                        <ButtonComponent class="mb-3" />
+                        <input type="text" class="form-control mb-3" hidden :value="latitude">
+                        <input type="text" class="form-control mb-3" hidden :value="longitude">
+                        <label for="">Nomor Hp Apotek</label>
+                        <InputField Name="nomorHp" v-model="form.nomorHpApotek" />
+                        <label for="">Deskripsi</label>
+                        <textarea class="form-control mb-3" row="4" v-model="form.deskripsiApotek"></textarea>
                     </div>
                 </div>
-            </Form>
+                <div class="container py-2 row">
+                    <h6><b> Data Admin Apotek </b></h6>
+                    <div class="col-sm-6 col-6">
+                        <label for="">Nama</label>
+                        <InputField Name="nama" v-model="form.nama" />
+                        <label for="">Jenis Kelamin</label>
+                        <InputField Name="jenis" v-model="form.jenisKelamin" />
+                    </div>
+                    <div class="col-sm-6 col-6">
+                        <label for="">Nomor Hp</label>
+                        <InputField Name="nomorHp" v-model="form.nomorHp" />
+                        <label for="">Password</label>
+                        <InputField Name="password" v-model="form.password" />
+                        <div class="d-flex justify-content-end">
+                            <ButtonComponent class="mb-3" @click="postApotek" />
+                        </div>
+                    </div>
+                </div>
         </div>
     </div>
 </template>
@@ -49,13 +60,14 @@ export default {
     data() {
         return {
             form: {
-                namaRs: '',
-                deskripsiRs: '',
-                alamatRs: '',
-                latitude: '',
-                longitude: '',
-                foto: null,
-                gambarLama: ''
+                namaApotek: '',
+                deskripsiApotek: '',
+                alamatApotek: '',
+                nomorHp: '',
+                nomorHpApotek: '',
+                password: '',
+                jenisKelamin: '',
+                nama: '',
             },
             zoom: 15,
             tileLayerUrl: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
@@ -72,25 +84,12 @@ export default {
         mapCenter() {
             return this.selectedPosition || [0, 0];
         },
-        formData() {
-            const formData = new FormData()
-
-            formData.append('foto_rs', this.form.foto)
-            formData.append('nama_rs', this.form.namaRs)
-            formData.append('alamat_rs', this.form.alamatRs)
-            formData.append('deskripsi_rs', this.form.deskripsiRs)
-            formData.append('latitude', this.form.latitude)
-            formData.append('longitude', this.form.longitude)
-            formData.append('gambarLama', this.form.gambarLama)
-
-            return formData;
-        }
     },
     mounted() {
         this.geolocate()
     },
     created() {
-        this.detailRumahSakit()
+        this.detailApotek()
     },
     methods: {
         geolocate(latitude, longitude) {
@@ -124,16 +123,16 @@ export default {
                     this.latitude = response.data.lat
                     this.longitude = response.data.lon
                     this.selectedPosition = [response.data.lat, response.data.lon];
-                    this.form.alamatRs = response.data.display_name;
+                    this.form.alamatApotek = response.data.display_name;
                     console.log(response);
                 })
                 .catch(error => {
                     console.error('Error occurred while fetching location details:', error);
                 });
         },
-        detailRumahSakit() {
+        detailApotek() {
             let type = "getData";
-            let url = [`master/rumah_sakit/data/${this.idFromParams}/edit`, {}];
+            let url = [`apotek/pengaturan/profil_apotek/${this.idFromParams}/edit`, {}];
             this.$store
                 .dispatch(type, url)
                 .then((result) => {
@@ -151,21 +150,40 @@ export default {
                     console.log(err);
                 });
         },
-        postRumahSakit() {
+        postApotek() {
             const params = this.$route.params.id
-            let type = "postDataUpload"
-            const formData = this.formData
+            let type = "postData"
             let url = [
-                `master/rumah_sakit/data/${params}?_method=put`, formData
+                `apotek/pengaturan/profil_apotek/${params}?_method=put`, {
+                    nama_apotek: this.form.namaApotek,
+                    deskripsi_apotek: this.form.deskripsiApotek,
+                    alamat_apotek: this.locationName,
+                    nomor_hp: this.form.nomorHp,
+                    nomor_hp_apotek: this.form.nomorHpApotek,
+                    password: this.form.password,
+                    jenis_kelamin: this.form.jenisKelamin,
+                    nama: this.form.nama,
+                    latitude: this.latitude,
+                    longitude: this.longitude
+                }
             ]
             this.$store.dispatch(type, url).then((result) => {
-                iziToast.success({
+                if(result.success === false){
+                    iziToast.error({
+                    title: 'galat',
+                    message: result.message,
+                    position: 'topRight',
+                    timeout: 1000
+                })
+                } else {
+                    iziToast.success({
                     title: 'success',
                     message: 'data berhasil diubah',
                     position: 'topRight',
                     timeout: 1000
                 })
                 this.$router.back()
+                }
             }).catch((err) => {
                 console.log(err);
             })

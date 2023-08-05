@@ -56,7 +56,7 @@ export default {
             let url = [
                 "autentikasi/login", this.form, {}
             ]
-            const allowRoles = ["RO-2003061", "RO-2003063", "RO-2003065", "RO-2003066", "RO-2003062"]
+            const allowRoles = ["RO-2003061", "RO-2003063", "RO-2003065", "RO-2003066", "RO-2003062", "RO-2003067"]
             this.$store.dispatch(type, url).then((result) => {
                 console.log(result);
                 const cekRole = result.data.getRole.idRole;

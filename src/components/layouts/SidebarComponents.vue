@@ -59,9 +59,10 @@
         </NavItem>
         <NavItem v-if="$can('action', 'Admin')" span="Aktivasi Akun" icon="fa-user-doctor" target="#collapseActive">
             <template #item>
-                <CollapseItem id="collapseActive" title="Dokter & Keahlian">
+                <CollapseItem id="collapseActive" title="Aktivasi Akun">
                     <template #router>
-                            <router-link class="collapse-item" to="/aktivasi_akun">Data Akun</router-link>
+                        <router-link class="collapse-item" to="/aktivasi_dokter">Dokter</router-link>
+                        <router-link class="collapse-item" to="/aktivasi_perawat">Perawat</router-link>
                     </template>
                 </CollapseItem>
             </template>
@@ -89,9 +90,9 @@
             <template #item>
                 <CollapseItem header="Konsumen & Rekap" id="collapseApotek" title="Apotek & Rekap">
                     <template #router>
-                        <router-link class="collapse-item" v-if="$can('action', 'Apotek')" to="/owner_apotek">Data Owner Apotek</router-link>
+                        <router-link class="collapse-item" v-if="$can('show', 'Admin')" to="/owner_apotek">Data Owner Apotek</router-link>
                         <router-link class="collapse-item" to="/apotek">Data Apotek</router-link>
-                        <router-link class="collapse-item" to="/apotek/grouping_produk">Grouping Produk</router-link>
+                        <router-link  v-if="$can('action', 'Admin Apotek')" class="collapse-item" to="/apotek/grouping_produk">Grouping Produk</router-link>
                     </template>
                 </CollapseItem>
             </template>

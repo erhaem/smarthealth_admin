@@ -23,7 +23,7 @@ const permisionsByRole = {
          'show_Perawat', 'action_Perawat'
     ],
     "RO-2003065": [
-        'show_Apotek','action_Owner', 'show_Kategori Produk'
+        'show_Apotek','action_Owner', 'show_Kategori Produk', 'action_Owner Admin'
     ],
     "RO-2003066": [
         'action_Rumah Sakit',
@@ -33,6 +33,9 @@ const permisionsByRole = {
         'show_Dokter',
         'show_Spesialis'
     ],
+    "RO-2003067": [
+        'show_Apotek', 'action_Admin Apotek', 'action_Owner Admin'
+    ]
 }
 export default defineAbility(can => {
     if (Cookie.get('user') !== undefined) {

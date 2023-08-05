@@ -4,7 +4,7 @@
             <div class="d-flex justify-content-between">
                 <h6 class="m-0 font-weight-bold text-primary">Data {{ $route.name }}</h6>
                 <div class="d-flex justify-content-start">
-                    <ButtonComponent v-if="$can('action', 'Owner')" Color="btn-dark" Message="Tambah Data +"
+                    <ButtonComponent v-if="$can('action', 'Admin Apotek ')" Color="btn-dark" Message="Tambah Data +"
                         data-bs-toggle="modal" data-bs-target="#tambahData" />
                     <div v-if="selected.length == 0">
                     </div>
@@ -21,6 +21,7 @@
                         <th>pilih</th>
                         <th>nama</th>
                         <th>harga</th>
+                        <th>stok</th>
                         <th v-if="$can('action', 'Owner')">aksi</th>
                     </thead>
                     <tbody v-if="isLoading">
@@ -38,6 +39,17 @@
                                 <td><input type="checkbox" v-model="selected" :value="data.kodeProduk"></td>
                                 <td>{{ data.namaProduk }}</td>
                                 <td>{{ data.hargaProduk }}</td>
+                                <td>
+                                    <div class="d-flex justify-content-center">
+                                        <p class="me-2">
+                                            <i class="fas fa-minus"></i>
+                                        </p>
+                                        <p v-for="data in qty">{{data.totalStok}}</p>
+                                        <p class="ms-2" data-bs-toggle="modal" data-bs-target="#tambahStok" @click="lihat(data.kodeProduk)">
+                                            <i class="fas fa-plus"></i>
+                                        </p>
+                                    </div>
+                                </td>
                                 <td v-if="$can('action', 'Owner')">
                                     <router-link :to="{name: 'Edit Produk Apotek', params:{profilApotek: this.idFromParams, id:data.kodeProduk}}">
                                         <ButtonComponent Message="Edit" Color="btn-warning"/>
@@ -61,9 +73,15 @@
             <ButtonComponent @click="postData" />
         </template>
     </ModalComponent>
-    <button @click="postProduk">
-        aak
-    </button>
+
+    <ModalComponent id="tambahStok">
+        <template #modal>
+            <InputField :value="kode" type="hidden" />
+            <label for="">Jumlah Stok Masuk</label>
+            <InputField v-model="form.qty" />
+            <ButtonComponent @click="postQty" />
+        </template>
+    </ModalComponent>
 </template>
 
 <script>
@@ -72,30 +90,24 @@ import InputField from '@/components/partials-component/InputField.vue'
 import ButtonComponent from '@/components/partials-component/ButtonComponent.vue'
 import EmptyLoading from '@/components/empty-table/EmptyLoading.vue'
 import EmptyData from '@/components/empty-table/EmptyData.vue'
+import iziToast from 'izitoast'
 export default {
     data() {
         return {
             dataProduk: [],
             form: {
-                nama_produk: '',
-                harga_produk: '',
-                deskripsi_produk: '',
-                id_profil_apotek: ''
+                kode_produk: '',
+                qty: ''
             },
             isLoading: false,
             selected: [],
-            produk: {
-                kode_produk: 'PRO-2003061',
-                tanggal: '2023-05-05',
-                qty: '10',
-                nama_supplier: 'tegar',
-                asal_supplier: 'pemadang',
-                apotek_id: 'PR-A-12345678910'
-            }
+            qtyyy: [],
+            kode: {}
         }
     },
     created() {
         this.getProduk()
+        // this.getQty()
     },
     computed: {
         idFromParams() {
@@ -115,7 +127,11 @@ export default {
                 {}
             ]
             this.$store.dispatch(type, url).then((result) => {
-                console.log(result);
+                iziToast.success({
+                    title: 'berhasil tambah produk',
+                    position: 'topRight'
+                })
+                this.getProduk()
             }).catch((err) => {
                 console.log(err);
             })
@@ -123,7 +139,7 @@ export default {
         getProduk() {
             let type = "getData"
             let url = [
-                `produk/data_produk/by_owner/${this.idFromParams}/get`, {}
+                `apotek/produk/data_produk/by_owner/${this.idFromParams}/get`, {}
             ]
             this.isLoading = true
             this.$store.dispatch(type, url).then((result) => {
@@ -161,16 +177,21 @@ export default {
                 });
             this.selected = [];
         },
-        postProduk(){
+        postQty(){
             let type = "postData"
             let url = [
-                "master/obat/transaksi_obat_masuk", this.produk, {}
+                "master/obat/transaksi_obat_masuk", {
+                    kode_produk: this.kode,
+                    qty: this.form.qty
+                }, {}
             ]
             this.$store.dispatch(type, url).then((result)=>{
                 console.log(result);
-            }).catch((err)=>{
-                console.log(err);
             })
+        },
+        lihat(kodeProduk){
+            this.kode = kodeProduk
+            console.log(kodeProduk);
         }
     },
     components: {

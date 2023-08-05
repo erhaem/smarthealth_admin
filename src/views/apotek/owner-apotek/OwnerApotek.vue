@@ -46,7 +46,6 @@
                                             "> -->
                                         <ButtonComponent Message="Aktifkan akun" Color="btn-warning"
                                             @click="aktifkan(data.getUser.id)" />
-                                        <!-- </router-link> -->
                                         <a href="" class="btn btn-sm btn-icon-split me-2 rounded btn-info" target="_blank">
                                             <span class="icon text-white-50">
                                                 <i class="fas fa-eye"></i>
