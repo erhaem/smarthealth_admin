@@ -9,6 +9,8 @@
                     <thead>
                         <th>Nama</th>
                         <th>Akun</th>
+                        <th>Foto</th>
+                        <th>Dokumen</th>
                         <th>Aksi</th>
                     </thead>
                     <tbody v-if="isLoading">
@@ -19,6 +21,16 @@
                             <tr>
                                 <td>{{ data.nama }}</td>
                                 <td>{{ data.role.namaRole }}</td>
+                                <td>
+                                    <a :href="data.foto" target="_blank" class="btn btn-sm btn-info">
+                                        lihat foto
+                                    </a>
+                                </td>
+                                <td>
+                                    <a :href="data.fileDokumen" target="_blank" class="btn btn-sm btn-success">
+                                        lihat dokumen
+                                    </a>
+                                </td>
                                 <td>
                                     <ButtonComponent data-bs-toggle="modal" data-bs-target="#tambahData" Message="Aktifkan Akun"
                                         @click="lihat(data.id)" />

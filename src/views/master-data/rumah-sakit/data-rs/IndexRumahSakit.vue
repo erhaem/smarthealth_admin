@@ -21,7 +21,7 @@
                     <thead>
                         <tr>
                             <th>no</th>
-                            <th v-if="$can('create', 'Rumah Sakit')">Pilih</th>
+                            <th v-if="$can('action', 'Rumah Sakit')">Pilih</th>
                             <th>Nama</th>
                             <th>Alamat</th>
                             <th>Praktek</th>
@@ -40,7 +40,7 @@
                                 <td>
                                     {{ index + 1 }}
                                 </td>
-                                <td v-if="$can('create', 'Rumah Sakit')">
+                                <td v-if="$can('action', 'Rumah Sakit')">
                                     <input type="checkbox" v-model="selectedId" :value="data.idRumahSakit">
                                 </td>
                                 <td>{{ data.namaRs }}</td>
@@ -58,7 +58,7 @@
                                         <router-link :to="'fasilitas_rs/' + data.idRumahSakit + '/show'">
                                             <ButtonComponent Color="btn-secondary" Message="fasilitas" Icon="fa-eye" />
                                         </router-link>
-                                        <router-link :to="'rumah_sakit/' + 'spesialis/' + data.idRumahSakit">
+                                        <router-link :to="{name: 'Spesialis Rumah Sakit', params: {idRumahSakit: data.idRumahSakit, namaRs: data.namaRs}}">
                                         <ButtonComponent Color="btn-success" Message="spesialis" Icon="fa-eye"/> 
                                         </router-link>
                                     </div>

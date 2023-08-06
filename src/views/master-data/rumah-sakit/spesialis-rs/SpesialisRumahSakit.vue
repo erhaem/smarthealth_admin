@@ -2,7 +2,7 @@
     <div class="card shadow">
         <div class="card-header">
             <div class="d-flex justify-content-between">
-                <h6 class="m-0 font-weight-bold text-primary">Data {{ $route.name }}</h6>
+                <h6 class="m-0 font-weight-bold text-primary">Daftar Spesialis {{this.$route.params.namaRs}}</h6>
                 <div class="d-flex justify-content-start" v-if="$can('action', 'Rumah Sakit')">
                     <div>
                         <ButtonComponent data-bs-toggle="modal" data-bs-target="#tambahData" Message="Tambah Data +" />
@@ -52,7 +52,7 @@
                                             </router-link>
                                         </template>
                                         <div v-if="data.penyakit">
-                                            <router-link :to="{name: 'Dokter Spesialis Rs', params: {idSpesialis: data.idSpesialis, id: idFromParams}}">
+                                            <router-link :to="{name: 'Dokter Spesialis Rs', params: {idSpesialis: data.idSpesialis, id: idFromParams, namaSpesialis:data.penyakit.namaSpesialis, namaRs: this.$route.params.namaRs}}">
                                                 <ButtonComponent Color="btn-success" Icon="fa-eye" Message="lihat dokter" />
                                             </router-link>
                                         </div>

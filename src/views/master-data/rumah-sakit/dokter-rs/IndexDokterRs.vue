@@ -16,8 +16,14 @@
                         Tempat Praktek
                     </th>
                     <th>
-                        Dokumen
+                        Aksi
                     </th>
+                    <tbody v-if="isLoading">
+                        <EmptyLoading/>
+                    </tbody>
+                    <tbody v-else-if="!dokter.length">
+                        <EmptyData/>
+                    </tbody>
                     <tbody v-for="(data, index) in dokter" :key="data.idPraktekAhli">
                         <tr>
                             <td>
@@ -62,6 +68,8 @@
     </ModalComponent>
 </template>
 <script>
+import EmptyData from '@/components/empty-table/EmptyData.vue'
+import EmptyLoading from '@/components/empty-table/EmptyLoading.vue'
 import InputField from '../../../../components/partials-component/InputField.vue'
 import SelectOption from '../../../../components/partials-component/SelectOption.vue'
 import ModalComponent from '@/components/partials-component/ModalComponent.vue'
@@ -78,7 +86,8 @@ export default {
                 idKeahlian: '',
                 idSpesialis: '',
                 biayaPraktek: ''
-            }
+            },
+            isLoading: false
         }
     },
     created() {
@@ -114,7 +123,9 @@ export default {
             let url = [
                 "master/ahli/praktek/praktek_rs", {}
             ]
+            this.isLoading = true
             this.$store.dispatch(type, url).then((result) => {
+                this.isLoading = false
                 this.dokter = result.data
             }).catch((err) => {
                 console.log(err);
@@ -139,7 +150,7 @@ export default {
         }
     },
     components: {
-        ButtonComponent, ModalComponent, SelectOption, InputField
+        ButtonComponent, ModalComponent, SelectOption, InputField, EmptyData, EmptyLoading
     }
 }
 </script>

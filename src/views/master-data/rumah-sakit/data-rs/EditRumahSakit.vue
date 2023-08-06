@@ -4,33 +4,31 @@
             <h6><b class="text-primary">{{ $route.name }}</b></h6>
         </div>
         <div class="card-body">
-            <Form @submit="postRumahSakit">
+            <Form @submit="submitRs">
                 <div class="container py-2 row">
                     <h6><b> {{ $route.name }} </b></h6>
                     <div class="col-sm-6 col-6">
-                        <label for="">Foto Rs</label>
                         <img :src="form.foto" class="img-fluid mb-3">
+                        <label for="">Foto Rs</label>
                         <input Name="alamat" class="form-control" type="file" @change="chooseFoto">
+                        <label for="">Nama Rumah Sakit</label>
+                        <InputField Name="namaRs" v-model="form.namaRs" />
+                        <ButtonComponent class="mb-3" />
                         <br>
+                    </div>
+                    <div class="col-sm-6 col-6">
                         <l-map v-if="form && form.latitude && form.longitude" :zoom="zoom"
                             :center="[form.latitude, form.longitude]" class="rounded" style="height:350px; width: 100%">
                             <l-tile-layer :url="tileLayerUrl"></l-tile-layer>
                             <l-marker v-if="selectedPosition" :lat-lng="[form.latitude, form.longitude]" :draggable="true"
                                 @dragend="handleMarkerDrag"></l-marker>
-                        </l-map>
-                    </div>
-                    <div class="col-sm-6 col-6">
-                        <label for="">Nama Rumah Sakit</label>
-                        <InputField Name="namaRs" v-model="form.namaRs" />
-                        <label for="">Alamat RS</label>
-                        <input type="text" class="form-control mb-3" :value="locationName">
-                        <label for="">Latitude RS</label>
-                        <input type="text" class="form-control mb-3" :value="latitude">
-                        <label for="">Longitude RS</label>
-                        <input type="text" class="form-control mb-3" :value="longitude">
-                        <label for="">Deskripsi RS</label>
-                        <textarea class="form-control mb-3" row="4" v-model="form.deskripsiRs"></textarea>
-                        <ButtonComponent class="mb-3" />
+                            </l-map>
+                            <label for="" class="mt-2">Alamat RS</label>
+                            <input type="text" class="form-control mb-3" :value="locationName">
+                            <input type="text" hidden class="form-control mb-3" :value="latitude">
+                            <input type="text" hidden class="form-control mb-3" :value="longitude">
+                            <label for="">Deskripsi RS</label>
+                            <textarea class="form-control mb-3" row="4" v-model="form.deskripsiRs"></textarea>
                     </div>
                 </div>
             </Form>
@@ -102,10 +100,8 @@ export default {
                 const longitude = e.target._latlng.lng;
                 this.selectedPosition = [latitude, longitude];
 
-                // Fetch the address based on the dragged marker's latitude and longitude
                 this.fetchLocationDetails(latitude, longitude);
 
-                // Update the form's latitude and longitude based on the dragged marker
                 this.form.latitude = latitude;
                 this.form.longitude = longitude;
             }
@@ -151,28 +147,46 @@ export default {
                     console.log(err);
                 });
         },
-        postRumahSakit() {
-            const params = this.$route.params.id
-            let type = "postDataUpload"
-            const formData = this.formData
-            let url = [
-                `master/rumah_sakit/data/${params}?_method=put`, formData
-            ]
-            this.$store.dispatch(type, url).then((result) => {
-                iziToast.success({
-                    title: 'success',
-                    message: 'data berhasil diubah',
-                    position: 'topRight',
-                    timeout: 1000
-                })
-                this.$router.back()
-            }).catch((err) => {
-                console.log(err);
-            })
-        },
         chooseFoto(event) {
             this.form.foto = event.target.files[0]
             console.log(this.form.foto);
+        },
+        submitRs(){
+            const params = this.$route.params.id
+            const allowedFormats = ['image/jpeg', 'image/png', 'image/jpg'];
+            const file = this.form.foto;
+            const maxSizeInBytes = 5 * 1024 * 1024;
+            if (file && allowedFormats.includes(file.type)) {
+                if (file.size <= maxSizeInBytes) {
+                    this.$store
+                        .dispatch("postDataUpload", [`master/rumah_sakit/data/${params}?_method=put`, this.formData])
+                        .then((result) => {
+                            iziToast.success({
+                                title: 'Success',
+                                position: 'topRight',
+                                message: 'Data Rumah Sakit Berhasil Diubah',
+                                timeout: 1000
+                            });
+                            this.$router.back()
+                        })
+                        .catch((err) => {
+                            console.log(err);
+                        });
+                } else {
+                    iziToast.error({
+                        title: 'Error',
+                        message: 'Maaf, ukuran file gambar terlalu besar. Maksimum ukuran file adalah 5MB.',
+                        position: 'topRight'
+                    });
+                }
+            } else {
+                iziToast.error({
+                    title: 'Error',
+                    message: 'Maaf, format yang diperbolehkan hanya jpg, png, jpeg',
+                    position: 'topRight'
+                });
+
+            }
         }
     },
     components: {

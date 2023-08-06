@@ -143,7 +143,7 @@ export default [{
             }
         },
         {
-            path: 'rumah_sakit/spesialis/:idRumahSakit',
+            path: 'rumah_sakit/spesialis/:idRumahSakit/:namaRs',
             name: 'Spesialis Rumah Sakit',
             component: SpesialisRumahSakit,
             meta: {
@@ -159,7 +159,7 @@ export default [{
             }
         },
         {
-            path: 'rumah_sakit/dokter/:idSpesialis/:id',
+            path: 'rumah_sakit/dokter/:namaSpesialis/:namaRs/:idSpesialis/:id',
             name: 'Dokter Spesialis Rs',
             component: DokterSpesialisRumahSakit
         },
@@ -216,12 +216,18 @@ export default [{
         {
             path: 'jadwal-antrian',
             name: 'list jadwal antrian',
-            component: JadwalAntrian
+            component: JadwalAntrian,
+            meta: {
+                middleware: checkRoles(roles.dokter)
+            }
         },
         {
             path: 'riwayat-kunjungan',
             name: 'Riwayat Kunjungan',
-            component: RiwayatKunjungan
+            component: RiwayatKunjungan,
+            meta: {
+                middleware: checkRoles(roles.dokter)
+            }
         },
         // Owner Rumah Sakit
         {

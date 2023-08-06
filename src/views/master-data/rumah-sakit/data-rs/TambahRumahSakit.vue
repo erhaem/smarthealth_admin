@@ -4,7 +4,7 @@
             <h6><b class="text-primary">{{ $route.name }}</b></h6>
         </div>
         <div class="card-body">
-            <Form @submit="postRumahSakit" :validation-schema="schema" v-slot="{ errors }">
+            <Form :validation-schema="schema" v-slot="{ errors }">
                 <l-map :zoom="zoom" :center="mapCenter" class="rounded mb-3" style="height:350px; width: 50%">
                     <l-tile-layer :url="tileLayerUrl"></l-tile-layer>
                     <l-marker v-if="selectedPosition" :lat-lng="selectedPosition" :draggable="true"
@@ -17,25 +17,23 @@
                             <label for="">Nama Rumah Sakit</label>
                             <InputField Name="namaRs" v-model="form.nama_rs" />
                             <span :class="'text-danger'">{{ errors.namaRs }}</span>
+                            <label for="">Foto Rs</label>
+                            <input Name="alamat" class="form-control" type="file" @change="chooseFoto">
                         </div>
                         <div>
-                            <label for="">Longitude</label>
-                            <input type="text" class="form-control mb-3" :value="longitude" />
+                            <input type="text" hidden class="form-control mb-3" :value="longitude" />
                         </div>
-                        <label for="">Deskripsi</label>
-                        <textarea Name="deskripsi" class="form-control" rows="3" v-model="form.deskripsi_rs"></textarea>
                     </div>
                     <div class="col-sm-6 col-6">
                         <label for="">Alamat</label>
                         <input type="text" class="form-control mb-3" :value="locationName" />
-                        <label for="">Latitude</label>
-                        <input type="text" class="form-control mb-3" :value="latitude" />
-                        <label for="">Foto Rs</label>
-                        <input Name="alamat" class="form-control" type="file" @change="chooseFoto">
+                        <input type="text" hidden class="form-control mb-3" :value="latitude" />
+                        <label for="">Deskripsi</label>
+                        <textarea Name="deskripsi" class="form-control" rows="3" v-model="form.deskripsi_rs"></textarea>
                     </div>
                 </div>
                 <div class="d-flex justify-content-between mt-3">
-                    <ButtonComponent />
+                    <ButtonComponent @click="postRumahSakit" />
                     <router-link to="/master/rumah_sakit">
                         <ButtonComponent Color="btn-dark" Message="Kembali" />
                     </router-link>
@@ -59,9 +57,6 @@ export default {
             form: {
                 nama_rs: '',
                 deskripsi_rs: '',
-                alamat_rs: '',
-                latitude: '',
-                longitude: '',
                 foto_rs: null
             },
             tileLayerUrl: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
@@ -74,15 +69,15 @@ export default {
     },
     computed: {
         formData() {
-            const { nama_rs, deskripsi_rs, alamat_rs, latitude, longitude, foto_rs } = this.form;
+            const { nama_rs, deskripsi_rs, foto_rs } = this.form;
             const formData = new FormData();
 
             formData.append('foto_rs', foto_rs);
             formData.append('nama_rs', nama_rs);
             formData.append('deskripsi_rs', deskripsi_rs);
-            formData.append('alamat_rs', alamat_rs);
-            formData.append('latitude', latitude);
-            formData.append('longitude', longitude);
+            formData.append('alamat_rs', this.locationName); // Use this.locationName directly
+            formData.append('latitude', this.latitude); // Use this.latitude directly
+            formData.append('longitude', this.longitude); // Use this.longitude directly
 
             return formData;
         },
@@ -117,7 +112,7 @@ export default {
                                 message: 'Data Rumah Sakit Berhasil Ditambahkan',
                                 timeout: 1000
                             });
-                            this.goBack();
+                            this.$router.back()
                         })
                         .catch((err) => {
                             console.log(err);

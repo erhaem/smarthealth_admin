@@ -2,7 +2,7 @@
     <div class="card shadow">
         <div class="card-header">
             <h6 class="font-weight-bold text-primary">
-                {{ $route.name }} - {{ $route.params.id }}
+                Dokter Spesialis {{ this.$route.params.namaSpesialis }} di {{ this.$route.params.namaRs }}
             </h6>
         </div>
         <div class="card-body">
@@ -10,10 +10,16 @@
                 <table class="table table-bordered" cellspacing="0">
                     <thead>
                         <th>
+                            no
+                        </th>
+                        <th>
                             nama
                         </th>
                         <th>
                             keahlian
+                        </th>
+                        <th>
+                            biaya praktek
                         </th>
                     </thead>
                     <tbody v-if="isLoading">
@@ -23,13 +29,19 @@
                         <EmptyData />
                     </tbody>
                     <template v-else>
-                        <tbody v-for="data in dokterSpesialis">
+                        <tbody v-for="(data, index) in dokterSpesialis" :key="index">
                             <tr>
+                                <td>
+                                    {{ index + 1 }}
+                                </td>
                                 <td>
                                     {{ data.namaDokter }}
                                 </td>
                                 <td>
                                     {{ data.idKeahlian.namaKeahlian }}
+                                </td>
+                                <td>
+                                    {{ data.biaya }}
                                 </td>
                             </tr>
                         </tbody>
