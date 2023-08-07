@@ -73,7 +73,7 @@ export default[{
             name: 'Edit Produk Apotek',
             component: EditProdukApotek,
             meta: {
-                middleware: checkRoles(roles.ownerApotek)
+                middleware: checkRoles(roles.adminApotek)
             }
         },
         {

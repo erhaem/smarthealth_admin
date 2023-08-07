@@ -21,7 +21,6 @@
                                 pilih
                             </th>
                             <th>nama</th>
-                            <th>alamat</th>
                             <th v-if="$can('action', 'Admin')">pemilik</th>
                             <th v-if="$can('action', 'Owner')">status</th>
                             <th v-if="$can('action', 'Owner Admin')">aksi</th>
@@ -42,7 +41,6 @@
                                         <input type="checkbox" v-model="selected" :value="data.idProfilApotek">
                                     </td>
                                     <td>{{ data.namaApotek }} </td>
-                                    <td>{{ data.alamatApotek }}</td>
                                     <td v-if="$can('action', 'Admin')">{{ data.user.nama }}</td>
                                     <td v-if="$can('action', 'Owner')">
                                         <ActiveSlider :checked="data.status == 1">
@@ -51,8 +49,8 @@
                                             </template>
                                         </ActiveSlider>
                                     </td>
-                                    <td>
-                                        <template v-if="$can('action', 'Admin Apotek')">
+                                    <td class="d-flex justify-content-center">
+                                        <!-- <template> -->
                                             <div v-if="data.status === 0">
                                                 <ButtonComponent disabled Message="lihat produk" Color="btn-warning" />
                                             </div>
@@ -62,7 +60,7 @@
                                                     <ButtonComponent Message="lihat produk" Color="btn-warning" />
                                                 </router-link>
                                             </div>
-                                        </template>
+                                        <!-- </template> -->
                                         <router-link v-if="$can('action', 'Owner')" :to="{ name: 'Edit Apotek', params: { id: data.idProfilApotek } }">
                                             <ButtonComponent Message="edit apotek" Color="btn-warning" />
                                         </router-link>

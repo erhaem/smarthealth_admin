@@ -84,6 +84,30 @@
             </div>
         </div>
     </div>
+    <div class="card shadow-lg w-50 rounded" v-if="$can('action', 'Admin Apotek')" v-for="data in plotting">
+        <div class="card-body">
+            <h5 class="text-primary"><b>Hai, Ada pesanann masuk nihhh</b></h5>
+            <hr>
+            <h5><b>Detail Dokter</b></h5>
+            <p>Rekomendasi: Dokter {{ data.rekomendasi.nama }} <br>
+                Nomor Telepon: {{ data.rekomendasi.nomorHp }}
+            </p>
+            <hr style="font-weight: bold;">
+            <h5><b>Detail Resep Obat</b></h5>
+            <p>Produk: {{ data.produk.nama }} <br>
+                Harga: {{ data.produk.harga }} <br>
+                Jumlah: {{ data.jumlahButuh }} <br>
+                Tanggal Resep: {{ data.tanggal }}
+            </p>
+            <hr style="font-weight: bold;">
+            <div class="d-flex justify-content-end">
+                <button class="btn btn-sm btn-success me-3">
+                    <i class="fas fa-check"></i>
+                    Proses Resep
+                </button>
+            </div>
+        </div>
+    </div>
 </template>
 
 <script>
@@ -96,10 +120,14 @@ export default {
         return {
             datas: '',
             isLoading: false,
+            plotting: []
         }
     },
     mounted() {
         this.getCountData()
+    },
+    created() {
+        this.getResep()
     },
     methods: {
         getCountData() {
@@ -113,6 +141,18 @@ export default {
                 setTimeout(() => {
                     this.isLoading = false
                 }, 2000);
+            }).catch((err) => {
+                console.log(err);
+            })
+        },
+        getResep() {
+            let type = "getData"
+            let url = [
+                "plotting", {}
+            ]
+            this.$store.dispatch(type, url).then((result) => {
+                this.plotting = result.data
+                console.log(result);
             }).catch((err) => {
                 console.log(err);
             })

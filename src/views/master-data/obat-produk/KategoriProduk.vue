@@ -88,7 +88,7 @@ export default {
             isLoading: false,
             pagination: {
                 total: 0,
-                perPage: 5,
+                perPage: 10,
                 currentPage: 1,
                 lastPage: 0,
                 page: 0,

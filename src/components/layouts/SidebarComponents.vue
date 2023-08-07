@@ -35,7 +35,7 @@
                         <router-link class="collapse-item" to="/master/grouping_artikel">Grouping Artikel</router-link>
                     </div>
                     <div>
-                        <h6 class="collapse-header">Rumah Sakit</h6>
+                        <h6 class="collapse-header" v-if="$can('show', 'Rumah Sakit')">Rumah Sakit</h6>
                         <router-link class="collapse-item" v-if="$can('show', 'Rumah Sakit')" to="/master/rumah_sakit">Data Rumah Sakit</router-link>
                         <router-link class="collapse-item" v-if="$can('show', 'Rumah Sakit')" :to="{name: 'Dokter Rumah Sakit'}">Pengajuan Dokter</router-link>
                         <router-link class="collapse-item" v-if="$can('action', 'Admin')" to="/master/owner_rs">Owner Rumah Sakit</router-link>
@@ -102,12 +102,12 @@
             <template #item>
                 <CollapseItem header="Konsumen & Rekap" id="collapseRekap" title="Rekap Data">
                     <template #router>
-                        <router-link class="collapse-item" to="/owner_apotek">Data Owner Apotek</router-link>
+                        <router-link class="collapse-item" to="/owner_apotek">Transaksi</router-link>
                     </template>
                 </CollapseItem>
             </template>
         </NavItem>
-        <NavItem span="KunjunganMu" icon="fa-users" target="#collapseKunjungan">
+        <NavItem span="KunjunganMu" v-if="$can('action', 'Dokter')" icon="fa-users" target="#collapseKunjungan">
             <template #item>
                 <CollapseItem header="" id="collapseKunjungan" title="Rekap dan Sesi Kunjungan">
                     <template #router>

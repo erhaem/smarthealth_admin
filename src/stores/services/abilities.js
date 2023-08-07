@@ -34,7 +34,7 @@ const permisionsByRole = {
         'show_Spesialis'
     ],
     "RO-2003067": [
-        'show_Apotek', 'action_Admin Apotek', 'action_Owner Admin'
+        'show_Apotek', 'action_Admin Apotek', 'action_Owner Admin', 'show_Kategori Produk',
     ]
 }
 export default defineAbility(can => {
