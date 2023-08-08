@@ -23,7 +23,7 @@
             </div>
         </div>
         <div class="col-xl-3 col-md-6 mb-4">
-            <LoadingIndicator v-if="isLoading" />
+        <LoadingIndicator v-if="isLoading" />
             <div class="card border-left-success shadow h-100 py-2" v-if="!isLoading">
                 <div class="card-body">
                     <div class="row no-gutters align-items-center">
@@ -84,27 +84,73 @@
             </div>
         </div>
     </div>
-    <div class="card shadow-lg w-50 rounded" v-if="$can('action', 'Admin Apotek')" v-for="data in plotting">
-        <div class="card-body">
-            <h5 class="text-primary"><b>Hai, Ada pesanann masuk nihhh</b></h5>
-            <hr>
-            <h5><b>Detail Dokter</b></h5>
-            <p>Rekomendasi: Dokter {{ data.rekomendasi.nama }} <br>
-                Nomor Telepon: {{ data.rekomendasi.nomorHp }}
-            </p>
-            <hr style="font-weight: bold;">
-            <h5><b>Detail Resep Obat</b></h5>
-            <p>Produk: {{ data.produk.nama }} <br>
-                Harga: {{ data.produk.harga }} <br>
-                Jumlah: {{ data.jumlahButuh }} <br>
-                Tanggal Resep: {{ data.tanggal }}
-            </p>
-            <hr style="font-weight: bold;">
-            <div class="d-flex justify-content-end">
-                <button class="btn btn-sm btn-success me-3">
-                    <i class="fas fa-check"></i>
-                    Proses Resep
-                </button>
+    <div class="row" v-if="$can('action', 'Admin Apotek')">
+        <div class="col-md-6 col-6">
+            <div class="card shadow-lg rounded" v-for="data in plotting">
+                <div class="card-body">
+                    <h5 class="text-primary"><b>Hai, Ada pesanann masuk nihhh</b></h5>
+                    <hr>
+                    <h5><b>Detail Dokter</b></h5>
+                    <p>Rekomendasi: Dokter {{ data.rekomendasi.nama }} <br>
+                        Nomor Telepon: {{ data.rekomendasi.nomorHp }}
+                    </p>
+                    <hr style="font-weight: bold;">
+                    <h5><b>Detail Resep Obat</b></h5>
+                    <p>Produk: {{ data.produk.nama }} <br>
+                        Harga: {{ data.produk.harga }} <br>
+                        Jumlah: {{ data.jumlahButuh }} <br>
+                        Tanggal Resep: {{ data.tanggal }}
+                    </p>
+                    <hr style="font-weight: bold;">
+                    <div class="d-flex justify-content-end">
+                        <button class="btn btn-sm btn-success me-3">
+                            <i class="fas fa-check"></i>
+                            Proses Resep
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 col-6">
+            <div class="card border-left-warning shadow py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
+                                Jumlah Resep Masuk</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">20</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-store fa-2x text-gray-300"></i>
+                        </div>
+                        <div class="d-flex justify-content-end mt-3">
+                            <button class="btn btn-sm btn-success me-3">
+                                <i class="fas fa-check"></i>
+                                Proses Resep
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card border-left-info shadow py-2 mt-3">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
+                                Jumlah Pesanan Masuk</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">20</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-store fa-2x text-gray-300"></i>
+                        </div>
+                        <div class="d-flex justify-content-end mt-3">
+                            <button class="btn btn-sm btn-success me-3">
+                                <i class="fas fa-check"></i>
+                                Proses Pesanan
+                            </button>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

@@ -36,7 +36,7 @@
                                         {{ index + 1 }}
                                     </td> -->
                                     <td>
-                                        <input type="checkbox" :value="data.idDokterKeahlian" v-model="selected">
+                                        <input type="checkbox" :value="data.idMaster" v-model="selected">
                                     </td>
                                     <td v-if="data.user">
                                         {{ data.user.nama }}

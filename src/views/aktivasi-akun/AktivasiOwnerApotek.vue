@@ -18,7 +18,7 @@
                         <EmptyData/>
                     </tbody>
                     <template v-else v-for="(data, index) in akun" :key="index">
-                        <tbody v-if="data.role.idRole === 'RO-2003063'">
+                        <tbody v-if="data.role.idRole === 'RO-2003065'">
                             <tr>
                                 <td>{{ data.nama }}</td>
                                 <td>{{ data.role.namaRole }}</td>
@@ -33,10 +33,9 @@
                                     </a>
                                 </td>
                                 <td>
-                                    <ButtonComponent data-bs-toggle="modal" data-bs-target="#tambahData" Message="Aktifkan Akun"
-                                        @click="lihat(data.id)" />
+                                    <ButtonComponent Message="Aktifkan Akun"
+                                        @click="simpanAkun(data.id)" />
                                 </td>
-
                             </tr>
                         </tbody>
                     </template>
@@ -46,7 +45,7 @@
     </div>
     <ModalComponent id="tambahData">
         <template #modal>
-            <label for="">Nomor STR</label>
+            <label for="">Nomor Apotek</label>
             <InputField v-model="form.nomor_strp" />
             <ButtonComponent class="mt-3" @click="simpanAkun" />
         </template>
@@ -93,15 +92,17 @@ export default {
         lihat(id) {
             this.idUser = id
         },
-        simpanAkun() {
+        simpanAkun(idUser) {
             let type = "putData";
             let url = [
-                `akun/active_account/${this.idUser}/account`, {
-                    nomor_strp: this.form.nomor_strp
-                }
+                `akun/active_account/${idUser}/account`, {}
             ];
             this.$store.dispatch(type, url).then((result) => {
-               this.$router.push({name: 'Aktivasi Akun Perawat'})
+                this.$swal({
+                    icon: 'success',
+                    title: 'berhasil aktifkan akun'
+                })
+                this.getAkun()
             }).catch((err) => {
                 console.log(err);
             })

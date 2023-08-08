@@ -37,9 +37,6 @@
                                 </td>
                             </tr>
                         </tbody>
-                        <tbody v-else>
-                            <EmptyData/>
-                        </tbody>
                     </template>
                 </table>
             </div>

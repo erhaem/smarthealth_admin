@@ -32,12 +32,12 @@
                         <h6 class="collapse-header">Artikel</h6>
                         <router-link class="collapse-item" to="/master/kategori_artikel">Kategori Artikel</router-link>
                         <router-link class="collapse-item" to="/master/artikel">Data Artikel</router-link>
-                        <router-link class="collapse-item" to="/master/grouping_artikel">Grouping Artikel</router-link>
+                        <router-link class="collapse-item" v-if="$can('action', 'Admin')" to="/master/grouping_artikel">Grouping Artikel</router-link>
                     </div>
                     <div>
                         <h6 class="collapse-header" v-if="$can('show', 'Rumah Sakit')">Rumah Sakit</h6>
                         <router-link class="collapse-item" v-if="$can('show', 'Rumah Sakit')" to="/master/rumah_sakit">Data Rumah Sakit</router-link>
-                        <router-link class="collapse-item" v-if="$can('show', 'Rumah Sakit')" :to="{name: 'Dokter Rumah Sakit'}">Pengajuan Dokter</router-link>
+                        <router-link class="collapse-item" v-if="$can('action', 'Rumah Sakit')" :to="{name: 'Dokter Rumah Sakit'}">Pengajuan Dokter</router-link>
                         <router-link class="collapse-item" v-if="$can('action', 'Admin')" to="/master/owner_rs">Owner Rumah Sakit</router-link>
                     </div>
                     <div v-if="$can('show', 'Rumah Sakit')">
@@ -64,6 +64,7 @@
                     <template #router>
                         <router-link class="collapse-item" to="/aktivasi_dokter">Dokter</router-link>
                         <router-link class="collapse-item" to="/aktivasi_perawat">Perawat</router-link>
+                        <router-link class="collapse-item" to="/aktivasi_owner_apotek">Owner Apotek</router-link>
                     </template>
                 </CollapseItem>
             </template>
@@ -91,7 +92,7 @@
             <template #item>
                 <CollapseItem header="Konsumen & Rekap" id="collapseApotek" title="Apotek & Rekap">
                     <template #router>
-                        <router-link class="collapse-item" v-if="$can('show', 'Admin')" to="/owner_apotek">Data Owner Apotek</router-link>
+                        <router-link class="collapse-item" v-if="$can('action', 'Admin')" to="/owner_apotek">Data Owner Apotek</router-link>
                         <router-link class="collapse-item" to="/apotek">Data Apotek</router-link>
                         <router-link  v-if="$can('action', 'Admin Apotek')" class="collapse-item" to="/apotek/grouping_produk">Grouping Produk</router-link>
                     </template>

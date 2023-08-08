@@ -43,12 +43,12 @@ export default {
         }
     },
     computed: {
-        // schema() {
-        //     return valid.object({
-        //         nomorHp: valid.string().required('nomor hp wajib diisi').min(12).max(15),
-        //         password: valid.string().required('password wajib diisi').min(8)
-        //     })
-        // }
+        schema() {
+            return valid.object({
+                nomorHp: valid.string().required('nomor hp wajib diisi').min(12).max(15),
+                password: valid.string().required('password wajib diisi').min(8)
+            })
+        }
     },
     methods: {
         postLogin() {
@@ -79,7 +79,7 @@ export default {
                     })
                 }
             }).catch((err) => {
-                console.log(err);
+                console.log('salahhhh');
             })
         }
     },

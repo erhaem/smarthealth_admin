@@ -35,6 +35,7 @@ import RiwayatKunjungan from '../../views/master-data/rumah-sakit/jadwal-antrian
 
 import AktivasiAkun from '@/views/aktivasi-akun/IndexAkun.vue'
 import AktivasiAkunPerawat from '@/views/aktivasi-akun/AktivasiPerawat.vue'
+import AktivasiOwnerApotek from '@/views/aktivasi-akun/AktivasiOwnerApotek.vue'
 
 export default [{
     path: '/master',
@@ -50,6 +51,11 @@ export default [{
     path: '/aktivasi_perawat',
     name: 'Aktivasi Akun Perawat',
     component: AktivasiAkunPerawat
+},
+{
+    path: '/aktivasi_owner_apotek',
+    name: 'Aktivasi Akun Apotek',
+    component: AktivasiOwnerApotek
 },
 {
     path: '/master',
@@ -109,7 +115,7 @@ export default [{
             name: 'Grouping Artikel',
             component: GroupingArtikel,
             meta: {
-                middleware: checkRoles(roles.adminDokter)
+                middleware: checkRoles(roles.admin)
             }
         },
         {
@@ -117,7 +123,7 @@ export default [{
             name: 'Edit Grouping Artikel',
             component: EditGroupingArtikel,
             meta: {
-                middleware: checkRoles(roles.adminDokter)
+                middleware: checkRoles(roles.admin)
             }
         },
         // Routes Rumah Sakit
@@ -166,7 +172,10 @@ export default [{
         {
             path: 'rumah_sakit/dokter',
             name: 'Dokter Rumah Sakit',
-            component: DokterRumahSakit
+            component: DokterRumahSakit,
+            meta: {
+                middleware: checkRoles(roles.adminRs)
+            }
         },
         {
             path: 'fasilitas_rs/:id/show',

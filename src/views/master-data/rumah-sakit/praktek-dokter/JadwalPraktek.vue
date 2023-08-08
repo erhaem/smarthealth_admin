@@ -5,7 +5,7 @@
                 <h6 class="m-0 font-weight-bold text-primary">Data {{ $route.name }}</h6>
                 <div class="d-flex justify-content-start">
                     <div>
-                        <ButtonComponent Message="Tambah Data +" data-bs-toggle="modal" data-bs-target="#tambahData" />
+                        <ButtonComponent v-if="$can('action', 'Rumah Sakit')" Message="Tambah Data +" data-bs-toggle="modal" data-bs-target="#tambahData" />
                         <div v-if="selectedId.length === 0"></div>
                         <ButtonComponent v-else-if="selectedId" Icon="fa-trash" Color="btn-danger" Message="hapus"
                             @click="deleteRumahSakit" />
@@ -63,7 +63,7 @@
             <ButtonComponent @click="postJadwal" />
         </template>
     </ModalComponent>
-    <VDatePicker v-model="date" mode="date" :min-date="minDate" :max-date="maxDate" :attributes="attributes"
+    <VDatePicker v-if="$can('action', 'Rumah Sakit')" v-model="date" mode="date" :min-date="minDate" :max-date="maxDate" :attributes="attributes"
         :disabled-dates="disabledDates" :select-attribute="selectAttribute" />
 </template>
 <script>
