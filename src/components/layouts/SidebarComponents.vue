@@ -65,6 +65,7 @@
                         <router-link class="collapse-item" to="/aktivasi_dokter">Dokter</router-link>
                         <router-link class="collapse-item" to="/aktivasi_perawat">Perawat</router-link>
                         <router-link class="collapse-item" to="/aktivasi_owner_apotek">Owner Apotek</router-link>
+                        <router-link class="collapse-item" to="/aktivasi_owner_rs">Owner Rumah Sakit</router-link>
                     </template>
                 </CollapseItem>
             </template>

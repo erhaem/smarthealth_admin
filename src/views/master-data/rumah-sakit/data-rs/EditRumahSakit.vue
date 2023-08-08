@@ -17,16 +17,18 @@
                         <br>
                     </div>
                     <div class="col-sm-6 col-6">
-                        <l-map v-if="form && form.latitude && form.longitude" :zoom="zoom"
+                        <!-- <l-map v-if="form && form.latitude && form.longitude" :zoom="zoom"
                             :center="[form.latitude, form.longitude]" class="rounded" style="height:350px; width: 100%">
                             <l-tile-layer :url="tileLayerUrl"></l-tile-layer>
                             <l-marker v-if="selectedPosition" :lat-lng="[form.latitude, form.longitude]" :draggable="true"
                                 @dragend="handleMarkerDrag"></l-marker>
-                            </l-map>
+                            </l-map> -->
                             <label for="" class="mt-2">Alamat RS</label>
-                            <input type="text" class="form-control mb-3" :value="locationName">
-                            <input type="text" hidden class="form-control mb-3" :value="latitude">
-                            <input type="text" hidden class="form-control mb-3" :value="longitude">
+                            <input type="text" class="form-control mb-3" v-model="form.alamatRs">
+                            <label for="" class="mt-2">Latitude</label>
+                            <input type="text" class="form-control mb-3" v-model="form.latitude">
+                            <label for="" class="mt-2">Longitude</label>
+                            <input type="text" class="form-control mb-3" v-model="form.longitude">
                             <label for="">Deskripsi RS</label>
                             <textarea class="form-control mb-3" row="4" v-model="form.deskripsiRs"></textarea>
                     </div>

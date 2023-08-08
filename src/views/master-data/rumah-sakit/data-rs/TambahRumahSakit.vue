@@ -5,11 +5,11 @@
         </div>
         <div class="card-body">
             <Form :validation-schema="schema" v-slot="{ errors }">
-                <l-map :zoom="zoom" :center="mapCenter" class="rounded mb-3" style="height:350px; width: 50%">
+                <!-- <l-map :zoom="zoom" :center="mapCenter" class="rounded mb-3" style="height:350px; width: 50%">
                     <l-tile-layer :url="tileLayerUrl"></l-tile-layer>
                     <l-marker v-if="selectedPosition" :lat-lng="selectedPosition" :draggable="true"
                         @dragend="handleMarkerDrag"></l-marker>
-                </l-map>
+                </l-map> -->
                 <div class="row">
                     <h6 class="mt-1"><b>Data Rumah Sakit</b></h6>
                     <div class="col-sm-6 col-6">
@@ -21,13 +21,15 @@
                             <input Name="alamat" class="form-control" type="file" @change="chooseFoto">
                         </div>
                         <div>
-                            <input type="text" hidden class="form-control mb-3" :value="longitude" />
+                            <label for="">Latitude</label>
+                            <input type="text" class="form-control mb-3" v-model="form.latitude" />
                         </div>
                     </div>
                     <div class="col-sm-6 col-6">
                         <label for="">Alamat</label>
-                        <input type="text" class="form-control mb-3" :value="locationName" />
-                        <input type="text" hidden class="form-control mb-3" :value="latitude" />
+                        <input type="text" class="form-control mb-3" v-model="form.alamat_rs" />
+                        <label for="">Longitude</label>
+                        <input type="text" class="form-control mb-3" v-model="form.longitude" />
                         <label for="">Deskripsi</label>
                         <textarea Name="deskripsi" class="form-control" rows="3" v-model="form.deskripsi_rs"></textarea>
                     </div>
@@ -57,7 +59,10 @@ export default {
             form: {
                 nama_rs: '',
                 deskripsi_rs: '',
-                foto_rs: null
+                foto_rs: null,
+                latitude: '',
+                longitude: '',
+                alamat_rs:''
             },
             tileLayerUrl: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
             selectedPosition: null,
@@ -69,15 +74,15 @@ export default {
     },
     computed: {
         formData() {
-            const { nama_rs, deskripsi_rs, foto_rs } = this.form;
+            const { nama_rs, deskripsi_rs, foto_rs, latitude, longitude, alamat_rs } = this.form;
             const formData = new FormData();
 
             formData.append('foto_rs', foto_rs);
             formData.append('nama_rs', nama_rs);
             formData.append('deskripsi_rs', deskripsi_rs);
-            formData.append('alamat_rs', this.locationName); // Use this.locationName directly
-            formData.append('latitude', this.latitude); // Use this.latitude directly
-            formData.append('longitude', this.longitude); // Use this.longitude directly
+            formData.append('alamat_rs', alamat_rs); 
+            formData.append('latitude', latitude); 
+            formData.append('longitude', longitude);
 
             return formData;
         },

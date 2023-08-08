@@ -57,9 +57,10 @@
             <SelectOption Width="w-100 mb-2" Label="Spesialis" v-model="form.idSpesialis">
                 <template #option>
                     <option value="">pilih spesialis</option>
-                    <option :value="data.idSpesialis" v-for="data in spesialis">{{ data.penyakit.namaSpesialis }}
+                    <option :value="data.penyakit.idSpesialisPenyakit" v-for="data in spesialis">{{ data.penyakit.namaSpesialis }}
                     </option>
                 </template>
+
             </SelectOption>
             <label for="">Biaya Praktek</label>
             <InputField v-model="form.biayaPraktek" />

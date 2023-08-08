@@ -7,20 +7,23 @@
                 <div class="container py-2 row">
                     <h6><b> Data Apotek </b></h6>
                     <div class="col-sm-6 col-6">
-                        <l-map v-if="form && form.latitude && form.longitude" :zoom="zoom"
+                        <!-- <l-map v-if="form && form.latitude && form.longitude" :zoom="zoom"
                             :center="[form.latitude, form.longitude]" class="rounded" style="height:350px; width: 100%">
                             <l-tile-layer :url="tileLayerUrl"></l-tile-layer>
                             <l-marker v-if="selectedPosition" :lat-lng="[form.latitude, form.longitude]" :draggable="true"
                                 @dragend="handleMarkerDrag"></l-marker>
-                        </l-map>
-                    </div>
-                    <div class="col-sm-6 col-6">
+                        </l-map> -->
+                        <input type="file" @change="chooseFoto">
                         <label for="">Nama Apotek</label>
                         <InputField Name="namaRs" v-model="form.namaApotek" />
                         <label for="">Alamat</label>
-                        <input type="text" class="form-control mb-3" :value="locationName">
-                        <input type="text" class="form-control mb-3" hidden :value="latitude">
-                        <input type="text" class="form-control mb-3" hidden :value="longitude">
+                        <input type="text" class="form-control mb-3" v-model="form.alamatApotek">
+                        <label for="">Latitude</label>
+                        <input type="text" class="form-control mb-3" v-model="form.latitude">
+                    </div>
+                    <div class="col-sm-6 col-6">
+                        <label for="">Longitude</label>
+                        <input type="text" class="form-control mb-3" v-model="form.longitude">
                         <label for="">Nomor Hp Apotek</label>
                         <InputField Name="nomorHp" v-model="form.nomorHpApotek" />
                         <label for="">Deskripsi</label>
@@ -68,6 +71,9 @@ export default {
                 password: '',
                 jenisKelamin: '',
                 nama: '',
+                latitude: '',
+                longitude: '',
+                fotoApotek: ''
             },
             zoom: 15,
             tileLayerUrl: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
@@ -84,6 +90,24 @@ export default {
         mapCenter() {
             return this.selectedPosition || [0, 0];
         },
+        formData() {
+            const formData = new FormData()
+
+            formData.append('nama_apotek', this.form.namaApotek)
+            formData.append('deskripsi_apotek', this.form.deskripsiApotek)
+            formData.append('alamat_apotek', this.form.alamatApotek)
+            formData.append('nomorHp', this.form.nomorHp)
+            formData.append('nomor_hp_apotek', this.form.nomorHpApotek)
+            formData.append('password', this.form.password)
+            formData.append('jenis_kelamin', this.form.jenisKelamin)
+            formData.append('nama', this.form.nama)
+            formData.append('longitude', this.form.longitude)
+            formData.append('latitude', this.form.latitude)
+            formData.append('foto_apotek', this.form.fotoApotek)
+            formData.append('gambarLama', this.form.gambarLama)
+
+            return formData;
+        }
     },
     mounted() {
         this.geolocate()
@@ -150,21 +174,21 @@ export default {
                     console.log(err);
                 });
         },
-        postApotek() {
+        submitRs() {
             const params = this.$route.params.id
             let type = "postData"
             let url = [
                 `apotek/pengaturan/profil_apotek/${params}?_method=put`, {
                     nama_apotek: this.form.namaApotek,
                     deskripsi_apotek: this.form.deskripsiApotek,
-                    alamat_apotek: this.locationName,
+                    alamat_apotek: this.form.alamatApotek,
                     nomor_hp: this.form.nomorHp,
                     nomor_hp_apotek: this.form.nomorHpApotek,
                     password: this.form.password,
                     jenis_kelamin: this.form.jenisKelamin,
                     nama: this.form.nama,
-                    latitude: this.latitude,
-                    longitude: this.longitude
+                    latitude: this.form.latitude,
+                    longitude: this.form.longitude
                 }
             ]
             this.$store.dispatch(type, url).then((result) => {
@@ -189,8 +213,45 @@ export default {
             })
         },
         chooseFoto(event) {
-            this.form.foto = event.target.files[0]
+            this.form.fotoApotek = event.target.files[0]
             console.log(this.form.foto);
+        },
+        postApotek(){
+            const params = this.$route.params.id
+            const allowedFormats = ['image/jpeg', 'image/png', 'image/jpg'];
+            const file = this.form.fotoApotek;
+            const maxSizeInBytes = 5 * 1024 * 1024;
+            if (file && allowedFormats.includes(file.type)) {
+                if (file.size <= maxSizeInBytes) {
+                    this.$store
+                        .dispatch("postDataUpload", [`apotek/pengaturan/profil_apotek/${params}?_method=put`, this.formData])
+                        .then((result) => {
+                            iziToast.success({
+                                title: 'Success',
+                                position: 'topRight',
+                                message: 'Data Rumah Sakit Berhasil Diubah',
+                                timeout: 1000
+                            });
+                            this.$router.back()
+                        })
+                        .catch((err) => {
+                            console.log(err);
+                        });
+                } else {
+                    iziToast.error({
+                        title: 'Error',
+                        message: 'Maaf, ukuran file gambar terlalu besar. Maksimum ukuran file adalah 5MB.',
+                        position: 'topRight'
+                    });
+                }
+            } else {
+                iziToast.error({
+                    title: 'Error',
+                    message: 'Maaf, format yang diperbolehkan hanya jpg, png, jpeg',
+                    position: 'topRight'
+                });
+
+            }
         }
     },
     components: {

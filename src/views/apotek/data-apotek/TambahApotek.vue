@@ -7,11 +7,11 @@
         </div>
         <div class="card-body">
             <div class="row">
-                <l-map :zoom="zoom" :center="mapCenter" class="rounded mb-3" style="height:350px; width: 50%">
+                <!-- <l-map :zoom="zoom" :center="mapCenter" class="rounded mb-3" style="height:350px; width: 50%">
                     <l-tile-layer :url="tileLayerUrl"></l-tile-layer>
                     <l-marker v-if="selectedPosition" :lat-lng="selectedPosition" :draggable="true"
                         @dragend="handleMarkerDrag"></l-marker>
-                </l-map>
+                </l-map> -->
                 <div class="col-6 col-sm-6">
                     <label for="">Foto Apotek</label>
                     <br>
@@ -23,12 +23,15 @@
                     <InputField v-model="form.deskripsi_apotek" />
                     <label for="">Nomor HP</label>
                     <InputField v-model="form.nomor_hp" />
-                    <label for="">Alamat</label>
-                    <input type="text" class="form-control mb-3" :value="locationName" />
-                    <input type="text" class="form-control mb-3" :value="latitude" hidden />
-                    <input type="text" class="form-control mb-3" :value="longitude" hidden />
                 </div>
                 <div class="col-6 col-sm-6">
+                    <label for="">Alamat</label>
+                    <input type="text" class="form-control mb-3" v-model="form.alamat_apotek" />
+                    <label for="">Latitude</label>
+                    <input type="text" class="form-control mb-3" v-model="form.latitude"  />
+                    <label for="">Longitude</label>
+                    <input type="text" class="form-control mb-3" v-model="form.longitude"  />
+
                 </div>
             </div>
             <h6 class="text-primary font-weight-bold">
@@ -63,15 +66,17 @@ export default {
     data() {
         return {
             form: {
-                nama_apotek: '',
-                deskripsi_apotek: '',
-                alamat_apotek: '',
-                nomor_hp: '',
-                nomor_hp_apotek: '',
-                password: '',
-                jenis_kelamin: '',
-                nama: '',
-                foto_apotek: null
+                nama_apotek: 'Arjawinangun',
+                deskripsi_apotek: 'lorem',
+                alamat_apotek: 'jakarta',
+                nomor_hp: '081233232277',
+                nomor_hp_apotek: '081233232273',
+                password: 'password',
+                jenis_kelamin: 'L',
+                nama: 'jaya',
+                foto_apotek: null,
+                latitude: '-6.398815349046238',
+                longitude: '108.28547605105486'
             },
             tileLayerUrl: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
             selectedPosition: null,
@@ -86,7 +91,7 @@ export default {
             return this.selectedPosition || [0, 0];
         },
         formData() {
-            const { nama_apotek, foto_apotek, deskripsi_apotek, nomor_hp, nomor_hp_apotek, password, jenis_kelamin, nama } = this.form;
+            const { nama_apotek, foto_apotek, deskripsi_apotek, nomor_hp, nomor_hp_apotek, password, jenis_kelamin, nama, alamat_apotek, latitude, longitude } = this.form;
             const formData = new FormData();
 
             formData.append('nama_apotek', nama_apotek);
@@ -98,9 +103,9 @@ export default {
             formData.append('nama', nama);
             formData.append('foto_apotek', foto_apotek);
 
-            formData.append('alamat_apotek', this.locationName); // Use this.locationName directly
-            formData.append('latitude', this.latitude); // Use this.latitude directly
-            formData.append('longitude', this.longitude); // Use this.longitude directly
+            formData.append('alamat_apotek', alamat_apotek); // Use this.locationName directly
+            formData.append('latitude', latitude); // Use this.latitude directly
+            formData.append('longitude', longitude); // Use this.longitude directly
 
             return formData;
         },

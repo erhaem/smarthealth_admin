@@ -63,8 +63,8 @@
             <ButtonComponent @click="postJadwal" />
         </template>
     </ModalComponent>
-    <VDatePicker v-if="$can('action', 'Rumah Sakit')" v-model="date" mode="date" :min-date="minDate" :max-date="maxDate" :attributes="attributes"
-        :disabled-dates="disabledDates" :select-attribute="selectAttribute" />
+    <!-- <VDatePicker v-if="$can('action', 'Rumah Sakit')" v-model="date" mode="date" :min-date="minDate" :max-date="maxDate" :attributes="attributes"
+        :disabled-dates="disabledDates" :select-attribute="selectAttribute" /> -->
 </template>
 <script>
 import pagination from '@/components/partials-component/PaginationComponent.vue'
