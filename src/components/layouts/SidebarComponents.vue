@@ -100,11 +100,11 @@
                 </CollapseItem>
             </template>
         </NavItem>
-        <NavItem v-if="$can('show', 'Apotek')" span="Transaksi Produk" icon="fa-users" target="#collapseRekap">
+        <NavItem v-if="$can('action', 'Admin')" span="Rekap Konsultasi" icon="fa-users" target="#collapseRekap">
             <template #item>
                 <CollapseItem header="Konsumen & Rekap" id="collapseRekap" title="Rekap Data">
                     <template #router>
-                        <router-link class="collapse-item" to="/owner_apotek">Transaksi</router-link>
+                        <router-link class="collapse-item" to="/rekap_konsultasi">Rekap Data Konsultasi</router-link>
                     </template>
                 </CollapseItem>
             </template>

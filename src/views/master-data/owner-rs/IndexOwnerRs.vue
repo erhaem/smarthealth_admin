@@ -4,10 +4,10 @@
             <div class="d-flex justify-content-between">
                 <h6 class="m-0 font-weight-bold text-primary">Data {{ $route.name }}</h6>
                 <div class="d-flex justify-content-start">
-                    <ButtonComponent Color="btn-primary" Message="Tambah Data" Icon="fa-plus" data-bs-toggle="modal"
+                    <!-- <ButtonComponent Color="btn-primary" Message="Tambah Data" Icon="fa-plus" data-bs-toggle="modal"
                     data-bs-target="#tambahData" />
                     <div v-if="selectedId.length === 0"></div>
-                    <ButtonComponent Color="btn-danger" @click="deleteData()" Icon="fa-trash" Message="Hapus" v-else-if="selectedId"/>
+                    <ButtonComponent Color="btn-danger" @click="deleteData()" Icon="fa-trash" Message="Hapus" v-else-if="selectedId"/> -->
                 </div>
             </div>
         </div>
@@ -18,9 +18,9 @@
                         <th>
                             No
                         </th>
-                        <th>
+                        <!-- <th>
                             pilih
-                        </th>
+                        </th> -->
                         <th>
                             Nama
                         </th>
@@ -49,17 +49,17 @@
                                 <td>
                                     {{ index + 1 }}
                                 </td>
-                                <td><input type="checkbox" :value="data.idOwner" v-model="selectedId"></td>
+                                <!-- <td><input type="checkbox" :value="data.idOwner" v-model="selectedId"></td> -->
                                 <td>{{ data.user.nama }}</td>
                                 <td>{{ data.user.email }}</td>
                                 <td>{{ data.user.nomorHp }}</td>
                                 <td>{{ data.noKtp }}</td>
                                 <td>
                                     <div class="d-flex justify-content-center">
-                                        <router-link :to="'owner_rs/' + data.user.id">
+                                        <!-- <router-link :to="'owner_rs/' + data.user.id">
                                             <ButtonComponent Message="Aktifkan akun" Color="btn-warning" />
-                                        </router-link>
-                                        <a href="" class="btn btn-sm btn-icon-split me-2 rounded btn-info"
+                                        </router-link> -->
+                                        <a :href="data.fileDokumen" class="btn btn-sm btn-icon-split me-2 rounded btn-info"
                                             target="_blank">
                                             <span class="icon text-white-50">
                                                 <i class="fas fa-eye"></i>

@@ -5,7 +5,7 @@ import snakecaseKeys from "snakecase-keys";
 
 const Api = {
     init() {
-        axios.defaults.baseURL = "http://127.0.0.1:8000/api";
+        axios.defaults.baseURL = "https://berobatplus.shop/api";
         axios.defaults.headers.post["Content-Type"] = "multipart/form-data";
         axios.defaults.headers.common.Authorization =
             "Bearer " + Cookies.get("token");
@@ -18,7 +18,7 @@ const Api = {
         axios.defaults.headers.post["Content-Type"] = "multipart/form-data";
     },
     get(resource, params) {
-        return axios.get(`${resource}`, {
+        return axios.get(`${resource}`, {   
             params: params,
             transformResponse: [
                 (data) => {

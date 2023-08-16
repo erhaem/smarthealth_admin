@@ -52,7 +52,7 @@
                                     </td>
                                     <td>
                                         <div class="d-flex justify-content-center">
-                                            <router-link :to="'dokter_keahlian/' + data.idDokterKeahlian + '/edit'">
+                                            <router-link :to="'dokter_keahlian/' + data.idMaster + '/edit'">
                                                 <ButtonComponent Message="Edit" Color="btn-warning" />
                                             </router-link>
                                         </div>
@@ -69,10 +69,10 @@
         <template #modal>
             <Form @submit="postKeahlian">
                 <div class="mb-3">
-                    <SelectOption v-model="form.dokter_id" Width="w-100" Label="Nama Dokter">
+                    <SelectOption v-model="form.user_ahli_id" Width="w-100" Label="Nama Dokter">
                         <template #option>
                             <option value="">pilih dokter</option>
-                            <option :value="data.idDokter" v-for="data in dokter" :key="index">{{
+                            <option :value="data.userId.id" v-for="data in dokter" :key="index">{{
                                 data.userId.nama }}
                             </option>
                         </template>
@@ -114,7 +114,7 @@ export default {
             dokter: [],
             selected: [],
             form: {
-                dokter_id: '',
+                user_ahli_id: '',
                 keahlian_id: ''
             },
             isLoading: false
@@ -184,7 +184,7 @@ export default {
                 return;
             }
             let type = "deleteData";
-            let urls = this.selected.map((idDokterKeahlian) => ["master/dokter_keahlian", idDokterKeahlian]);
+            let urls = this.selected.map((idDokterKeahlian) => ["master/ahli/keahlian/master", idDokterKeahlian]);
             this.$swal({
                 icon: 'question',
                 title: "Apakah kamu ingin menyimpan perubahan",
@@ -210,7 +210,7 @@ export default {
         postKeahlian() {
             let type = "postData"
             let url = [
-                "master/dokter_keahlian", this.form
+                "master/ahli/keahlian/master", this.form
             ]
             this.$store.dispatch(type, url).then((result) => {
                 iziToast.success({

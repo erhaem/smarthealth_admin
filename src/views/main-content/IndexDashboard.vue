@@ -86,32 +86,41 @@
     </div>
     <div class="row" v-if="$can('action', 'Admin Apotek')">
         <div class="col-md-6 col-6">
-            <div class="card shadow-lg rounded" v-for="data in plotting">
-                <div class="card-body">
-                    <h5 class="text-primary"><b>Hai, Ada pesanann masuk nihhh</b></h5>
-                    <hr>
-                    <h5><b>Detail Dokter</b></h5>
-                    <p>Rekomendasi: Dokter {{ data.rekomendasi.nama }} <br>
-                        Nomor Telepon: {{ data.rekomendasi.nomorHp }}
-                    </p>
-                    <hr style="font-weight: bold;">
-                    <h5><b>Detail Resep Obat</b></h5>
-                    <p>Produk: {{ data.produk.nama }} <br>
-                        Harga: {{ data.produk.harga }} <br>
-                        Jumlah: {{ data.jumlahButuh }} <br>
-                        Tanggal Resep: {{ data.tanggal }}
-                    </p>
-                    <hr style="font-weight: bold;">
-                    <div class="d-flex justify-content-end">
-                        <button class="btn btn-sm btn-success me-3">
-                            <i class="fas fa-check"></i>
-                            Proses Resep
-                        </button>
+            <template v-if="plotting.length > 0">
+                <div class="card shadow-lg rounded mb-3" v-for="data in plotting">
+                    <div class="card-body">
+                        <h5 class="text-primary"><b>Hai, Ada pesanann masuk nihhh</b></h5>
+                        <hr>
+                        <h5><b>Detail Dokter</b></h5>
+                        <p>Rekomendasi: Dokter {{ data.rekomendasi.nama }} <br>
+                            Nomor Telepon: {{ data.rekomendasi.nomorHp }}
+                        </p>
+                        <hr style="font-weight: bold;">
+                        <h5><b>Detail Resep Obat</b></h5>
+                        <p>Produk: {{ data.produk.nama }} <br>
+                            Harga: {{ data.produk.harga }} <br>
+                            Jumlah: {{ data.jumlahButuh }} <br>
+                            Tanggal Resep: {{ data.tanggal }}
+                        </p>
+                        <hr style="font-weight: bold;">
+                        <div class="d-flex justify-content-end">
+                            <button class="btn btn-sm btn-success me-3">
+                                <i class="fas fa-check"></i>
+                                Proses Resep
+                            </button>
+                        </div>
                     </div>
                 </div>
-            </div>
+            </template>
+            <template v-else>
+                <div class="alert alert-danger text-center">
+                    <p>
+                        Belum ada pesanan yang masuk
+                    </p>
+                </div>
+            </template>
         </div>
-        <div class="col-md-6 col-6">
+        <!-- <div class="col-md-6 col-6">
             <div class="card border-left-warning shadow py-2">
                 <div class="card-body">
                     <div class="row no-gutters align-items-center">
@@ -152,8 +161,9 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> -->
     </div>
+    {{ riwayat }}
 </template>
 
 <script>
@@ -166,14 +176,16 @@ export default {
         return {
             datas: '',
             isLoading: false,
-            plotting: []
+            plotting: [],
+            riwayat: []
         }
     },
     mounted() {
         this.getCountData()
     },
     created() {
-        this.getResep()
+        this.getResep(),
+        this.getRiwayat()
     },
     methods: {
         getCountData() {

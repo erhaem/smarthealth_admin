@@ -37,11 +37,21 @@ import AktivasiAkun from '@/views/aktivasi-akun/IndexAkun.vue'
 import AktivasiAkunPerawat from '@/views/aktivasi-akun/AktivasiPerawat.vue'
 import AktivasiOwnerApotek from '@/views/aktivasi-akun/AktivasiOwnerApotek.vue'
 import AktivasiOwnerRs from '@/views/aktivasi-akun/AktivasiRumahSakit.vue'
+import RekapKonsultasi from '@/views/konsumen/RekapKonsultasi.vue'
+
 
 export default [{
     path: '/master',
     name: 'Master Data',
     component: MasterData,
+},
+{
+    path: '/rekap_konsultasi',
+    name: 'Rekap Konsultasi',
+    component: RekapKonsultasi,
+    meta: {
+        middleware: checkRoles(roles.admin)
+    }
 },
 {
     path: '/aktivasi_dokter',

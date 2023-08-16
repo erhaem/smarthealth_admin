@@ -5,16 +5,17 @@
         </div>
         <div class="card-body">
             <Form @submit="postKeahlian">
-                <div class="mb-3">
-                    <SelectOption v-model="form.dokterId" Label="Nama Dokter">
+                <!-- <div class="mb-3">
+                    <SelectOption v-model="form.user_ahli_id" Label="Nama Dokter">
                         <template #option>
                             <option value="">pilih dokter</option>
-                            <option :value="data.idDokter" v-for="data in limitedData" :key="index">{{
+                            <option :value="data.userId.id" v-for="data in limitedData" :key="index">{{
                                 form.getDokter.nama }}
                             </option>
                         </template>
                     </SelectOption>
-                </div>
+                </div> -->
+                <input type="text" hidden :value="form.user.id">
                 <div class="mb-3">
                     <SelectOption v-model="form.keahlianId" Label="Nama Keahlian">
                         <template #option>
@@ -46,7 +47,9 @@ export default {
             keahlianDokter: [],
             dokter: [],
             form: {
-                dokterId: '',
+                user: {
+                    id: ''
+                },
                 keahlianId: ''
             },
             limit: 1,
@@ -92,7 +95,7 @@ export default {
         getKeahlianDokter() {
             let type = "getData"
             let url = [
-                "master/dokter_keahlian/" + this.idFromParams + "/edit", {}
+                "master/ahli/keahlian/master/" + this.idFromParams + "/edit", {}
             ]
             this.$store.dispatch(type, url).then((result) => {
                 this.form = result.data
@@ -124,7 +127,10 @@ export default {
         postKeahlian() {
             let type = "updateData"
             let url = [
-                "master/dokter_keahlian", this.idFromParams, this.form
+                "master/ahli/keahlian/master", this.idFromParams, {
+                    user_ahli_id: this.form.user.id,
+                    keahlian_id: this.form.keahlianId
+                }
             ]
             this.$store.dispatch(type, url).then((result) => {
                 iziToast.success({

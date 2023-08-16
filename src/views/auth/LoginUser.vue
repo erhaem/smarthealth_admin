@@ -7,21 +7,34 @@
                         Login Akun BerobatPlus
                     </h4>
                 </div>
-                <Form @submit="postLogin" class="px-4 py-4 text-dark" :validation-schema="schema" v-slot="{ errors }">
-                    <div class="mb-2">
-                        <label for="">Nomor HP</label>
-                        <InputField Name="nomorHp" v-model="form.nomor_hp" />
-                        <span class="text-danger">{{ errors.nomorHp }}</span>
+                <div class="card shadow">
+                    <div class="card-body">
+                        <Form @submit="postLogin" class="px-4 py-4 text-dark" :validation-schema="schema" v-slot="{ errors }">
+                            <div class="mb-2">
+                                <label for="">Nomor HP</label>
+                                <InputField Name="nomorHp" v-model="form.nomor_hp" />
+                                <span class="text-danger">{{ errors.nomorHp }}</span>
+                            </div>
+                            <div>
+                                <label for="">Password</label>
+                                <InputField Name="password" v-model="form.password" type="password" />
+                                <span class="text-danger">{{ errors.password }}</span>
+                            </div>
+                            <div class="d-flex justify-content-start">
+                                <input type="text" class="form-control w-50 me-3" :value="captchaText" disabled>
+                                <input type="text" class="form-control" placeholder="captcha" v-model="userInput"
+                                    @input="checkCaptcha">
+                            </div>
+                            <div class="d-flex justify-content-start">
+                                <p @click="reload" class="me-4 text-primary"><small>re-load captcha</small></p>
+                               
+                            </div>
+                            <div class="d-flex justify-content-end">
+                                <ButtonComponent />
+                            </div>
+                        </Form>
                     </div>
-                    <div>
-                        <label for="">Password</label>
-                        <InputField Name="password" v-model="form.password" type="password" />
-                        <span class="text-danger">{{ errors.password }}</span>
-                    </div>
-                    <div class="d-flex justify-content-end">
-                        <ButtonComponent />
-                    </div>
-                </Form>
+                </div>
             </div>
         </div>
     </div>
@@ -39,7 +52,13 @@ export default {
             form: {
                 nomor_hp: '',
                 password: ''
-            }
+            },
+            captchaText: this.generateCaptchaText(),
+            userInput: '',
+            showMessage: false,
+            message: '',
+            messageClass: '',
+            captchaValid: false,
         }
     },
     computed: {
@@ -51,7 +70,38 @@ export default {
         }
     },
     methods: {
+        generateCaptchaText() {
+            const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+            let captcha = '';
+            for (let i = 0; i < 6; i++) {
+                captcha += characters.charAt(Math.floor(Math.random() * characters.length));
+            }
+            return captcha;
+        },
+        checkCaptcha() {
+            if (this.userInput === this.captchaText) {
+                this.showMessage = true;
+                this.message = 'Captcha benar!';
+                this.messageClass = 'success';
+                this.captchaValid = true;
+            } else {
+                this.showMessage = true;
+                this.message = 'Captcha salah';
+                this.messageClass = 'error';
+                this.captchaValid = false;
+            }
+        },
         postLogin() {
+            this.checkCaptcha();
+
+            if (!this.captchaValid) {
+                this.$swal({
+                    icon: 'error',
+                    title: 'Invalid CAPTCHA',
+                    text: 'Please enter the correct CAPTCHA value.',
+                });
+                return;
+            }
             let type = "postData"
             let url = [
                 "autentikasi/login", this.form, {}

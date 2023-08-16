@@ -75,8 +75,8 @@ export default {
                 jenis_kelamin: 'L',
                 nama: 'jaya',
                 foto_apotek: null,
-                latitude: '-6.398815349046238',
-                longitude: '108.28547605105486'
+                latitude: '',
+                longitude: ''
             },
             tileLayerUrl: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
             selectedPosition: null,
