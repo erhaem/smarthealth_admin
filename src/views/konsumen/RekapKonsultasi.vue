@@ -9,11 +9,11 @@
                     <thead>
                         <tr>
                             <th>no</th>
-                            <th>Nama</th>
-                            <th>NIK</th>
-                            <th>Nomor HP</th>
-                            <th>Alamat</th>
-                            <th>Email</th>
+                            <th> Member</th>
+                            <th> Dokter</th>
+                            <th>Biaya</th>
+                            <th>Status</th>
+                            <th>Tanggal</th>
                         </tr>
                     </thead>
                     <tbody v-if="isLoading">
@@ -28,10 +28,21 @@
                                 <td>
                                     {{ index + 1 }}
                                 </td>
-                                <td>hamdan</td>
-                                <td>hamdan</td>
-                                <td>hamdan</td>
-                                <td>hamdan</td>
+                                <td>
+                                    {{ data.konsumen.nama }}
+                                </td>
+                                <td>
+                                    {{ data.ahli.nama }}
+                                </td>
+                                <td>
+                                    {{ data.transaksi.biaya }}
+                                </td>
+                                <td>
+                                    {{data.transaksi.status}}
+                                </td>
+                                <td>
+                                    {{ data.transaksi.tanggal }}
+                                </td>
                             </tr>
                         </tbody>
                     </template>
@@ -62,7 +73,9 @@ export default {
             let url = [
                 "transaksi/konsultasi", {}, {}
             ]
+            this.isLoading = true
             this.$store.dispatch(type, url).then((result)=>{
+                this.isLoading = false
                 this.riwayat = result.data
                 console.log(result);
             }).catch((err)=>{

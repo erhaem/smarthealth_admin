@@ -184,8 +184,8 @@ export default {
         this.getCountData()
     },
     created() {
-        this.getResep(),
-        this.getRiwayat()
+        this.getResep()
+        // this.getRiwayat()
     },
     methods: {
         getCountData() {
