@@ -161,7 +161,8 @@ export default {
                                 message: 'Data Produk Berhasil Ditambahkan',
                                 timeout: 1000
                             });
-                            this.$router.back()
+                            // this.$router.back()
+                            this.getProduk()
                         })
                         .catch((err) => {
                             console.log(err);

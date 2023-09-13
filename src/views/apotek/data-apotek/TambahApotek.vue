@@ -22,7 +22,7 @@
                     <label for="">Deskripsi</label>
                     <InputField v-model="form.deskripsi_apotek" />
                     <label for="">Nomor HP</label>
-                    <InputField v-model="form.nomor_hp" />
+                    <InputField v-model="form.nomor_hp_apotek" />
                 </div>
                 <div class="col-6 col-sm-6">
                     <label for="">Alamat</label>
@@ -42,7 +42,7 @@
                     <label for="">Nama Admin</label>
                     <InputField v-model="form.nama" />
                     <label for="">Nomor Hp</label>
-                    <InputField v-model="form.nomor_hp_apotek" />
+                    <InputField v-model="form.nomor_hp" />
                 </div>
                 <div class="col-6 col-sm-">
                     <label for="">Jenis Kelamin</label>
@@ -66,14 +66,14 @@ export default {
     data() {
         return {
             form: {
-                nama_apotek: 'Arjawinangun',
-                deskripsi_apotek: 'lorem',
-                alamat_apotek: 'jakarta',
-                nomor_hp: '081233232277',
+                nama_apotek: '',
+                deskripsi_apotek: '',
+                alamat_apotek: '',
+                nomor_hp: '',
                 nomor_hp_apotek: '081233232273',
-                password: 'password',
+                password: '',
                 jenis_kelamin: 'L',
-                nama: 'jaya',
+                nama: '',
                 foto_apotek: null,
                 latitude: '',
                 longitude: ''
