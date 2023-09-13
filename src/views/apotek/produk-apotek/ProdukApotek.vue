@@ -41,7 +41,7 @@
                                 <td>{{ data.hargaProduk }}</td>
                                 <td>
                                     <div class="d-flex justify-content-center">
-                                        <p class="me-2" data-bs-target="#kurangStok" data-bs-toggle="modal">
+                                        <p class="me-2" data-bs-target="#kurangStok" data-bs-toggle="modal" @click="lihat(data.kodeProduk)">
                                             <i class="fas fa-minus"></i>
                                         </p>
                                         <p>{{data.qty}}</p>
@@ -86,7 +86,7 @@
     </ModalComponent>
     <ModalComponent id="kurangStok">
         <template #modal>
-            <InputField :value="kode" type="hidden" />
+            <input type="text" hidden :value="kode" />
             <label for="">Jumlah Stok Keluar</label>
             <InputField v-model="form.qty" />
             <ButtonComponent @click="kurangQty" />
@@ -118,7 +118,7 @@ export default {
             isLoading: false,
             selected: [],
             qtyyy: [],
-            kode: {}
+            kode: ''
         }
     },
     created() {
@@ -184,7 +184,7 @@ export default {
         getProduk() {
             let type = "getData"
             let url = [
-                `apotek/produk/data_produk`, {}
+                `apotek/produk/data_produk/by_owner/${this.idFromParams}/get`, {}
             ]
             this.isLoading = true
             this.$store.dispatch(type, url).then((result) => {
@@ -232,6 +232,12 @@ export default {
             ]
             this.$store.dispatch(type, url).then((result)=>{
                 console.log(result);
+                iziToast.success({
+                    icon: 'success',
+                    title: 'berhasil tambah qty produk',
+                    position: 'topRight'
+                })
+                this.getProduk()
             })
         },
         kurangQty(){

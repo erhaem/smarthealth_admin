@@ -7,11 +7,11 @@
         </div>
         <div class="card-body">
             <div class="row">
-                <!-- <l-map :zoom="zoom" :center="mapCenter" class="rounded mb-3" style="height:350px; width: 50%">
+                <l-map :zoom="zoom" :center="mapCenter" class="rounded mb-3" style="height:350px; width: 50%">
                     <l-tile-layer :url="tileLayerUrl"></l-tile-layer>
                     <l-marker v-if="selectedPosition" :lat-lng="selectedPosition" :draggable="true"
                         @dragend="handleMarkerDrag"></l-marker>
-                </l-map> -->
+                </l-map>
                 <div class="col-6 col-sm-6">
                     <label for="">Foto Apotek</label>
                     <br>
@@ -26,11 +26,11 @@
                 </div>
                 <div class="col-6 col-sm-6">
                     <label for="">Alamat</label>
-                    <input type="text" class="form-control mb-3" v-model="form.alamat_apotek" />
+                    <input type="text" class="form-control mb-3" :value="locationName" />
                     <label for="">Latitude</label>
-                    <input type="text" class="form-control mb-3" v-model="form.latitude"  />
+                    <input type="text" class="form-control mb-3" :value="latitude"  />
                     <label for="">Longitude</label>
-                    <input type="text" class="form-control mb-3" v-model="form.longitude"  />
+                    <input type="text" class="form-control mb-3" :value="longitude"  />
 
                 </div>
             </div>
@@ -103,9 +103,9 @@ export default {
             formData.append('nama', nama);
             formData.append('foto_apotek', foto_apotek);
 
-            formData.append('alamat_apotek', alamat_apotek); // Use this.locationName directly
-            formData.append('latitude', latitude); // Use this.latitude directly
-            formData.append('longitude', longitude); // Use this.longitude directly
+            formData.append('alamat_apotek', this.locationName); // Use this.locationName directly
+            formData.append('latitude', this.latitude); // Use this.latitude directly
+            formData.append('longitude', this.longitude); // Use this.longitude directly
 
             return formData;
         },
@@ -196,7 +196,7 @@ export default {
                                 message: 'Data Rumah Sakit Berhasil Ditambahkan',
                                 timeout: 1000
                             });
-                            this.$router.back()
+                            // this.$router.back()
                         })
                         .catch((err) => {
                             console.log(err);

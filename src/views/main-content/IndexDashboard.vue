@@ -163,7 +163,6 @@
             </div>
         </div> -->
     </div>
-    {{ riwayat }}
 </template>
 
 <script>

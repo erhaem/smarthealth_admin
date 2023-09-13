@@ -7,19 +7,21 @@
                 <div class="container py-2 row">
                     <h6><b> Data Apotek </b></h6>
                     <div class="col-sm-6 col-6">
-                        <!-- <l-map v-if="form && form.latitude && form.longitude" :zoom="zoom"
+                        <l-map v-if="form && form.latitude && form.longitude" :zoom="zoom"
                             :center="[form.latitude, form.longitude]" class="rounded" style="height:350px; width: 100%">
                             <l-tile-layer :url="tileLayerUrl"></l-tile-layer>
                             <l-marker v-if="selectedPosition" :lat-lng="[form.latitude, form.longitude]" :draggable="true"
                                 @dragend="handleMarkerDrag"></l-marker>
-                        </l-map> -->
+                        </l-map>
+                        <br>
                         <input type="file" @change="chooseFoto">
+                        <br>
                         <label for="">Nama Apotek</label>
                         <InputField Name="namaRs" v-model="form.namaApotek" />
                         <label for="">Alamat</label>
-                        <input type="text" class="form-control mb-3" v-model="form.alamatApotek">
+                        <input type="text" class="form-control mb-3" :value="locationName">
                         <label for="">Latitude</label>
-                        <input type="text" class="form-control mb-3" v-model="form.latitude">
+                        <input type="text" class="form-control mb-3" :value="latitude">
                     </div>
                     <div class="col-sm-6 col-6">
                         <label for="">Longitude</label>
@@ -232,7 +234,7 @@ export default {
                                 message: 'Data Rumah Sakit Berhasil Diubah',
                                 timeout: 1000
                             });
-                            this.$router.back()
+                            // this.$router.back()
                         })
                         .catch((err) => {
                             console.log(err);
