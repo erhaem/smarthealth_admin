@@ -1,5 +1,5 @@
 <template>
-  <div class="bs-stepper">
+  <div class="bs-stepper ">
     <div class="card shadow">
       <div class="card-header py-2">
         <div class="d-flex flex-column px-2 pb-3">
@@ -73,12 +73,12 @@
               <BtnOptionComponent Option1="Perempuan" Option2="Laki-Laki" :uniqueId="'1'" />
 
               <label for="Usia">Berapa Usia Pasien?</label>
-              <input
-                type="text"
-                class="form-control form-control-lg"
-                style="width: 20rem"
-                id="usr"
-              />
+              <select class="form-select form-select-lg w-25">
+                  <option selected>Range Usia Anda</option>
+                  <option value="1">less or equal than 55 tahun</option>
+                  <option value="2">more than 55 tahun</option>
+                </select>
+            
             </div>
           </div>
           <div
@@ -91,13 +91,12 @@
           >
             <div class="d-flex flex-column">
               <div class="form-group d-grid gap-3">
-                <label for="Hipertensi">Apakah pasien memiliki riwayat hipertensi ?</label>
+                <label for="Hipertensi">{{ question[0].q1 }}</label>
                 <BtnOptionComponent :uniqueId="2" />
                 <label for="Kolesterol"
-                  >Berapa tingkat kolesterol “jahat” Low Density Lipoprotein pasien (Berdasarkan
-                  hasil tes lab)?</label
+                  >{{ question[1].q2 }}</label
                 >
-                <select class="form-select form-select-lg" style="width: 20rem">
+                <select class="form-select form-select-lg w-25">
                   <option selected>Kadar LDL</option>
                   <option value="1">100 mg/dL</option>
                   <option value="2">100-129 mg/dL</option>
@@ -106,14 +105,14 @@
                   <option value="5">>190 mg/dL</option>
                 </select>
                 <label for="vertigo"
-                  >Apakah pasien memiliki gejala vertigo sentral (pusing berkeliling)?</label
+                  >{{ question[2].q3 }}</label
                 >
                 <BtnOptionComponent :uniqueId="3" />
                 <label for="kelumpuhan"
-                  >Apakah pasien memiliki gejala Kelumpuhan pada sebagian tubuh?</label
+                  >{{ question[3].q4 }}</label
                 >
                 <BtnOptionComponent :uniqueId="4" />
-                <label for="bicara">Apakah pasien mengalami kesulitan dalam berbicara?</label>
+                <label for="bicara">{{ question[4].q5 }}</label>
                 <BtnOptionComponent :uniqueId="5" />
               </div>
             </div>
@@ -129,8 +128,8 @@
             <div class="d-flex flex-column">
               <h3 class="fw-bold text-primary-emphasis mx-auto">Risiko Peringatan</h3>
               <div
-                class="progress mx-auto"
-                style="width: 40rem"
+                class="progress mx-auto w-50"
+                
                 role="progressbar"
                 aria-label="Warning example"
                 aria-valuenow="75"
@@ -156,23 +155,23 @@
               <h5 class="fw-bold text-primary-emphasis">Ringkasan Seputar Tes</h5>
               <div class="d-grid gap-2 mb-2">
                 <div class="d-flex flex-column rounded bg-secondary-subtle px-5 py-2">
-                  <p>Apakah pasien memiliki riwayat hipertensi ?</p>
+                  <p>{{ question[0].q1 }}</p>
                   <p class="fw-normal">Yes - <b>Score %</b></p>
                 </div>
                 <div class="d-flex flex-column rounded bg-secondary-subtle px-5 py-2">
-                  <p>Apakah pasien memiliki riwayat hipertensi ?</p>
+                  <p>{{ question[1].q2 }}</p>
                   <p class="fw-normal">Yes - <b>Score %</b></p>
                 </div>
                 <div class="d-flex flex-column rounded bg-secondary-subtle px-5 py-2">
-                  <p>Apakah pasien memiliki riwayat hipertensi ?</p>
+                  <p>{{ question[2].q3 }}</p>
                   <p class="fw-normal">Yes - <b>Score %</b></p>
                 </div>
                 <div class="d-flex flex-column rounded bg-secondary-subtle px-5 py-2">
-                  <p>Apakah pasien memiliki riwayat hipertensi ?</p>
+                  <p>{{ question[3].q4 }}</p>
                   <p class="fw-normal">Yes - <b>Score %</b></p>
                 </div>
                 <div class="d-flex flex-column rounded bg-secondary-subtle px-5 py-2">
-                  <p>Apakah pasien memiliki riwayat hipertensi ?</p>
+                  <p>{{ question[4].q5 }}</p>
                   <p class="fw-normal">Yes - <b>Score %</b></p>
                 </div>
               </div>
@@ -215,6 +214,14 @@ export default {
         { subtittle: 'Informasi Umum Pasien' },
         { subtittle: 'Sesi Tes Risiko Stroke' },
         { subtittle: 'Hasil Tes Risiko Stroke' }
+      ],
+      question: [
+        { q1: 'Apakah pasien memiliki riwayat hipertensi ?'},
+        { q2: 'Berapa tingkat kolesterol “jahat” Low Density Lipoprotein pasien (Berdasarkan hasil tes lab)?'},
+        { q3: 'Apakah pasien memiliki gejala vertigo sentral (pusing berkeliling)?'},
+        { q4: 'Apakah pasien memiliki gejala Kelumpuhan pada sebagian tubuh?'},
+        { q5: 'Apakah pasien mengalami kesulitan dalam berbicara?'}
+
       ],
 
       riwayat: [],
