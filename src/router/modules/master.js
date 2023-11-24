@@ -41,6 +41,7 @@ import RekapKonsultasi from '@/views/konsumen/RekapKonsultasi.vue'
 
 import SesiTesStroke from '@/views/master-data/tes-stroke/IndexSesiTes.vue'
 import RiwayatTesStroke from '@/views/master-data/tes-stroke/IndexRiwayatTes.vue'
+import RuangTesStroke from '@/views/master-data/tes-stroke/RuangTes.vue'
 
 
 export default [{
@@ -281,6 +282,14 @@ export default [{
             path: 'riwayat-tes',
             name: 'riwayat tes stroke',
             component: RiwayatTesStroke,
+            meta: {
+                middleware: checkRoles(roles.dokter)
+            }
+        },
+        {
+            path: 'ruang-tes',
+            name: 'Ruang Tes Risiko Stroke',
+            component: RuangTesStroke,
             meta: {
                 middleware: checkRoles(roles.dokter)
             }

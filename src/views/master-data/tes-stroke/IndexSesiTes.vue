@@ -31,11 +31,9 @@
                   {{ data.konsumen.user.nama }}
                 </td>
                 <td>
-                  <BtnKajiComponent
-                    Message="Kaji Pasien"
-                    @click="ubahStatus(data.idJadwalAntrian)"
-                  />
-                  
+                  <router-link :to="'ruang-tes/'">
+                    <BtnKajiComponent Message="Kaji Pasien" />
+                  </router-link>
                 </td>
               </tr>
             </tbody>
@@ -74,33 +72,6 @@ export default {
     }))
   },
   methods: {
-    ubahStatus(idJadwalAntrian) {
-      let type = 'putData'
-      let url = [`ahli/jadwal_antrian/${idJadwalAntrian}`, {}]
-      this.$swal({
-        icon: 'question',
-        title: 'Apakah sudah selesai melakukan konsultasi?',
-        showDenyButton: true,
-        showCancelButton: false,
-        confirmButtonText: 'Ya, sudah',
-        denyButtonText: 'Belum nih'
-      }).then((result) => {
-        if (result.isConfirmed) {
-          this.$store
-            .dispatch(type, url)
-            .then(() => {
-              this.$swal({
-                icon: 'success',
-                title: 'berhasil melakukan konsultasi'
-              })
-              this.getAntrian()
-            })
-            .catch((err) => {
-              console.log(err)
-            })
-        }
-      })
-    },
     lihat(idJadwalAntrian) {
       let type = 'getData'
       let url = [`qr/${idJadwalAntrian}`, {}]
