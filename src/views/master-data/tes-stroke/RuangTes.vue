@@ -73,8 +73,8 @@
               <BtnOptionComponent Option1="Perempuan" Option2="Laki-Laki" :uniqueId="'1'" />
 
               <label for="Usia">Berapa Usia Pasien?</label>
-              <select class="form-select form-select-lg w-25">
-                  <option selected>Range Usia Anda</option>
+              <select class="form-select form-select-lg w-50">
+                  <option selected>Rentang Usia</option>
                   <option value="1">less or equal than 55 tahun</option>
                   <option value="2">more than 55 tahun</option>
                 </select>
