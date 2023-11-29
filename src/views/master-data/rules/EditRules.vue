@@ -12,7 +12,8 @@
               </thead>
               <tbody>
                 <tr>
-                  <td>tipes</td>
+                  <td>tipes </td>
+                  
                   <td>
                     <button type="button" class="btn btn-primary btn-sm mx-1 p-2 mx-sm-1 mx-lg-1">UPDATE</button>
                     <button type="button" class="btn btn-primary btn-sm mx-1 p-2 mx-sm-1 mx-lg-1">DELETE</button>
