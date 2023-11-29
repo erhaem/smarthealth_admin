@@ -91,6 +91,7 @@
 </style>
 
 <script>
+import axios from 'axios';
 export default {
   data() {
     return {
@@ -106,9 +107,9 @@ export default {
   methods: {
     async fetchGejalaData(penyakitId) {
       try {
-        const apiEndpoint = `http://192.168.100.56:8000/api/rule/${penyakitId}`;
-        const response = await fetch(apiEndpoint);
-        const data = await response.json();
+        const apiEndpoint = `/rule/${penyakitId}`;
+        const response = await axios.get(apiEndpoint);
+        const data = await response.data;
 
         const gejalaValueCF = {};
         data.rule_data.forEach((rule) => {
@@ -141,8 +142,8 @@ export default {
     },
     async fetchPenyakitData() {
       try {
-        const response = await fetch('http://192.168.100.56:8000/api/penyakit');
-        const data = await response.json();
+        const response = await axios.get('/penyakit');
+        const data = await response.data;
         this.penyakitList = data;
       } catch (error) {
         console.error('Error fetching penyakit data:', error);
@@ -165,29 +166,21 @@ export default {
                 value_cf: item.cf
             }));
 
-        const apiEndpoint = `http://192.168.100.56:8000/api/rule/${this.selectedPenyakitId}/update`;
-        const response = await fetch(apiEndpoint, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            rule_data: updatedRules,
-          }),
+            const apiEndpoint = `/rule/${this.selectedPenyakitId}/update`;
+        const response = await axios.post(apiEndpoint, {
+          rule_data: updatedRules,
         });
 
-        if (!response.ok) {
+        if (!response.data.success) {
           throw new Error('Gagal mengirimkan formulir');
         }
 
-        const responseData = await response.json();
-        console.log(responseData);
+        console.log(response.data);
 
-        
         alert('Formulir berhasil dikirimkan!');
       } catch (error) {
         console.error('Error mengirimkan formulir:', error);
-        
+
         alert('Gagal mengirimkan formulir. Silakan coba lagi.');
       }
     },
