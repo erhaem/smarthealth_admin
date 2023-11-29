@@ -3,6 +3,10 @@ import KategoriProduk from '@/views/master-data/obat-produk/KategoriProduk.vue'
 import EditKategoriProduk from '@/views/master-data/obat-produk/EditKategoriProduk.vue'
 
 import IndexArtikel from '@/views/master-data/artikel/data-artikel/IndexArtikel.vue'
+
+import Rules from '@/views/master-data/rules/Rules.vue'
+import EditRules from '@/views/master-data/rules/EditRules.vue'
+
 import EditArtikel from '@/views/master-data/artikel/data-artikel/EditArtikel.vue'
 import KategoriArtikel from '@/views/master-data/artikel/kategori-artikel/KategoriArtikel.vue'
 import EditKategoriArtikel from '@/views/master-data/artikel/kategori-artikel/EditKategoriArtikel.vue'
@@ -40,11 +44,16 @@ import AktivasiOwnerRs from '@/views/aktivasi-akun/AktivasiRumahSakit.vue'
 import RekapKonsultasi from '@/views/konsumen/RekapKonsultasi.vue'
 
 
+
+
+
 export default [{
     path: '/master',
     name: 'Master Data',
     component: MasterData,
 },
+
+
 {
     path: '/rekap_konsultasi',
     name: 'Rekap Konsultasi',
@@ -114,6 +123,26 @@ export default [{
                 middleware: checkRoles(roles.adminDokter)
             }
         },
+
+           // Routes Rules
+           {
+            path: '/rules',
+            name: 'Rules',
+            component: Rules,
+            meta: {
+                middleware: checkRoles(roles.adminDokter)
+            }
+        },
+
+        {
+            path: '/EditRules',
+            name: 'EditRules',
+            component: EditRules,
+            meta: {
+                middleware: checkRoles(roles.adminDokter)
+            }
+        },
+
         {
             path: 'artikel/:id/edit',
             name: 'Edit Artikel',
