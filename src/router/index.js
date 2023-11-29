@@ -1,29 +1,26 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import routes from './routes'
+import routes from './routes';
 import Cookies from 'js-cookie'
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
 
   routes,
-  linkActiveClass: 'active'
-})
-
-router.beforeEach((to, from) => {
-  document.title = to.meta?.title ?? 'Dashboard'
+  linkActiveClass: "active"
 })
 
 router.beforeEach((to, from, next) => {
-  const token = Cookies.get('token')
+  const token = Cookies.get("token")
   if (to.name !== 'LoginUser' && !token) next({ name: 'LoginUser' })
-  if (to.name === 'LoginUser' && token) next({ name: 'Dashboard' })
-  else {
-    const middleware = to.meta.middleware
-    if (middleware) {
+  if (to.name === "LoginUser" && token) next({ name: "Dashboard" });
+  else{
+    const middleware = to.meta.middleware;
+    if(middleware){
       middleware(to, from, next)
-    } else {
+    }else{
       next()
     }
   }
 })
+
 
 export default router

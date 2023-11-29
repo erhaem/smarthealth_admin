@@ -34,6 +34,15 @@
                         <router-link class="collapse-item" to="/master/artikel">Data Artikel</router-link>
                         <router-link class="collapse-item" v-if="$can('action', 'Admin')" to="/master/grouping_artikel">Grouping Artikel</router-link>
                     </div>
+                    <div  >
+                        <h6 class="collapse-header">BASE RULES</h6>
+                        <router-link class="collapse-item" to="/rules">Configrusi Gejala</router-link>
+                        <router-link class="collapse-item" to="/EditRules">Edit Data Rules</router-link>
+       
+     
+                    </div>
+
+                    
                     <div>
                         <h6 class="collapse-header" v-if="$can('show', 'Rumah Sakit')">Rumah Sakit</h6>
                         <router-link class="collapse-item" v-if="$can('show', 'Rumah Sakit')" to="/master/rumah_sakit">Data Rumah Sakit</router-link>

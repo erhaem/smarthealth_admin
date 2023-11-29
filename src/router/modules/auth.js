@@ -1,10 +1,5 @@
-export default [
-  {
+export default [{
     path: '/login',
     name: 'LoginUser',
-    meta: {
-      title: 'Login'
-    },
-    component: () => import('@/views/auth/LoginUser.vue')
-  }
-]
+    component: ()=>import('@/views/auth/LoginUser.vue')
+}]
