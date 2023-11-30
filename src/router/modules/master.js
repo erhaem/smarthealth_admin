@@ -6,6 +6,7 @@ import IndexArtikel from '@/views/master-data/artikel/data-artikel/IndexArtikel.
 
 import Rules from '@/views/master-data/rules/Rules.vue'
 import EditRules from '@/views/master-data/rules/EditRules.vue'
+import TambahGejala from '@/views/master-data/rules/TambahGejala.vue'
 
 import EditArtikel from '@/views/master-data/artikel/data-artikel/EditArtikel.vue'
 import KategoriArtikel from '@/views/master-data/artikel/kategori-artikel/KategoriArtikel.vue'
@@ -138,6 +139,14 @@ export default [{
             path: '/EditRules',
             name: 'EditRules',
             component: EditRules,
+            meta: {
+                middleware: checkRoles(roles.adminDokter)
+            }
+        },
+        {
+            path: '/TambahGejala',
+            name: 'TambahGejala',
+            component: TambahGejala,
             meta: {
                 middleware: checkRoles(roles.adminDokter)
             }
