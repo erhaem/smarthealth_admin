@@ -154,7 +154,7 @@
 
 <script>
 import axios from 'axios';
-
+  
 export default {
   data() {
     return {
@@ -196,6 +196,7 @@ export default {
       try {
         const response = await axios.post('/gejala', this.newGejala);
         console.log(response.data.success);
+        alert(response.data.success);
 
         this.newGejala = { nama: '', kode: '' };
 
@@ -206,6 +207,7 @@ export default {
         $('#gejala').modal('hide');
       } catch (error) {
         console.error('Error submitting gejala data:', error);
+
       }
     },
 
@@ -213,15 +215,18 @@ export default {
           try {
             const response = await axios.post('/penyakit', this.newpenyakit);
             console.log(response.data.success);
+            alert(response.data.success);
 
             this.newpenyakit = { kode: '', nama: '', penyebab: '' };
 
             // Fix the method name here
             this.fetchPenyakitData();
 
+   
             $('#penyakit').modal('hide');
           } catch (error) {
             console.error('Error submitting penyakit data:', error);
+      
           }
         },  
     confirmDelete(gejalaId) {
@@ -235,7 +240,7 @@ export default {
     try {
       const response = await axios.delete(`/gejala/${gejalaId}`);
       console.log(response.data.message);
-
+      alert(response.data.message);
       this.gejala = this.gejala.filter(item => item.id !== gejalaId);
     } catch (error) {
       console.error('Error deleting gejala:', error);
@@ -250,6 +255,7 @@ export default {
     async deletePenyakit(penyakitId) {
       try {
         const response = await axios.delete(`/penyakit/${penyakitId}`);
+        alert(response.data.message);
         console.log(response.data.message);
 
         // Filter the deleted penyakit by id
