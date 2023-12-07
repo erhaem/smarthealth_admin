@@ -128,6 +128,17 @@
                 </CollapseItem>
             </template>
         </NavItem>
+    
+        <NavItem span="Antrean Tes Stroke" v-if="$can('action', 'Dokter')" icon="fa-stethoscope" target="#collapseStroke">
+            <template #item>
+                <CollapseItem header="" id="collapseStroke" title="Tes Risiko Stroke">
+                    <template #router>
+                        <router-link class="collapse-item" :to="{name: 'list sesi tes stroke'}">Sesi Tes</router-link>
+                        <router-link class="collapse-item" :to="{name: 'riwayat tes stroke'}">Riwayat Tes Pasien</router-link>
+                    </template>
+                </CollapseItem>
+            </template>
+        </NavItem>
     </ul>
 </template>
 

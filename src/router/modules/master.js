@@ -35,14 +35,18 @@ import IndexRs from '../../views/master-data/owner-rs/IndexOwnerRs.vue'
 import EditOwnerRs from '@/views/master-data/owner-rs/EditOwnerRs.vue'
 import UpdateOwnerRs from '@/views/master-data/owner-rs/UpdateOwnerRs.vue'
 import { checkRoles, roles } from '../../middleware/redirect';
-import JadwalAntrian from '../../views/master-data/rumah-sakit/jadwal-antrian/IndexJadwalAntrian.vue'
-import RiwayatKunjungan from '../../views/master-data/rumah-sakit/jadwal-antrian/IndexRiwayatKunjungan.vue'
+import JadwalAntrian from '@/views/master-data/rumah-sakit/jadwal-antrian/IndexJadwalAntrian.vue'
+import RiwayatKunjungan from '@/views/master-data/rumah-sakit/jadwal-antrian/IndexRiwayatKunjungan.vue'
 
 import AktivasiAkun from '@/views/aktivasi-akun/IndexAkun.vue'
 import AktivasiAkunPerawat from '@/views/aktivasi-akun/AktivasiPerawat.vue'
 import AktivasiOwnerApotek from '@/views/aktivasi-akun/AktivasiOwnerApotek.vue'
 import AktivasiOwnerRs from '@/views/aktivasi-akun/AktivasiRumahSakit.vue'
 import RekapKonsultasi from '@/views/konsumen/RekapKonsultasi.vue'
+
+import SesiTesStroke from '@/views/master-data/tes-stroke/IndexSesiTes.vue'
+import RiwayatTesStroke from '@/views/master-data/tes-stroke/IndexRiwayatTes.vue'
+import RuangTesStroke from '@/views/master-data/tes-stroke/RuangTes.vue'
 
 
 
@@ -300,6 +304,30 @@ export default [{
             path: 'riwayat-kunjungan',
             name: 'Riwayat Kunjungan',
             component: RiwayatKunjungan,
+            meta: {
+                middleware: checkRoles(roles.dokter)
+            }
+        },
+        {
+            path: 'antrian-tes',
+            name: 'list sesi tes stroke',
+            component: SesiTesStroke,
+            meta: {
+                middleware: checkRoles(roles.dokter)
+            }
+        },
+        {
+            path: 'riwayat-tes',
+            name: 'riwayat tes stroke',
+            component: RiwayatTesStroke,
+            meta: {
+                middleware: checkRoles(roles.dokter)
+            }
+        },
+        {
+            path: 'ruang-tes',
+            name: 'Ruang Tes Risiko Stroke',
+            component: RuangTesStroke,
             meta: {
                 middleware: checkRoles(roles.dokter)
             }
