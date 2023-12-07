@@ -72,7 +72,7 @@
       </div>
     </div>
   </div>
-  <ModalComponent id="tambahData" :modalTitle="'tambah ' + $route.name">
+  <ModalComponent id="tambahData" :modalTitle="'Tambah ' + $route.name">
     <template #modal>
       <Form @submit="postKeahlian">
         <div class="mb-3">
