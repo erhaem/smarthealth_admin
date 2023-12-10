@@ -1,5 +1,5 @@
 <template>
-  <div class="bs-stepper ">
+  <div class="bs-stepper">
     <div class="card shadow">
       <div class="card-header py-2">
         <div class="d-flex flex-column px-2 pb-3">
@@ -50,9 +50,17 @@
             </div>
 
             <div class="d-none d-flex flex-column col-6 ms-3 ps-5 pt-4">
-              <!-- Ini nanti manggil data nama pasien sama kedatangannya dari api -->
-              <h6 class="fw-bold text-primary-emphasis pb-2">Nama pasien :</h6>
-              <h6 class="fw-bold text-primary-emphasis pt-1">Kedatangan :</h6>
+              <template v-if="infoAntrean && infoAntrean.userKonsumen">
+                <h6 class="fw-bold text-primary-emphasis pb-2">
+                  Nama pasien: {{ infoAntrean.userKonsumen.nama }}
+                </h6>
+                <h6 class="fw-bold text-primary-emphasis pt-1">
+                  Kedatangan: {{ getFormattedDate(infoAntrean.createdAt) }}
+                </h6>
+              </template>
+              <template v-else>
+                <p>Loading...</p>
+              </template>
             </div>
           </div>
         </div>
@@ -70,15 +78,20 @@
           >
             <div class="form-group d-grid gap-3">
               <label for="Jenis Kelamin">Apa Jenis Kelamin Pasien?</label>
-              <BtnOptionComponent Option1="Perempuan" Option2="Laki-Laki" :uniqueId="'1'" />
+              <BtnOptionComponent
+                :value="formData.jenisKelamin"
+                @update:value="formData.jenisKelamin = $event"
+                Option1="Perempuan"
+                Option2="Laki-Laki"
+                :uniqueId="'1'"
+              />
 
               <label for="Usia">Berapa Usia Pasien?</label>
-              <select class="form-select form-select-lg w-50">
-                  <option selected>Rentang Usia</option>
-                  <option value="1">less or equal than 55 tahun</option>
-                  <option value="2">more than 55 tahun</option>
-                </select>
-            
+              <select v-model="formData.rentangUsia" class="form-select form-select-lg w-50">
+                <option disabled>Rentang Usia</option>
+                <option value="1">55 tahun atau kurang</option>
+                <option value="2">lebih dari 55 tahun</option>
+              </select>
             </div>
           </div>
           <div
@@ -92,28 +105,41 @@
             <div class="d-flex flex-column">
               <div class="form-group d-grid gap-3">
                 <label for="Hipertensi">{{ question[0].q1 }}</label>
-                <BtnOptionComponent :uniqueId="2" />
-                <label for="Kolesterol"
-                  >{{ question[1].q2 }}</label
-                >
-                <select class="form-select form-select-lg w-25">
-                  <option selected>Kadar LDL</option>
-                  <option value="1">100 mg/dL</option>
-                  <option value="2">100-129 mg/dL</option>
-                  <option value="3">130-159 mg/dL</option>
-                  <option value="4">160-189 mg/dL</option>
-                  <option value="5">>190 mg/dL</option>
+                <BtnOptionComponent
+                  :value="formData.isHipertensi"
+                  @update:value="formData.isHipertensi = $event"
+                  :uniqueId="2"
+                />
+                <label for="Kolesterol">{{ question[1].q2 }}</label>
+                <select v-model="formData.rangeKadarLdl" class="form-select form-select-lg w-25">
+                  <option disabled>Kadar LDL</option>
+                  <option value="90">&lt;= 90 mg/dL</option>
+                  <option value="100-129">100-129 mg/dL</option>
+                  <option value="130-159">130-159 mg/dL</option>
+                  <option value="160-189">160-189 mg/dL</option>
+                  <option value="190">&gt;= 190 mg/dL</option>
                 </select>
-                <label for="vertigo"
-                  >{{ question[2].q3 }}</label
-                >
-                <BtnOptionComponent :uniqueId="3" />
-                <label for="kelumpuhan"
-                  >{{ question[3].q4 }}</label
-                >
-                <BtnOptionComponent :uniqueId="4" />
+                <!-- <p>
+                  {{ formData.jenisKelamin }} {{ formData.isHipertensi }} {{ formData.kadarLdl }}
+                </p> -->
+                <label for="vertigo">{{ question[2].q3 }}</label>
+                <BtnOptionComponent
+                  :value="formData.isVertigo"
+                  @update:value="formData.isVertigo = $event"
+                  :uniqueId="3"
+                />
+                <label for="kelumpuhan">{{ question[3].q4 }}</label>
+                <BtnOptionComponent
+                  :value="formData.isKelumpuhanParsial"
+                  @update:value="formData.isKelumpuhanParsial = $event"
+                  :uniqueId="4"
+                />
                 <label for="bicara">{{ question[4].q5 }}</label>
-                <BtnOptionComponent :uniqueId="5" />
+                <BtnOptionComponent
+                  :value="formData.isKesulitanBicara"
+                  @update:value="formData.isKesulitanBicara = $event"
+                  :uniqueId="5"
+                />
               </div>
             </div>
           </div>
@@ -125,21 +151,31 @@
             aria-labelledby="logins-part-trigger"
             v-show="isCurrentStep(3)"
           >
-            <div class="d-flex flex-column">
-              <h3 class="fw-bold text-primary-emphasis mx-auto">Risiko Peringatan</h3>
+            <div v-if="resultTest !== null" class="d-flex flex-column">
+              <h3 class="fw-bold text-primary-emphasis mx-auto">Tingkat Risiko</h3>
               <div
                 class="progress mx-auto w-50"
-                
                 role="progressbar"
-                aria-label="Warning example"
-                aria-valuenow="75"
+                :aria-valuenow="resultTest.persentaseTotal"
                 aria-valuemin="0"
                 aria-valuemax="100"
               >
-                <div class="progress-bar text-bg-warning" style="width: 75%">75%</div>
+                <div
+                  :class="
+                    'progress-bar text-bg-' +
+                    (resultTest.persentaseTotal > 50
+                      ? 'warning'
+                      : resultTest.persentaseTotal > 75
+                      ? 'danger'
+                      : 'success')
+                  "
+                  :style="{ width: resultTest.persentaseTotal + '%' }"
+                >
+                  {{ resultTest.persentaseTotal }}%
+                </div>
               </div>
-              <p class="fw-light mx-auto mt-2">Level Risiko Perempuan, >40 Tahun</p>
-              <h5 class="fw-bold text-primary-emphasis">Detail Perhitungan Angka Stroke</h5>
+              <!-- <p class="fw-light mx-auto mt-2">Level Risiko Perempuan, >40 Tahun</p> -->
+              <h5 class="fw-bold text-primary-emphasis">Detail Info Angka Risiko</h5>
               <div class="d-flex flex-row gap-5">
                 <span class="fw-normal mb-2">
                   <i class="icon text-success fa-solid fa-circle fa-lg"></i> 0-50 - Risiko Rendah
@@ -156,23 +192,25 @@
               <div class="d-grid gap-2 mb-2">
                 <div class="d-flex flex-column rounded bg-secondary-subtle px-5 py-2">
                   <p>{{ question[0].q1 }}</p>
-                  <p class="fw-normal">Yes - <b>Score %</b></p>
+                  <p class="fw-normal">{{ formData.isHipertensi ? 'Ya' : 'Tidak' }}</p>
                 </div>
                 <div class="d-flex flex-column rounded bg-secondary-subtle px-5 py-2">
                   <p>{{ question[1].q2 }}</p>
-                  <p class="fw-normal">Yes - <b>Score %</b></p>
+                  <p class="fw-normal">{{ formData.rangeKadarLdl }}</p>
                 </div>
                 <div class="d-flex flex-column rounded bg-secondary-subtle px-5 py-2">
                   <p>{{ question[2].q3 }}</p>
-                  <p class="fw-normal">Yes - <b>Score %</b></p>
+                  <p class="fw-normal">{{ formData.isVertigo ? 'Ya' : 'Tidak' }}</p>
                 </div>
                 <div class="d-flex flex-column rounded bg-secondary-subtle px-5 py-2">
                   <p>{{ question[3].q4 }}</p>
-                  <p class="fw-normal">Yes - <b>Score %</b></p>
+                  <p class="fw-normal">{{ formData.isKelumpuhanParsial ? 'Ya' : 'Tidak' }}</p>
                 </div>
                 <div class="d-flex flex-column rounded bg-secondary-subtle px-5 py-2">
                   <p>{{ question[4].q5 }}</p>
-                  <p class="fw-normal">Yes - <b>Score %</b></p>
+                  <p class="fw-normal">
+                    {{ formData.isKesulitanBicara ? 'Ya' : 'Tidak' }}
+                  </p>
                 </div>
               </div>
               <h5 class="fw-bold text-primary-emphasis">Berikan Anjuran Untuk Pasien</h5>
@@ -181,6 +219,7 @@
                 id="comment"
                 cols="auto"
                 rows="2"
+                v-model="pesanDokter"
                 class="p-3 rounded"
                 placeholder="Tuliskan rekomendasi penanganan/pencegahan medis...."
               ></textarea>
@@ -208,6 +247,17 @@ import BtnOptionComponent from '@/components/partials-component/BtnOptionCompone
 export default {
   data() {
     return {
+      pesanDokter: null,
+      resultTest: null,
+      infoAntrean: null,
+      formData: {
+        jenisKelamin: null,
+        isHipertensi: false,
+        rangeKadarLdl: 0, // kalo yg ini range
+        isVertigo: false,
+        isKelumpuhanParsial: false,
+        isKesulitanBicara: false
+      },
       currentStep: 1,
       stepper: null,
       stepTitles: [
@@ -216,12 +266,13 @@ export default {
         { subtittle: 'Hasil Tes Risiko Stroke' }
       ],
       question: [
-        { q1: 'Apakah pasien memiliki riwayat hipertensi ?'},
-        { q2: 'Berapa tingkat kolesterol “jahat” Low Density Lipoprotein pasien (Berdasarkan hasil tes lab)?'},
-        { q3: 'Apakah pasien memiliki gejala vertigo sentral (pusing berkeliling)?'},
-        { q4: 'Apakah pasien memiliki gejala Kelumpuhan pada sebagian tubuh?'},
-        { q5: 'Apakah pasien mengalami kesulitan dalam berbicara?'}
-
+        { q1: 'Apakah pasien memiliki riwayat hipertensi ?' },
+        {
+          q2: 'Berapa tingkat kolesterol "jahat" Low Density Lipoprotein pasien (Berdasarkan hasil tes lab)?'
+        },
+        { q3: 'Apakah pasien memiliki gejala vertigo sentral (pusing berkeliling)?' },
+        { q4: 'Apakah pasien memiliki gejala Kelumpuhan pada sebagian tubuh?' },
+        { q5: 'Apakah pasien mengalami kesulitan dalam berbicara?' }
       ],
 
       riwayat: [],
@@ -229,13 +280,7 @@ export default {
     }
   },
   created() {
-    const userNames = ['Alvi', 'Ade', 'AdeAl', 'ViAlvi', 'AlviAd']
-    const currentDate = new Date()
-    this.riwayat = userNames.map((nama, index) => ({
-      konsumen: { nama },
-      idJadwalAntrian: index + 1,
-      tanggalTes: this.getFormattedDate(currentDate, index) // Add formatted date
-    }))
+    this.getInfoCurrentAntrean()
   },
   computed: {
     isCurrentStep() {
@@ -247,8 +292,8 @@ export default {
           return 'Lanjutkan Tes'
         case 2:
           return 'Lihat Hasil Tes'
-        case 3:
-          return 'Kirimkan Hasil Tes'
+        // case 3:
+        //   return 'Kirimkan Hasil Tes'
         default:
           return 'Kirimkan Hasil Tes'
       }
@@ -271,8 +316,98 @@ export default {
     changeStep(step) {
       this.currentStep = step
     },
+    getInfoCurrentAntrean() {
+      let type = 'getData'
+      let url = [`list_antrean_test_stroke/${this.$route.params.antreanId}/antrean/info`, {}]
+
+      this.$store
+        .dispatch(type, url)
+        .then((result) => {
+          if (!result.success) {
+            this.$swal({
+              icon: 'error',
+              title: 'Gagal mendapatkan list antrean',
+              text: result.message
+            })
+
+            return false
+          }
+
+          this.infoAntrean = result.data
+        })
+        .catch(console.error)
+    },
+
+    prosesTest() {
+      let type = 'postData'
+      let url = ['proses_test_stroke', this.formData]
+
+      this.$store
+        .dispatch(type, url)
+        .then((result) => {
+          if (!result.success) {
+            this.$swal({
+              icon: 'error',
+              title: 'Gagal memproses test risiko stroke',
+              text: result.message
+            })
+
+            return false
+          }
+
+          this.resultTest = result.data
+
+          console.log(this.resultTest)
+        })
+        .catch(console.error)
+    },
+
+    sendHasilTest() {
+      const data = {
+        ...this.resultTest,
+        pesanDokter: this.pesanDokter,
+        idUserKonsumen: this.infoAntrean.userKonsumen.id,
+        idUserDokter: this.infoAntrean.userDokter.id,
+        noUrutAntrean: this.infoAntrean.noUrut
+      }
+
+      let type = 'postData'
+      let url = ['add_riwayat_test_stroke', data]
+
+      this.$store
+        .dispatch(type, url)
+        .then((result) => {
+          if (!result.success) {
+            this.$swal({
+              icon: 'error',
+              title: 'Gagal mengirim hasil test risiko stroke',
+              text: result.message
+            })
+
+            return false
+          }
+
+          this.$swal({
+            icon: 'success',
+            title: 'Berhasil mengirim hasil test risiko stroke'
+            // text: result.message
+          })
+        })
+        .catch(console.error)
+    },
+
     getNext() {
-      console.log(this.$refs)
+      console.log('refs: ', this.$refs)
+
+      if (this.currentStep == 2) {
+        this.prosesTest()
+      }
+
+      if (this.currentStep == 3) {
+        this.sendHasilTest()
+        return
+      }
+
       this.stepper.next()
       this.currentStep++
 
@@ -285,9 +420,9 @@ export default {
         }
       })
     },
-    getFormattedDate(currentDate, index) {
+    getFormattedDate(currentDate) {
       const nextMonthDate = new Date(currentDate)
-      nextMonthDate.setMonth(currentDate.getMonth() + index + 1)
+      // nextMonthDate.setMonth(currentDate.getMonth() + index + 1)
       const options = {
         year: 'numeric',
         month: 'long',
@@ -301,4 +436,3 @@ export default {
   }
 }
 </script>
-<style></style>
