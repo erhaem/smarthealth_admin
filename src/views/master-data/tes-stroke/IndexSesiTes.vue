@@ -10,7 +10,7 @@
         <table class="table table-bordered" width="100%" cellspacing="0">
           <thead>
             <tr>
-              <th>No</th>
+              <th>No. Urut</th>
               <th>Nama Pasien</th>
               <th>Aksi</th>
             </tr>
@@ -19,19 +19,21 @@
             <EmptyLoading />
           </tbody>
           <tbody v-else-if="antrian.length === 0">
-            <EmptyData Label="belum ada antrian pasien nihh" />
+            <EmptyData Label="Saat ini belum ada antrean untuk Anda" />
           </tbody>
           <template v-else>
             <tbody v-for="(data, index) in antrian" :key="index">
               <tr>
                 <td>
-                  {{ index + 1 }}
+                  {{ data.noUrut }}
                 </td>
                 <td>
-                  {{ data.konsumen.user.nama }}
+                  {{ data.userKonsumen.nama }}
                 </td>
                 <td>
-                  <router-link :to="'ruang-tes/'">
+                  <router-link
+                    :to="{ name: 'Ruang Tes Risiko Stroke', params: { antreanId: data.id } }"
+                  >
                     <BtnKajiComponent Message="Kaji Pasien" />
                   </router-link>
                 </td>
@@ -50,6 +52,7 @@
 </template>
 
 <script>
+import Cookies from 'js-cookie'
 import ModalComponent from '@/components/partials-component/ModalComponent.vue'
 import EmptyData from '@/components/empty-table/EmptyData.vue'
 import EmptyLoading from '@/components/empty-table/EmptyLoading.vue'
@@ -60,18 +63,52 @@ export default {
       antrian: [],
       riwayat: [],
       isLoading: false,
-      qr: {}
+      qr: {},
+      currentUser: {}
     }
   },
   created() {
-    this.getRiwayat()
-    const userNames = ['Alvi', 'Ade', 'AdeAl', 'ViAlvi', 'AlviAd']
-    this.antrian = userNames.map((nama, index) => ({
-      konsumen: { user: { nama } },
-      idJadwalAntrian: index + 1 // You can add other properties as needed
-    }))
+    // this.getRiwayat()
+    // this.getInfoCurrentUser()
+    this.listAntrean()
+    // const userNames = ['Alvi', 'Ade', 'AdeAl', 'ViAlvi', 'AlviAd']
+    // this.antrian = userNames.map((nama, index) => ({
+    //   konsumen: { user: { nama } },
+    //   idJadwalAntrian: index + 1 // You can add other properties as needed
+    // }))
   },
   methods: {
+    listAntrean() {
+      /**
+       * 07/12/23
+       * Call me insane,
+       * I know it's probably a devil way to get current user info thru cookie
+       * see that variable: currentDokter
+       *
+       * Think I lost my mind wtf, help
+       * */
+      const currentDokter = JSON.parse(Cookies.get('user')).data
+
+      // console.log('list antrean dulu')
+      let type = 'getData'
+      let url = [`list_antrean_test_stroke/${currentDokter.getDokter.userId}/dokter`, {}]
+
+      this.$store.dispatch(type, url).then((result) => {
+        if (!result.success) {
+          this.$swal({
+            icon: 'error',
+            title: 'Gagal mendapatkan list antrean',
+            text: result.message
+          })
+
+          return false
+        }
+
+        this.antrian = result.data.filter((data) => data.sedangDiproses === 0)
+        // console.log(result.data)
+      })
+    },
+
     lihat(idJadwalAntrian) {
       let type = 'getData'
       let url = [`qr/${idJadwalAntrian}`, {}]
@@ -101,7 +138,7 @@ export default {
           this.riwayat = result.data
         })
         .catch((err) => {
-          console.log(er)
+          console.log(err)
         })
     }
   },
