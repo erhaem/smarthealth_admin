@@ -34,14 +34,7 @@
                         <router-link class="collapse-item" to="/master/artikel">Data Artikel</router-link>
                         <router-link class="collapse-item" v-if="$can('action', 'Admin')" to="/master/grouping_artikel">Grouping Artikel</router-link>
                     </div>
-                    <div  >
-                        <h6 class="collapse-header">BASE RULES</h6>
-                        <router-link class="collapse-item" to="/rules">Configrusi Gejala</router-link>
-                        <router-link class="collapse-item" to="/EditRules">Edit Data Rules</router-link>
-       
-     
-                    </div>
-
+        
                     
                     <div>
                         <h6 class="collapse-header" v-if="$can('show', 'Rumah Sakit')">Rumah Sakit</h6>
@@ -124,6 +117,17 @@
                     <template #router>
                         <router-link class="collapse-item" :to="{name: 'list jadwal antrian'}">Sesi Kunjungan</router-link>
                         <router-link class="collapse-item" :to="{name: 'Riwayat Kunjungan'}">Riwayat Kunjungan</router-link>
+                    </template>
+                </CollapseItem>
+            </template>
+        </NavItem>
+
+        <NavItem span="Base Rules" v-if="$can('action', 'Dokter')" icon="fa-user-md" target="#collapseBaseRule">
+            <template #item>
+                <CollapseItem header="" id="collapseBaseRule" title="Configruasi Aturan">
+                    <template #router>
+                        <router-link class="collapse-item" to="/rules">Configrusi Gejala</router-link>
+                        <router-link class="collapse-item" to="/EditRules">Edit Data Rules</router-link>
                     </template>
                 </CollapseItem>
             </template>
