@@ -163,10 +163,10 @@
                 <div
                   :class="
                     'progress-bar text-bg-' +
-                    (resultTest.persentaseTotal > 50
-                      ? 'warning'
-                      : resultTest.persentaseTotal > 75
+                    (parseInt(resultTest.persentaseTotal) > 75
                       ? 'danger'
+                      : parseInt(resultTest.persentaseTotal) > 50
+                      ? 'warning'
                       : 'success')
                   "
                   :style="{ width: resultTest.persentaseTotal + '%' }"
